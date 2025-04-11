@@ -1,0 +1,19 @@
+- name: Create low-privileged user
+  hosts: all
+  become: yes
+  vars:
+    username: test
+    user_password: "{{ 'test' | password_hash('sha512') }}"
+  tasks:
+    - name: Ensure the user exists
+      ansible.builtin.user:
+        name: "{{ username }}"
+        password: "{{ user_password }}"
+        shell: /bin/bash
+        state: present
+
+    - name: Ensure user has minimal permissions
+      ansible.builtin.user:
+        name: "{{ username }}"
+        groups: ""
+        append: no
