@@ -6,7 +6,7 @@ import json
 from random_gen import generate_random_password
 
 def run_ansible_playbook(playbook, ask_become_pass=False):
-    command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '-ask-become-pass']
+    command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '--ask-become-pass']
     
     if ask_become_pass:
         command.append('--ask-become-pass')
