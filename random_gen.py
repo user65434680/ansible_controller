@@ -6,8 +6,6 @@ import string
 def generate_random_password(length=8):
     characters = string.ascii_letters + string.digits + "!?"
     
-    print(f"Available characters for password generation: {characters}")
-    
     password = ''.join(random.choice(characters) for _ in range(length))
     
     return password
