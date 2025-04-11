@@ -48,7 +48,6 @@ def add_user():
         yaml.dump(user_data, file, default_flow_style=False)
 
     print("Users have been added to user_data.yml.")
-    run_ansible_playbook('users.yml', ask_become_pass=False)
 
 def generate_random_password(length=8):
     characters = string.ascii_letters + string.digits + "!?"
@@ -69,21 +68,26 @@ def main():
     except FileNotFoundError:
         user_data = {'users': []}
 
-    print("Select an option:")
-    print("1. Create user")
-    print("2. Delete user")
-    print("3. Add users interactively")
+    while True:
+        print("Select an option:")
+        print("1. Create user")
+        print("2. Delete user")
+        print("3. Add users interactively")
+        print("4. Exit")
 
-    choice = input("Enter the number of your choice: ").strip()
+        choice = input("Enter the number of your choice: ").strip()
 
-    if choice == "1":
-        create_user()
-    elif choice == "2":
-        delete_user()
-    elif choice == "3":
-        add_user()
-    else:
-        print("Invalid choice. Exiting.")
+        if choice == "1":
+            create_user()
+        elif choice == "2":
+            delete_user()
+        elif choice == "3":
+            add_user()
+        elif choice == "4":
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice. Try again.")
 
 if __name__ == '__main__':
     main()
