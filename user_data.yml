@@ -1,5 +1,7 @@
 #this file is used to add users for the creation process. with the following example
 
 users:
-#  - username:
-#  - password:
+#  - username: example
+#  - password: example
+  - username: test1
+  - password: test1
