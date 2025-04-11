@@ -15,9 +15,9 @@
       loop_control:
         loop_var: item
 
-    - name: Create default directories for each user
+    - name: Create Desktop directory
       ansible.builtin.file:
-        path: "/home/{{ item.username }}/{{ directory }}"
+        path: "/home/{{ item.username }}/Desktop"
         state: directory
         owner: "{{ item.username }}"
         group: "{{ item.username }}"
@@ -25,12 +25,58 @@
       loop: "{{ users }}"
       loop_control:
         loop_var: item
-      vars:
-        directories:
-          - Desktop
-          - Documents
-          - Downloads
-          - Music
-          - Pictures
-          - Videos
-      with_items: "{{ directories }}"
+
+    - name: Create Documents directory
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}/Documents"
+        state: directory
+        owner: "{{ item.username }}"
+        group: "{{ item.username }}"
+        mode: '0755'
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: item
+
+    - name: Create Downloads directory
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}/Downloads"
+        state: directory
+        owner: "{{ item.username }}"
+        group: "{{ item.username }}"
+        mode: '0755'
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: item
+
+    - name: Create Music directory
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}/Music"
+        state: directory
+        owner: "{{ item.username }}"
+        group: "{{ item.username }}"
+        mode: '0755'
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: item
+
+    - name: Create Pictures directory
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}/Pictures"
+        state: directory
+        owner: "{{ item.username }}"
+        group: "{{ item.username }}"
+        mode: '0755'
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: item
+
+    - name: Create Videos directory
+      ansible.builtin.file:
+        path: "/home/{{ item.username }}/Videos"
+        state: directory
+        owner: "{{ item.username }}"
+        group: "{{ item.username }}"
+        mode: '0755'
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: item
