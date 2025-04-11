@@ -1,4 +1,4 @@
-- name: Create low-privileged user
+- name: Create low-privileged user with home directory
   hosts: all
   become: yes
   vars:
@@ -11,9 +11,19 @@
         password: "{{ user_password }}"
         shell: /bin/bash
         state: present
+        create_home: yes
 
-    - name: Ensure user has minimal permissions
-      ansible.builtin.user:
-        name: "{{ username }}"
-        groups: ""
-        append: no
+    - name: Create default directories in the user's home
+      ansible.builtin.file:
+        path: "/home/{{ username }}/{{ item }}"
+        state: directory
+        owner: "{{ username }}"
+        group: "{{ username }}"
+        mode: '0755'
+      loop:
+        - Desktop
+        - Documents
+        - Downloads
+        - Music
+        - Pictures
+        - Videos
