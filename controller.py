@@ -20,24 +20,33 @@ def run_ansible_playbook(playbook, ask_become_pass=False):
 
 def add_users_from_file():
     filename = input ("Enter the file name that contains names from students. (only works as .txt)").strip()
-
     while True:
-        with open(filename, 'r') as file:
-            users = []
-            for line in file:
-                names = line.strip().split()
-                if len(names) == 2:
-                    firstname, lastname = names[0], names[1]
+        try:
+            with open(filename, 'r') as file:
+                users = []
+                for line in file:
+                    names = line.strip().split()
+                    if len(names) == 2:
+                        firstname, lastname = names[0], names[1]
 
-                    username = (firstname[:3] + lastname [:3]).lower()
+                        username = (firstname[:3] + lastname [:3]).lower()
 
-                    password = generate_random_password()
+                        password = generate_random_password()
 
-                    users.append({'username': username,})
-        with open('user_data.json', 'w') as file:
-            json.dump(user_data, file, indent=4)
+                        users.append({'username': username,})
+            
+            with open('user_data.json', 'w') as file:
+                json.dump(user_data, file, indent=4)
 
-        print("Users have been added to user_data.json.")
+            print("Users have been added to user_data.json.")
+        
+        except FileNotFoundError:
+            print(f"file {filename} not found")
+        except Exception as e:
+            print(f"An error occured {e}")
+
+
+
 
 
 def add_user():
