@@ -18,6 +18,27 @@ def run_ansible_playbook(playbook, ask_become_pass=False):
     except subprocess.CalledProcessError as e:
         print(f"Error running playbook {playbook}: {e.stderr}")
 
+def add_users_from_file():
+    filename = input ("Enter the file name that contains names from students. (only works as .txt)").strip()
+
+    while True:
+        with open(filename, 'r') as file:
+            users = []
+            for line in file:
+                names = line.strip().split()
+                if len(names) == 2:
+                    firstname, lastname = names[0], names[1]
+
+                    username = (firstname[:3] + lastname [:3]).lower()
+
+                    password = generate_random_password()
+
+                    users.append({'username': username,})
+        with open('user_data.json', 'w') as file:
+            json.dump(user_data, file, indent=4)
+
+        print("Users have been added to user_data.json.")
+
 
 def add_user():
     print("\n--- Adding Users ---")
@@ -71,7 +92,8 @@ def main():
         print("1. Create user")
         print("2. Delete user")
         print("3. Add users interactively")
-        print("4. Exit")
+        print("4. Add users from txt file")
+        print("5. Exit")
 
         choice = input("Enter the number of your choice: ").strip()
 
@@ -82,6 +104,9 @@ def main():
         elif choice == "3":
             add_user()
         elif choice == "4":
+            add_users_from_file()
+        elif choice == "5":
+
             print("Exiting the program.")
             break
         else:
