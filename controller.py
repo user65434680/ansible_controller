@@ -3,7 +3,7 @@
 import subprocess
 import sys
 import yaml
-import random
+from random_gen import generate_random_password
 import string
 
 def run_ansible_playbook(playbook, ask_become_pass=False):
@@ -19,8 +19,8 @@ def run_ansible_playbook(playbook, ask_become_pass=False):
     except subprocess.CalledProcessError as e:
         print(f"Error running playbook {playbook}: {e.stderr}")
 
+
 def add_user():
-    global user_data
     print("\n--- Adding Users ---")
     while True:
         username = input("Enter username (or type 'exit' to stop): ").strip()
@@ -48,10 +48,6 @@ def add_user():
         yaml.dump(user_data, file, default_flow_style=False)
 
     print("Users have been added to user_data.yml.")
-
-def generate_random_password(length=8):
-    characters = string.ascii_letters + string.digits + "!?"
-    return ''.join(random.choice(characters) for _ in range(length))
 
 def delete_user():
     run_ansible_playbook('del_users.yml')
