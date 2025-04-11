@@ -1,10 +1,16 @@
 - name: delete user
   hosts: all
   become: yes
+  vars_files:
+    - user_data.yml
+  
   tasks:
     - name: delete user
       ansible.builtin.user:
-        name: test
+        name: "{{ item.username }}"
         state: absent
         remove: yes
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: item
   
