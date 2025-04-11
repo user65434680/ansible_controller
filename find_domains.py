@@ -5,13 +5,11 @@ import ipaddress
 import re
 import sys
 
-# Function to get IP addresses using dig
 def dig_ips(domain):
     ipv4 = subprocess.run(["dig", "+short", "A", domain], capture_output=True, text=True).stdout.splitlines()
     ipv6 = subprocess.run(["dig", "+short", "AAAA", domain], capture_output=True, text=True).stdout.splitlines()
     return ipv4 + ipv6
 
-# Function to get CIDR ranges from whois
 def get_cidr_from_whois(ip):
     try:
         result = subprocess.run(["whois", ip], capture_output=True, text=True).stdout
@@ -30,7 +28,7 @@ def get_cidr_from_whois(ip):
     except Exception:
         return None
 
-# Function to get unique CIDR ranges
+
 def get_unique_cidrs(domain):
     ips = dig_ips(domain)
     cidrs = set()
@@ -41,7 +39,7 @@ def get_unique_cidrs(domain):
                 cidrs.add(cidr.strip())
     return sorted(cidrs)
 
-# Function to handle adding or removing websites from the whitelist
+
 def modify_whitelist(whitelist):
     print("\nWould you like to:")
     print("1) Remove websites from whitelist")
@@ -80,16 +78,16 @@ def modify_whitelist(whitelist):
     return whitelist
 
 def main():
-    # Default whitelist (you can persist it if you want)
+
     whitelist = []
 
-    # Ask the user whether they'd like to modify the whitelist
+
     modify_choice = input("Would you like to modify the whitelist? (y/n): ").strip().lower()
 
     if modify_choice == "y":
         whitelist = modify_whitelist(whitelist)
 
-    # Display the updated whitelist
+
     if whitelist:
         print("\nUpdated Whitelist:")
         for website in whitelist:
@@ -97,10 +95,9 @@ def main():
     else:
         print("No websites in the whitelist.")
 
-    # Ask for the domain after modifying the whitelist
+
     domain = input("\nEnter a domain to get IP ranges (e.g., wikipedia.org): ").strip()
 
-    # Process the domain if provided
     if domain:
         print(f"\nFinding IP ranges for: {domain}")
         cidrs = get_unique_cidrs(domain)
