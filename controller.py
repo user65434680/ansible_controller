@@ -2,6 +2,7 @@
 
 import subprocess
 import sys
+import yaml
 
 def run_ansible_playbook(playbook):
     try:
@@ -13,26 +14,65 @@ def run_ansible_playbook(playbook):
         print(f"Playbook {playbook} executed successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Error running playbook {playbook}: {e.stderr}")
-        
+
 def create_user():
     run_ansible_playbook('users.yml')
 
 def delete_user():
     run_ansible_playbook('del_users.yml')
 
+def add_user():
+    try:
+        with open('user_data.yml', 'r') as file:
+            user_data = yaml.safe_load(file)
+            if not user_data:
+                user_data = {'users': []}
+    except FileNotFoundError:
+        user_data = {'users': []}
+
+    print("\n--- Adding Users ---")
+    while True:
+        username = input("Enter username (or type 'exit' to stop): ").strip()
+        if username.lower() == 'exit':
+            break
+
+        password = input("Enter password: ").strip()
+
+        user_data['users'].append({
+            'username': username,
+            'password': password
+        })
+
+        print(f"User '{username}' has been added.")
+
+    with open('user_data.yml', 'w') as file:
+        yaml.dump(user_data, file, default_flow_style=False)
+
+    print("Users have been added to user_data.yml.")
+
+    run_ansible_playbook('users.yml')
+
 def main():
-    print("Select an option:")
-    print("1. Create user")
-    print("2. Delete user")
+    while True:
+        print("\nSelect an option:")
+        print("1. Create user")
+        print("2. Delete user")
+        print("3. Add user")
+        print("4. Exit")
 
-    choice = input("Enter the number of your choice: ").strip()
+        choice = input("Enter the number of your choice: ").strip()
 
-    if choice == "1":
-        create_user()
-    elif choice == "2":
-        delete_user()
-    else:
-        print("Invalid choice. Exiting.")
+        if choice == "1":
+            create_user()
+        elif choice == "2":
+            delete_user()
+        elif choice == "3":
+            add_user()
+        elif choice == "4":
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
 if __name__ == '__main__':
     main()
