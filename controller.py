@@ -21,12 +21,16 @@ def create_user():
 def delete_user():
     run_ansible_playbook('del_users.yml')
 
+
 def add_user():
+
     try:
         with open('user_data.yml', 'r') as file:
             user_data = yaml.safe_load(file)
-            if not user_data:
+            if not user_data or 'users' not in user_data:
                 user_data = {'users': []}
+            elif not user_data['users']:
+                user_data['users'] = []
     except FileNotFoundError:
         user_data = {'users': []}
 
@@ -49,8 +53,8 @@ def add_user():
         yaml.dump(user_data, file, default_flow_style=False)
 
     print("Users have been added to user_data.yml.")
-
     run_ansible_playbook('users.yml')
+
 
 def main():
     while True:
