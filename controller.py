@@ -88,19 +88,19 @@ def assign_computers_manually():
     for i, client in enumerate(clients, start=1):
         print(f"{i}) {client}")
 
-def assing_computers_automatically():
+def assign_computers_automatically():
     run_ansible_playbook('echo_available_computers.yml')
     client_ranking
 
 
-def assing_computers_choice():
+def assign_computers_choice():
     
-    assing_computers_choice = input("Would you like to either assing computers\n manually\n1) automatically\n2)").strip()
+    assign_computers_choice = input("Would you like to either assign computers\n manually\n1) automatically\n2)").strip()
 
-    if assing_computers_choice == "1":
-        assign_computers_manually
-    elif assing_computers_choice == "2":
-        assing_computers_automatically
+    if assign_computers_choice == "1":
+        assign_computers_manually()
+    elif assign_computers_choice == "2":
+        assign_computers_automatically()
 
 
 def main():
@@ -118,7 +118,7 @@ def main():
         print("2. Delete user")
         print("3. Add users interactively")
         print("4. Add users from txt file")
-        print("5. assing target computers")
+        print("5. assign target computers")
         print("6. Exit")
 
         choice = input("Enter the number of your choice: ").strip()
@@ -132,7 +132,7 @@ def main():
         elif choice == "4":
             add_users_from_file()
         elif choice == "5":
-            assing_computers_choice
+            assign_computers_choice()
         elif choice == "6":
 
             print("Exiting the program.")
