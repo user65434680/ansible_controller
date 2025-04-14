@@ -7,7 +7,7 @@ def load_user_counts(path="user_counts.json"):
 def extract_client_number(name):
     return int(name.replace("client", ""))
 
-def main():
+def client_ranking():
     try:
         user_counts = load_user_counts()
     except FileNotFoundError:
@@ -45,5 +45,5 @@ def main():
 
     print("\nSaved selected clients to 'ranked_clients.json'.")
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__client_ranking__":
+    client_ranking()
