@@ -108,6 +108,7 @@ def add_to_ansible():
 
 def add_to_ansible2():
     playbook_1 = "add_computer.yml"
+    playbook_2 = "generate_ssh_keys.yml"
     ansible_user = input("Enter the computer client username: ").strip()
     ansible_IP = input("Enter the client IP address: ").strip()
 
@@ -116,12 +117,21 @@ def add_to_ansible2():
 
     ansible = ['ansible-playbook', '-i', f'{ansible_user}@{ansible_IP},', playbook_1, '--ask-become-pass']
     
+    ansible_2 = ['ansible-playbook', '-i', f'{ansible_user}@{ansible_IP},', playbook_2, '--ask-become-pass']
+
     try:
         result = subprocess.run(ansible, check=True, text=True, capture_output=True)
         print(result.stdout)
         print(f"Playbook {playbook_1} executed successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Error running playbook {playbook_1}: {e.stderr}")
+
+    try:
+        result = subprocess.run(ansible_2, check=True, text=True, capture_output=True)
+        print(result.stdout)
+        print(f"Playbook {playbook_2} executed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error running playbook {playbook_2}: {e.stderr}")
 
 
 def assign_computers_choice():

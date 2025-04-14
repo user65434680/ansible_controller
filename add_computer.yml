@@ -1,0 +1,15 @@
+- name: add computer to ansible network
+  hosts: all
+  become: yes
+
+- name: update system
+  ansible.builtin.command: sudo apt update && sudo apt upgrade -y
+
+- name: install openssh-server
+  ansible.builtin.command: sudo apt install openssh-server -y
+
+- name: install curl
+  ansible.builtin.command: sudo apt install curl -y
+
+- name: add pi-hole
+  ansible.builtin.command: curl -sSL https://install.pi-hole.net | bash
