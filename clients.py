@@ -4,10 +4,10 @@ def load_user_counts(path="user_counts.json"):
     with open(path, "r") as f:
         return json.load(f)
 
-def get_client_list(n):
-    return [f"client{i}" for i in range(1, n + 1)]
+def extract_client_number(name):
+    return int(name.replace("client", ""))
 
-def client_ranking():
+def main():
     try:
         user_counts = load_user_counts()
     except FileNotFoundError:
@@ -15,39 +15,35 @@ def client_ranking():
         return
 
     try:
-        num_clients = int(input("How many clients are needed? "))
+        num_needed = int(input("How many computers are needed? "))
     except ValueError:
         print("Please enter a valid number.")
         return
 
-    selected_clients = get_client_list(num_clients)
-
-    valid_clients = [client for client in selected_clients if client in user_counts]
-
-    if not valid_clients:
-        print("No matching clients found in user_counts.json.")
-        return
+    all_clients = {k: v for k, v in user_counts.items() if k.startswith("client") and k[6:].isdigit()}
 
     sorted_clients = sorted(
-        valid_clients,
-        key=lambda c: (user_counts[c], int(c.replace("client", "")))
+        all_clients.items(),
+        key=lambda item: (item[1], extract_client_number(item[0]))
     )
 
-    print("\nRanked Clients by Number of Users (Least to Most):")
-    for client in sorted_clients:
-        print(f"{client}: {user_counts[client]} users")
+    chosen_clients = sorted_clients[:num_needed]
+
+    print("\nSelected Clients:")
+    for name, count in chosen_clients:
+        print(f"{name}: {count} users")
 
     ranked_data = {
         "ranked_clients": [
-            {"name": client, "users": user_counts[client]}
-            for client in sorted_clients
+            {"name": name, "users": count}
+            for name, count in chosen_clients
         ]
     }
 
     with open("ranked_clients.json", "w") as f:
         json.dump(ranked_data, f, indent=4)
 
-    print("\nRanked client data saved to 'ranked_clients.json'.")
+    print("\nSaved selected clients to 'ranked_clients.json'.")
 
-if __name__ == "__client_ranking__":
-    client_ranking()
+if __name__ == "__main__":
+    main()
