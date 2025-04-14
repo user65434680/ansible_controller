@@ -95,7 +95,7 @@ def assign_computers_automatically():
 
 def assign_computers_choice():
     
-    assign_computers_choice = input("Would you like to either assign computers\n manually\n1) automatically\n2)").strip()
+    assign_computers_choice = input("Would you like to either assign computers\n1) manually\n2) automatically\n").strip()
 
     if assign_computers_choice == "1":
         assign_computers_manually()
