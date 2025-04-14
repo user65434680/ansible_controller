@@ -46,8 +46,8 @@
           port port="443" protocol="tcp" accept
         zone: public
         permanent: yes
-      loop: "{{ whitelist.values() | flatten }}"
-      notify: Reload firewalld
+        state: enabled
+
 
   handlers:
     - name: Reload firewalld
