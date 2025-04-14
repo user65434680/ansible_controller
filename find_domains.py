@@ -49,7 +49,8 @@ def load_whitelist():
 
 def save_whitelist(whitelist):
     with open(WHITELIST_FILE, "w") as f:
-        json.dump(whitelist, f, indent=2)
+        json.dump({"whitelist": whitelist}, f, indent=2)
+
 
 def modify_whitelist(domains):
     print("\nWould you like to:")
