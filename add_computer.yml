@@ -2,11 +2,7 @@
   hosts: all
   become: yes
   tasks:
-
-    - name: add computer to ansible network
-      hosts: all
-      become: yes
-
+  
     - name: update system
       ansible.builtin.command: sudo apt update && sudo apt upgrade -y
 
