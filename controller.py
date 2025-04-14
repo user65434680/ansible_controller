@@ -99,7 +99,7 @@ def add_to_ansible():
     add_choice = input("This is used to add new computers to ansible using username, password and IP\n all computers must have the same password for this to work so do not add computers with different passwords.\n1) continue\n2) exit")
 
     if add_choice == "1":
-        add_to_ansible2
+        add_to_ansible2()
     elif add_choice =="2":
         print("exiting")
         return
