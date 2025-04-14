@@ -4,6 +4,7 @@ import subprocess
 import sys
 import json
 from random_gen import generate_random_password
+from clients import client_ranking
 
 def run_ansible_playbook(playbook, ask_become_pass=False):
     command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '--ask-become-pass']
@@ -87,8 +88,9 @@ def assign_computers_manually():
     for i, client in enumerate(clients, start=1):
         print(f"{i}) {client}")
 
-def assing_computers_manually():
+def assing_computers_automatically():
     run_ansible_playbook('echo_available_computers.yml')
+    client_ranking
 
 
 def assing_computers_choice():
@@ -98,8 +100,7 @@ def assing_computers_choice():
     if assing_computers_choice == "1":
         assign_computers_manually
     elif assing_computers_choice == "2":
-        assing_computers_manually
-    
+        assing_computers_automatically
 
 
 def main():
