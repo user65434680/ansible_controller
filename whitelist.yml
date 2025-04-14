@@ -38,6 +38,13 @@
         permanent: yes
         state: enabled
 
+    - name: Block all outgoing traffic (drop all by default)
+      ansible.posix.firewalld:
+        rich_rule: 'rule family="ipv4" outbound reject'
+        zone: public
+        permanent: yes
+        state: enabled
+
     - name: Allow HTTP/HTTPS access to whitelisted CIDRs
       ansible.posix.firewalld:
         rich_rule: >
