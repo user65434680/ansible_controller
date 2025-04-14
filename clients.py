@@ -33,7 +33,7 @@ def client_ranking():
         key=lambda c: (user_counts[c], int(c.replace("client", "")))
     )
 
-    print("\n📋 Ranked Clients by Number of Users (Least to Most):")
+    print("\nRanked Clients by Number of Users (Least to Most):")
     for client in sorted_clients:
         print(f"{client}: {user_counts[client]} users")
 
