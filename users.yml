@@ -1,6 +1,6 @@
 - name: Create low-privileged user with home directory
   hosts: all
-  become: yes
+  become: true
   vars_files:
     - user_data.json
   tasks:

@@ -1,0 +1,23 @@
+# lift_firewall.yml
+---
+- name: Revert firewall changes after exam
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Set firewalld default zone back to public
+      ansible.builtin.command: firewall-cmd --set-default-zone=public
+
+    - name: Set public zone target to ACCEPT
+      ansible.builtin.command: firewall-cmd --permanent --zone=public --set-target=ACCEPT
+
+    - name: Remove all rich rules
+      ansible.builtin.shell: |
+        for rule in $(firewall-cmd --zone=public --list-rich-rules); do
+          firewall-cmd --permanent --zone=public --remove-rich-rule="$rule"
+        done
+      args:
+        executable: /bin/bash
+
+    - name: Reload firewalld
+      ansible.builtin.command: firewall-cmd --reload

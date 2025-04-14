@@ -1,0 +1,54 @@
+# apply_firewall.yml
+---
+- name: Apply exam firewall rules
+  hosts: all
+  become: yes
+  vars_files:
+    - whitelist.json
+
+  tasks:
+    - name: Ensure firewalld is installed and running
+      ansible.builtin.package:
+        name: firewalld
+        state: present
+
+    - name: Enable and start firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: Set default zone to drop everything
+      ansible.posix.firewalld:
+        state: enabled
+        zone: public
+        interface: "{{ ansible_default_ipv4.interface }}"
+        immediate: yes
+        permanent: yes
+
+    - name: Set default outgoing policy to drop
+      ansible.builtin.command: >
+        firewall-cmd --permanent --zone=public --set-target=DROP
+      notify: Reload firewalld
+
+    - name: Allow DNS for name resolution
+      ansible.posix.firewalld:
+        service: dns
+        zone: public
+        permanent: yes
+        state: enabled
+
+    - name: Allow HTTP/HTTPS access to whitelisted CIDRs
+      ansible.posix.firewalld:
+        rich_rule: >
+          rule family="ipv4"
+          destination address="{{ item }}"
+          port port="443" protocol="tcp" accept
+        zone: public
+        permanent: yes
+      loop: "{{ whitelist.values() | flatten }}"
+      notify: Reload firewalld
+
+  handlers:
+    - name: Reload firewalld
+      ansible.builtin.command: firewall-cmd --reload

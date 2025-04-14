@@ -1,0 +1,56 @@
+#incase this is needed and I cant think of other options.
+---
+- name: Delete non-whitelisted users on Ubuntu
+  hosts: all
+  become: true
+  gather_facts: true
+
+  vars:
+    static_whitelist:
+      - root
+      - daemon
+      - bin
+      - sys
+      - sync
+      - games
+      - man
+      - lp
+      - mail
+      - news
+      - uucp
+      - proxy
+      - www-data
+      - backup
+      - list
+      - irc
+      - gnats
+      - nobody
+      - systemd-network
+      - systemd-resolve
+      - syslog
+      - messagebus
+      - _apt
+      - lxd
+      - uuidd
+      - dnsmasq
+
+  tasks:
+    - name: Get list of users with UID >= 1000
+      command: "awk -F: '$3 >= 1000 { print $1 }' /etc/passwd"
+      register: user_list_raw
+
+    - name: Set full whitelist including client[0-9]+
+      set_fact:
+        whitelist: "{{ static_whitelist + (user_list_raw.stdout_lines | select('match', '^client[0-9]+$') | list) }}"
+
+    - name: Build filtered user list (excluding whitelisted users)
+      set_fact:
+        users_to_delete: "{{ user_list_raw.stdout_lines | difference(whitelist) }}"
+
+    - name: Delete non-whitelisted users
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ users_to_delete }}"
+      when: users_to_delete | length > 0

@@ -3,7 +3,10 @@
 import subprocess
 import ipaddress
 import re
-import sys
+import json
+import os
+
+WHITELIST_FILE = "whitelist.json"
 
 def dig_ips(domain):
     ipv4 = subprocess.run(["dig", "+short", "A", domain], capture_output=True, text=True).stdout.splitlines()
@@ -28,7 +31,6 @@ def get_cidr_from_whois(ip):
     except Exception:
         return None
 
-
 def get_unique_cidrs(domain):
     ips = dig_ips(domain)
     cidrs = set()
@@ -39,74 +41,62 @@ def get_unique_cidrs(domain):
                 cidrs.add(cidr.strip())
     return sorted(cidrs)
 
+def load_whitelist():
+    if os.path.exists(WHITELIST_FILE):
+        with open(WHITELIST_FILE, "r") as f:
+            return json.load(f)
+    return {}
 
-def modify_whitelist(whitelist):
+def save_whitelist(whitelist):
+    with open(WHITELIST_FILE, "w") as f:
+        json.dump(whitelist, f, indent=2)
+
+def modify_whitelist(domains):
     print("\nWould you like to:")
     print("1) Remove websites from whitelist")
     print("2) Add websites to whitelist")
     choice = input("Enter 1 or 2: ").strip()
 
     if choice == "1":
-        websites_to_remove = input("\nEnter websites to remove, separated by commas: ").strip()
-        if websites_to_remove:
-            websites_list = [website.strip() for website in websites_to_remove.split(",")]
-            for website in websites_list:
-                if website in whitelist:
-                    whitelist.remove(website)
-                    print(f"Removed {website} from whitelist.")
-                else:
-                    print(f"{website} was not found in the whitelist.")
-        else:
-            print("No websites entered for removal.")
-
+        to_remove = input("Enter websites to remove, separated by commas: ").strip()
+        for site in [w.strip() for w in to_remove.split(",")]:
+            domains.pop(site, None)
+            print(f"Removed {site}")
     elif choice == "2":
-        websites_to_add = input("\nEnter websites to add, separated by commas: ").strip()
-        if websites_to_add:
-            websites_list = [website.strip() for website in websites_to_add.split(",")]
-            for website in websites_list:
-                if website not in whitelist:
-                    whitelist.append(website)
-                    print(f"Added {website} to whitelist.")
-                else:
-                    print(f"{website} is already in the whitelist.")
-        else:
-            print("No websites entered for addition.")
-
+        to_add = input("Enter websites to add, separated by commas: ").strip()
+        for site in [w.strip() for w in to_add.split(",")]:
+            if site not in domains:
+                domains[site] = []
+                print(f"Added {site}")
+            else:
+                print(f"{site} is already in the whitelist.")
     else:
-        print("Invalid choice. Please enter 1 or 2.")
+        print("Invalid choice.")
 
-    return whitelist
+    return domains
 
-def main():
-
-    whitelist = []
-
-
-    modify_choice = input("Would you like to modify the whitelist? (y/n): ").strip().lower()
-
-    if modify_choice == "y":
-        whitelist = modify_whitelist(whitelist)
-
-
-    if whitelist:
-        print("\nUpdated Whitelist:")
-        for website in whitelist:
-            print(f"  - {website}")
-    else:
-        print("No websites in the whitelist.")
-
-
-    domain = input("\nEnter a domain to get IP ranges (e.g., wikipedia.org): ").strip()
-
-    if domain:
-        print(f"\nFinding IP ranges for: {domain}")
+def update_domains_with_cidrs(domains):
+    for domain in domains:
+        print(f"\nGetting CIDRs for: {domain}")
         cidrs = get_unique_cidrs(domain)
         if cidrs:
-            print("CIDR ranges found:")
-            for cidr in cidrs:
-                print(f"  - {cidr}")
+            domains[domain] = cidrs
+            print(f"  Found {len(cidrs)} CIDRs.")
         else:
-            print("No CIDR ranges found.")
+            print("  No CIDRs found.")
+    return domains
 
-if __name__ == "__main__":
-    main()
+def main_domains():
+    whitelist = load_whitelist()
+
+    modify = input("Modify the whitelist? (y/n): ").strip().lower()
+    if modify == "y":
+        whitelist = modify_whitelist(whitelist)
+
+    whitelist = update_domains_with_cidrs(whitelist)
+    save_whitelist(whitelist)
+
+    print("\nWhitelist saved to whitelist.json")
+
+if __name__ == "__main_domains__":
+    main_domains()

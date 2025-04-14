@@ -2,9 +2,11 @@
 
 import subprocess
 import sys
+import os
 import json
 from random_gen import generate_random_password
 from clients import client_ranking
+from find_domains import main_domains
 
 def run_ansible_playbook(playbook, ask_become_pass=False):
     command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '--ask-become-pass']
@@ -93,6 +95,8 @@ def assign_computers_automatically():
     client_ranking
 
 
+
+
 def assign_computers_choice():
     
     assign_computers_choice = input("Would you like to either assign computers\n1) manually\n2) automatically\n").strip()
@@ -101,7 +105,8 @@ def assign_computers_choice():
         assign_computers_manually()
     elif assign_computers_choice == "2":
         assign_computers_automatically()
-
+    else:
+        print ("please choose again")
 
 def main():
     global user_data
@@ -120,8 +125,10 @@ def main():
         print("4. Add users from txt file")
         print("5. assign target computers")
         print("6. Exit")
+        print("7. firewall")
 
         choice = input("Enter the number of your choice: ").strip()
+
 
         if choice == "1":
             create_user()
@@ -133,6 +140,8 @@ def main():
             add_users_from_file()
         elif choice == "5":
             assign_computers_choice()
+        elif choice == "7":
+            main_domains
         elif choice == "6":
 
             print("Exiting the program.")
