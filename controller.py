@@ -94,7 +94,34 @@ def assign_computers_automatically():
     run_ansible_playbook('echo_available_computers.yml')
     client_ranking
 
+def add_to_ansible():
 
+    add_choice = input("This is used to add new computers to ansible using username, password and IP\n all computers must have the same password for this to work so do not add computers with different passwords.\n1) continue\n2) exit")
+
+    if add_choice == "1":
+        add_to_ansible2
+    elif add_choice =="2":
+        print("exiting")
+        return
+        
+
+
+def add_to_ansible2():
+    playbook_1 = "add_computer.yml"
+    ansible_user = input("Enter the computer client username: ").strip()
+    ansible_IP = input("Enter the client IP address: ").strip()
+
+    with open('inventory.ini', 'a') as inventory_file:
+        inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
+
+    ansible = ['ansible-playbook', '-i', f'{ansible_user}@{ansible_IP},', playbook_1, '--ask-become-pass']
+    
+    try:
+        result = subprocess.run(ansible, check=True, text=True, capture_output=True)
+        print(result.stdout)
+        print(f"Playbook {playbook_1} executed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error running playbook {playbook_1}: {e.stderr}")
 
 
 def assign_computers_choice():
@@ -123,9 +150,10 @@ def main():
         print("2. Delete user")
         print("3. Add users interactively")
         print("4. Add users from txt file")
-        print("5. assign target computers")
+        print("5. Assign target computers")
         print("6. Exit")
-        print("7. firewall")
+        print("7. Firewall")
+        print("8. Add a client to ansible")
 
         choice = input("Enter the number of your choice: ").strip()
 
@@ -141,7 +169,9 @@ def main():
         elif choice == "5":
             assign_computers_choice()
         elif choice == "7":
-            main_domains
+            main_domains()
+        elif choice == "8":
+            add_to_ansible()
         elif choice == "6":
 
             print("Exiting the program.")
