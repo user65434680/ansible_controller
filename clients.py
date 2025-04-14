@@ -9,15 +9,15 @@ def extract_client_number(name):
 
 def client_ranking():
     try:
-        user_counts = load_user_counts()
-    except FileNotFoundError:
-        print("Error: user_counts.json not found.")
-        return
-
-    try:
         num_needed = int(input("How many computers are needed? "))
     except ValueError:
         print("Please enter a valid number.")
+        return
+    
+    try:
+        user_counts = load_user_counts()
+    except FileNotFoundError:
+        print("Error: user_counts.json not found.")
         return
 
     all_clients = {k: v for k, v in user_counts.items() if k.startswith("client") and k[6:].isdigit()}
@@ -45,5 +45,5 @@ def client_ranking():
 
     print("\nSaved selected clients to 'ranked_clients.json'.")
 
-if __name__ == "__client_ranking__":
+if __name__ == "__main__":
     client_ranking()

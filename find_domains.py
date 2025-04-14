@@ -98,5 +98,5 @@ def main_domains():
 
     print("\nWhitelist saved to whitelist.json")
 
-if __name__ == "__main_domains__":
+if __name__ == "__main__":
     main_domains()
