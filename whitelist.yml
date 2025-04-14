@@ -47,6 +47,8 @@
         zone: public
         permanent: yes
         state: enabled
+      loop: "{{ whitelist.values() | flatten }}"
+      notify: Reload firewalld
 
 
   handlers:
