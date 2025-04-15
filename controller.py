@@ -164,10 +164,10 @@ def main():
         print("Select an option:")
         print("1. User control")
         print("2. Assign target computers")
-        print("3. Exit")
-        print("4. Domains")
-        print("5. Add a client to ansible")
-
+        print("3. Domains")
+        print("4. Add a client to ansible")
+        print("5. Exit")
+        
         choice = input("Enter the number of your choice: ").strip()
 
 
