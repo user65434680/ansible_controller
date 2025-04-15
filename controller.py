@@ -118,7 +118,7 @@ def add_to_ansible2():
     with open('inventory.ini', 'a') as inventory_file:
         inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
 
-    ansible_1 = ['ansible-playbook', '-i', ansible_IP, playbook_1, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
+    ansible_1 = ['ansible-playbook', '-i', ansible_IP, playbook_1, '-u', ansible_user, '--ask-become-pass']
 
     try:
         result = subprocess.run(ansible_1, check=True, text=True, capture_output=True)
