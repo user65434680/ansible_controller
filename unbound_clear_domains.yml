@@ -1,0 +1,22 @@
+---
+- name: clear domains except blacklist
+  hosts: all
+  tasks:
+    - name: read file
+      ansible.builtin.slurp:
+        src: "/etc/unbound/unbound.conf.d/whitelist.conf"
+      register: current_config
+
+    - name: parse and clear
+      ansible.builtin.copy:
+        dest: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        content: |
+          server:
+          local-zone: "."
+          local-zone: "." refuse
+        mode: '0644'
+
+    - name: restart unbound
+      ansible.builtin.systemd:
+        name: unbound
+        state: restarted

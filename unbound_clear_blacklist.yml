@@ -1,0 +1,15 @@
+---
+- name: clear all
+  hosts: all
+  tasks:
+    - name: empty whole whitelist
+      ansible.builtin.copy:
+        dest: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        content: ""
+        mode: '0644'
+
+    - name: restart unbound
+      ansible.builtin.systemd:
+        name: unbound
+        state: restarted
+      

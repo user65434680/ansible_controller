@@ -1,0 +1,40 @@
+---
+- name: configure unbound whitelist
+  hosts: all
+  tasks:
+    - name: Read JSON
+      ansible.builtin.slurp:
+        src: "domains.json"
+      register: domains.json
+
+    - name: parse json data
+      set_fact:
+        domains: "{{ domains_json.content | b64decode | from_json }}"
+
+      
+    - name: Ensure config file exists
+      ansible.builtin.file:
+        path: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        state: touch
+        mode: '0644'
+      
+    - name: write default settings to file
+      ansible.builtin.lineinfile:
+        path: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        line: "{{ item }}"
+        create: yes
+      with_items:
+      - "server:"
+      - "  local-zone: \".\" refuse"
+    
+    - name: write allowed domains to file
+      ansible.builtin.lineinfile:
+        path: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        line: "  local-zone: \"{{ item }}\" transparent"
+        create: yes
+      with_items: "{{ domains.domains }}"
+
+    - name: restart service
+      ansible.builtin.systemd:
+        name: unbound
+        state: restarted
