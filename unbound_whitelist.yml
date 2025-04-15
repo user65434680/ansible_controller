@@ -1,16 +1,9 @@
 ---
 - name: configure unbound whitelist
   hosts: all
+  vars_files:
+    - allowed_domains.json
   tasks:
-    - name: Read JSON
-      ansible.builtin.slurp:
-        src: "allowed_domains.json"
-      register: domains_json
-
-    - name: parse json data
-      set_fact:
-        domains: "{{ domains_json.content | b64decode | from_json }}"
-
     - name: Ensure config file exists
       ansible.builtin.file:
         path: "/etc/unbound/unbound.conf.d/whitelist.conf"
@@ -31,7 +24,7 @@
         path: "/etc/unbound/unbound.conf.d/whitelist.conf"
         line: "  local-zone: \"{{ item }}\" transparent"
         create: yes
-      with_items: "{{ domains.domains }}"
+      with_items: "{{ domains }}"
 
     - name: restart service
       ansible.builtin.systemd:
