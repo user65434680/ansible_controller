@@ -3,19 +3,20 @@
   hosts: all
   become: true
   tasks:
-    - name: read file
-      ansible.builtin.slurp:
-        src: "/etc/unbound/unbound.conf.d/whitelist.conf"
-      register: current_config
-
-    - name: parse and clear
+    - name: empty whole whitelist
       ansible.builtin.copy:
         dest: "/etc/unbound/unbound.conf.d/whitelist.conf"
-        content: |
-          server:
-          local-zone: "."
-          local-zone: "." refuse
+        content: ""
         mode: '0644'
+
+    - name: write default settings to file
+      ansible.builtin.lineinfile:
+        path: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        line: "{{ item }}"
+        create: yes
+      with_items:
+      - "server:"
+      - "  local-zone: \".\" refuse"
 
     - name: restart unbound
       ansible.builtin.systemd:
