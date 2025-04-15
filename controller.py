@@ -6,7 +6,6 @@ import os
 import json
 from random_gen import generate_random_password
 from clients import client_ranking
-from find_domains import main_domains
 from generate_keys_script import generate_ssh_keys_for_clients
 from domain_controller import choose_action
 
@@ -154,9 +153,8 @@ def main():
         print("4. Add users from txt file")
         print("5. Assign target computers")
         print("6. Exit")
-        print("7. Firewall")
+        print("7. Domains")
         print("8. Add a client to ansible")
-        print("9. Domains")
 
         choice = input("Enter the number of your choice: ").strip()
 
@@ -172,11 +170,9 @@ def main():
         elif choice == "5":
             assign_computers_choice()
         elif choice == "7":
-            main_domains()
+            choose_action()
         elif choice == "8":
             add_to_ansible()
-        elif choice == "9":
-            choose_action()
         elif choice == "6":
 
             print("Exiting the program.")
