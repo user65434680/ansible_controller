@@ -4,34 +4,48 @@ import os
 import subprocess
 import json
 
-def allow_domains():
-    domain_list = input("Please input domains in allowed format (youtube.com): ").strip()
+import json
+import os
 
+def allow_domains():
+    existing_domains = {"domains": []}
 
     if os.path.exists('allowed_domains.json') and os.path.getsize('allowed_domains.json') > 0:
         try:
             with open('allowed_domains.json', 'r') as file:
-                existing_domains = json.load(file)
+                data = json.load(file)
+
+                if isinstance(data, dict) and "domains" in data and isinstance(data["domains"], list):
+                    existing_domains = data
+                else:
+                    print("Invalid structure in allowed_domains.json. Resetting to default.")
         except json.JSONDecodeError:
-            print("Invalid JSON format found in allowed_domains.json, starting fresh.")
-            existing_domains = {"domains": []}
-    else:
-        existing_domains = {"domains": []}
+            print("Corrupt JSON in allowed_domains.json. Resetting to default.")
 
+    print("Type allowed domains (like youtube.com). Type 'continue' to finish and apply changes.\n")
 
-    if domain_list and domain_list not in existing_domains["domains"]:
-        existing_domains["domains"].append(domain_list)
+    while True:
+        domain = input("Enter domain: ").strip()
 
+        if domain.lower() == "continue":
+            break
 
-        with open('allowed_domains.json', 'w') as file:
-            json.dump(existing_domains, file, indent=4)
+        if not domain:
+            print("Domain cannot be empty. Try again.")
+            continue
 
-        print(f"Added domain: {domain_list}")
-    else:
-        print(f"Domain '{domain_list}' is already in the list or input was empty.")
+        if domain in existing_domains["domains"]:
+            print(f"'{domain}' is already in the list.")
+        else:
+            existing_domains["domains"].append(domain)
+            print(f"Added '{domain}' to allowed domains.")
 
+    with open('allowed_domains.json', 'w') as file:
+        json.dump(existing_domains, file, indent=4)
 
+    print("Allowed domains updated.\nRunning playbook...")
     allow_domains_run()
+
 
 
 def clear_allowed_domains():
