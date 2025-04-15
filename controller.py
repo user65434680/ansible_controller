@@ -96,57 +96,42 @@ def assign_computers_automatically():
 
 def add_to_ansible():
 
-    add_choice = input("This is used to add new computers to ansible using username, password and IP\n all computers must have the same password for this to work so do not add computers with different passwords.\n1) continue\n2) exit\n")
+    add_choice = input("This is used to add new computers to ansible using username, password and IP\n all computers must have the same password for this to work so do not add computers with different passwords.\n1) continue\n2) exit\n number:\n3")
 
     if add_choice == "1":
-        add_to_ansible_with_temp_inventory()
+        add_to_ansible2()
     elif add_choice =="2":
         print("exiting")
         return
         
 
 
-import subprocess
-
-def add_to_ansible_with_temp_inventory():
+def add_to_ansible2():
     playbook_1 = "add_computer.yml"
     playbook_2 = "generate_ssh_keys.yml"
     ansible_user = input("Enter the computer client username: ").strip()
     ansible_IP = input("Enter the client IP address: ").strip()
 
-    inventory_file = 'inventory_temp.ini'
+    with open('inventory.ini', 'a') as inventory_file:
+        inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
 
-    host_line = f"{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}"
+    ansible = ['ansible-playbook', '-i', ansible_IP, playbook_1, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
+    
+    ansible_2 = ['ansible-playbook', '-i', ansible_IP, playbook_2, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
 
     try:
-        with open(inventory_file, 'r') as f:
-            content = f.read()
-        if '[clients]' not in content:
-            with open(inventory_file, 'a') as f:
-                f.write('\n[clients]\n')
-    except FileNotFoundError:
-        with open(inventory_file, 'w') as f:
-            f.write('[clients]\n')
-
-    with open(inventory_file, 'a') as f:
-        f.write(host_line + '\n')
-
-    ansible_1 = ['ansible-playbook', '-i', inventory_file, playbook_1, '--ask-become-pass']
-    try:
-        result = subprocess.run(ansible_1, check=True, text=True, capture_output=True)
+        result = subprocess.run(ansible, check=True, text=True, capture_output=True)
         print(result.stdout)
         print(f"Playbook {playbook_1} executed successfully.")
     except subprocess.CalledProcessError as e:
-        print(f"Error running playbook {playbook_1}:\n{e.stderr}")
+        print(f"Error running playbook {playbook_1}: {e.stderr}")
 
-    ansible_2 = ['ansible-playbook', '-i', inventory_file, playbook_2, '--ask-become-pass']
     try:
         result = subprocess.run(ansible_2, check=True, text=True, capture_output=True)
         print(result.stdout)
         print(f"Playbook {playbook_2} executed successfully.")
     except subprocess.CalledProcessError as e:
-        print(f"Error running playbook {playbook_2}:\n{e.stderr}")
-
+        print(f"Error running playbook {playbook_2}: {e.stderr}")
 
 
 def assign_computers_choice():
