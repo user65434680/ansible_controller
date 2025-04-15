@@ -7,6 +7,7 @@ import json
 from random_gen import generate_random_password
 from clients import client_ranking
 from find_domains import main_domains
+from generate_keys import generate_ssh_keys
 
 def run_ansible_playbook(playbook, ask_become_pass=False):
     command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '--ask-become-pass']
@@ -107,8 +108,10 @@ def add_to_ansible():
 
 
 def add_to_ansible2():
+
+    generate_ssh_keys
+
     playbook_1 = "add_computer.yml"
-    playbook_2 = "generate_ssh_keys.yml"
     ansible_user = input("Enter the computer client username: ").strip()
     ansible_IP = input("Enter the client IP address: ").strip()
 
@@ -116,8 +119,6 @@ def add_to_ansible2():
         inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
 
     ansible_1 = ['ansible-playbook', '-i', ansible_IP, playbook_1, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
-    
-    ansible_2 = ['ansible-playbook', '-i', ansible_IP, playbook_2, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
 
     try:
         result = subprocess.run(ansible_1, check=True, text=True, capture_output=True)
@@ -125,14 +126,6 @@ def add_to_ansible2():
         print(f"Playbook {playbook_1} executed successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Error running playbook {playbook_1}: {e.stderr}")
-
-    try:
-        result = subprocess.run(ansible_2, check=True, text=True, capture_output=True)
-        print(result.stdout)
-        print(f"Playbook {playbook_2} executed successfully.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error running playbook {playbook_2}: {e.stderr}")
-
 
 def assign_computers_choice():
     
