@@ -173,7 +173,7 @@ def main():
 
 
         if choice == "1":
-            user_control
+            user_control()
         elif choice == "2":
             assign_computers_choice()
         elif choice == "3":
