@@ -75,12 +75,27 @@ def add_user():
 
     print("Users have been added to user_data.json.")
 
+def user_control():
+
+    option = input("User control options:\n1) Push user to client\n2) Create new user\n3) create new user from txt file\n4) Delete user\n5) Exit").strip()
+
+    if option == "1":
+        push_user()
+    elif option == "2":
+        add_user() 
+    elif option == "3":
+        add_users_from_file()
+    elif option == "4":
+        delete_user()
+    elif option == "5":
+        return
+
 
 def delete_user():
     run_ansible_playbook('del_users.yml')
 
 
-def create_user():
+def push_user():
     run_ansible_playbook('users.yml')
 
 def assign_computers_manually():
@@ -147,33 +162,25 @@ def main():
 
     while True:
         print("Select an option:")
-        print("1. Create user")
-        print("2. Delete user")
-        print("3. Add users interactively")
-        print("4. Add users from txt file")
-        print("5. Assign target computers")
-        print("6. Exit")
-        print("7. Domains")
-        print("8. Add a client to ansible")
+        print("1. User control")
+        print("2. Assign target computers")
+        print("3. Exit")
+        print("4. Domains")
+        print("5. Add a client to ansible")
 
         choice = input("Enter the number of your choice: ").strip()
 
 
+
         if choice == "1":
-            create_user()
+            user_control
         elif choice == "2":
-            delete_user()
-        elif choice == "3":
-            add_user()
-        elif choice == "4":
-            add_users_from_file()
-        elif choice == "5":
             assign_computers_choice()
-        elif choice == "7":
+        elif choice == "3":
             choose_action()
-        elif choice == "8":
+        elif choice == "4":
             add_to_ansible()
-        elif choice == "6":
+        elif choice == "5":
 
             print("Exiting the program.")
             break
