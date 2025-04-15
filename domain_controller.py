@@ -1,7 +1,4 @@
-#!/usr/bin/env python3
-
 import os
-import sys
 import subprocess
 import json
 
@@ -50,14 +47,6 @@ def run_ansible_playbook_control(playbook, ask_become_pass=False):
         print(f"Error running playbook {playbook}: {e.stderr}")
 
 def choose_action():
-    global user_data
-    
-    try:
-        with open('user_data.json', 'r') as file:
-            user_data = json.load(file) or {'users': []}
-    except FileNotFoundError:
-        user_data = {'users': []}
-
     while True:
         print("Select an option:")
         print("1. Allow domains")
