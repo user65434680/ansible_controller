@@ -7,7 +7,7 @@ import json
 from random_gen import generate_random_password
 from clients import client_ranking
 from find_domains import main_domains
-from generate_keys import generate_ssh_keys
+from generate_keys import generate_ssh_keys_for_clients
 
 def run_ansible_playbook(playbook, ask_become_pass=False):
     command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '--ask-become-pass']
@@ -109,7 +109,7 @@ def add_to_ansible():
 
 def add_to_ansible2():
 
-    generate_ssh_keys
+    generate_ssh_keys_for_clients()
 
     playbook_1 = "add_computer.yml"
     ansible_user = input("Enter the computer client username: ").strip()
