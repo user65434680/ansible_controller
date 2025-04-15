@@ -7,7 +7,7 @@ import json
 from random_gen import generate_random_password
 from clients import client_ranking
 from find_domains import main_domains
-from generate_keys import generate_ssh_keys_for_clients
+from generate_keys_script import generate_ssh_keys_for_clients
 
 def run_ansible_playbook(playbook, ask_become_pass=False):
     command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '--ask-become-pass']
