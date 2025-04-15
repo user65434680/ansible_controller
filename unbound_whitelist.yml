@@ -1,6 +1,7 @@
 ---
 - name: configure unbound whitelist
   hosts: all
+  become: true
   vars_files:
     - allowed_domains.json
   tasks:

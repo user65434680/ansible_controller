@@ -1,6 +1,7 @@
 ---
 - name: clear all
   hosts: all
+  become: true
   tasks:
     - name: empty whole whitelist
       ansible.builtin.copy:

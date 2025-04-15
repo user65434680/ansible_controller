@@ -1,10 +1,13 @@
 - name: delete user
   hosts: all
-  become: yes
+  become: true
   tasks:
   
-    - name: update system
-      ansible.builtin.command: sudo apt update && sudo apt upgrade -y
+    - name: update system1
+      ansible.builtin.command: sudo apt update -y
+
+    - name: update system2
+      ansible.builtin.command: sudo apt upgrade -y
 
     - name: install openssh-server
       ansible.builtin.command: sudo apt install openssh-server -y

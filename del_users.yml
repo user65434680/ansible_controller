@@ -1,6 +1,6 @@
 - name: delete user
   hosts: all
-  become: yes
+  become: true
   vars_files:
     - user_data.json
   

@@ -1,6 +1,7 @@
 ---
 - name: Count users on each host
   hosts: all
+  become: true
   gather_facts: no
   tasks:
     - name: Get users with UID >= 1000
