@@ -96,7 +96,7 @@ def assign_computers_automatically():
 
 def add_to_ansible():
 
-    add_choice = input("This is used to add new computers to ansible using username, password and IP\n all computers must have the same password for this to work so do not add computers with different passwords.\n1) continue\n2) exit\n number:\n3")
+    add_choice = input("This is used to add new computers to ansible using username, password and IP\n all computers must have the same password for this to work so do not add computers with different passwords.\n1) continue\n2) exit\n number:")
 
     if add_choice == "1":
         add_to_ansible2()
@@ -115,12 +115,12 @@ def add_to_ansible2():
     with open('inventory.ini', 'a') as inventory_file:
         inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
 
-    ansible = ['ansible-playbook', '-i', ansible_IP, playbook_1, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
+    ansible_1 = ['ansible-playbook', '-i', ansible_IP, playbook_1, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
     
     ansible_2 = ['ansible-playbook', '-i', ansible_IP, playbook_2, '-u', ansible_user, '--ask-pass', '--ask-become-pass']
 
     try:
-        result = subprocess.run(ansible, check=True, text=True, capture_output=True)
+        result = subprocess.run(ansible_1, check=True, text=True, capture_output=True)
         print(result.stdout)
         print(f"Playbook {playbook_1} executed successfully.")
     except subprocess.CalledProcessError as e:
