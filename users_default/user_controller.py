@@ -4,7 +4,7 @@ import json
 import sys
 import os
 import subprocess
-from random_gen import generate_random_password
+from users_default.random_gen import generate_random_password
 from ansible_utils import run_ansible_playbook
 
 def add_users_from_file():
