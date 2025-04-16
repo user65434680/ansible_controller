@@ -92,7 +92,7 @@ def app_armor_menu():
     elif choice == '2':
         control_blacklist()
     elif choice == '3':
-        sys.exit(0)
+        return
     else:
         print("Invalid choice. Please try again.")
         app_armor_menu()
