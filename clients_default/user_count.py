@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import json
 
 def load_user_counts(path="user_counts.json"):

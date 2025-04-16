@@ -1,0 +1,7 @@
+python pyyaml
+
+ansible
+
+whois
+
+dig

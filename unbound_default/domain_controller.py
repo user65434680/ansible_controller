@@ -3,7 +3,7 @@
 import os
 import subprocess
 import json
-
+from ansible_utils import run_ansible_playbook
 import json
 import os
 
@@ -53,27 +53,17 @@ def clear_allowed_domains():
     with open('allowed_domains.json', 'w') as file:
         json.dump([], file, indent=4)
     
-    run_ansible_playbook_control('unbound_clear_domains.yml')
+    run_ansible_playbook('unbound_clear_domains.yml')
 
 def clear_all():
 
     with open('allowed_domains.json', 'w') as file:
         json.dump([], file, indent=4)
     
-    run_ansible_playbook_control('unbound_clear_blacklist.yml')
+    run_ansible_playbook('unbound_clear_blacklist.yml')
 
 def allow_domains_run():
-    run_ansible_playbook_control('unbound_whitelist.yml')
-
-def run_ansible_playbook_control(playbook, ask_become_pass=False):
-    command = ['ansible-playbook', '-i', 'inventory.ini', playbook, '--ask-become-pass']
-    
-    try:
-        result = subprocess.run(command, check=True, text=True, capture_output=True)
-        print(result.stdout)
-        print(f"Playbook {playbook} executed successfully.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error running playbook {playbook}: {e.stderr}")
+    run_ansible_playbook('unbound_whitelist.yml')
 
 def choose_action():
     while True:
