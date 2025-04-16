@@ -7,6 +7,8 @@ import subprocess
 from users_default.random_gen import generate_random_password
 from ansible_utils import run_ansible_playbook
 
+c_path = os.path.dirname(os.path.abspath(__file__))
+
 def add_users_from_file():
     filename = input ("Enter the file name that contains names from students. (only works as .txt)").strip()
     try:
@@ -72,7 +74,7 @@ def user_control():
     except FileNotFoundError:
         user_data = {'users': []}
 
-    option = input("User control options:\n1) Push user to client\n2) Create new user\n3) create new user from txt file\n4) Delete user\n5) Exit").strip()
+    option = input("User control options:\n1) Push user to client\n2) Create new user\n3) create new user from txt file\n4) Delete user\n5) Exit\nSelect an option: ").strip()
 
     if option == "1":
         push_user()
@@ -86,10 +88,10 @@ def user_control():
         return
     
 def delete_user():
-    run_ansible_playbook('del_users.yml')
+    run_ansible_playbook(f"{c_path}/del_users.yml")
 
 def push_user():
-    run_ansible_playbook('users.yml')
+    run_ansible_playbook(f"{c_path}/users.yml")
 
 if __name__ == '__main__':
     user_control()

@@ -8,8 +8,8 @@ from apparmor_default.app_armor_controller import app_armor_menu
 def main():
     while True:
         print("Select an option:")
-        print("1. User control")
-        print("2. Assign target computers")
+        print("1. Users")
+        print("2. Client computers")
         print("3. Domains")
         print("4. AppArmor")
         print("5. Exit")

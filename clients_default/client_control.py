@@ -5,6 +5,9 @@ import subprocess
 from clients_default.user_count import client_ranking
 from clients_default.generate_keys_script import generate_ssh_keys_for_clients
 from ansible_utils import run_ansible_playbook
+import os
+
+c_path = os.path.dirname(os.path.abspath(__file__))
 
 def assign_computers_manually():
     with open("clients.txt", "r") as file:
@@ -15,7 +18,7 @@ def assign_computers_manually():
         print(f"{i}) {client}")
 
 def assign_computers_automatically():
-    run_ansible_playbook('echo_available_computers.yml')
+    run_ansible_playbook(f"{c_path}/echo_available_computers.yml")
     client_ranking
 
 def add_to_ansible():

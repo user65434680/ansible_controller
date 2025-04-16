@@ -7,6 +7,8 @@ from ansible_utils import run_ansible_playbook
 import json
 import os
 
+c_path = os.path.dirname(os.path.abspath(__file__))
+
 def allow_domains():
     existing_domains = {"domains": []}
 
@@ -53,17 +55,17 @@ def clear_allowed_domains():
     with open('allowed_domains.json', 'w') as file:
         json.dump([], file, indent=4)
     
-    run_ansible_playbook('unbound_clear_domains.yml')
+    run_ansible_playbook(f"{c_path}/unbound_clear_domains.yml")
 
 def clear_all():
 
     with open('allowed_domains.json', 'w') as file:
         json.dump([], file, indent=4)
     
-    run_ansible_playbook('unbound_clear_blacklist.yml')
+    run_ansible_playbook(f"{c_path}/unbound_clear_blacklist.yml")
 
 def allow_domains_run():
-    run_ansible_playbook('unbound_whitelist.yml')
+    run_ansible_playbook(f"{c_path}/unbound_whitelist.yml")
 
 def choose_action():
     while True:
@@ -73,7 +75,7 @@ def choose_action():
         print("3. Clear all domains and blacklist")
         print("4. Exit")
 
-        choice = input("Enter the number of your choice: ").strip()
+        choice = input("Select an option: ").strip()
 
         if choice == "1":
             allow_domains()

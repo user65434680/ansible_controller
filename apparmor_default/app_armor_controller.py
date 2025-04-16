@@ -6,6 +6,7 @@ import subprocess
 import json
 from ansible_utils import run_ansible_playbook
 
+c_path = os.path.dirname(os.path.abspath(__file__))
 
 #segment 1 whitelist
 WHITELIST_FILE = "whitelist.json"
@@ -59,7 +60,7 @@ def control_whitelist():
     if data1 == "1":
         main_1()
     elif data1 == "2":
-        run_ansible_playbook('remove_whitelist.yml')
+        run_ansible_playbook(f"{c_path}/remove_whitelist.yml")
         print("Whitelist cleared")
     elif data1 == "3":
         return
