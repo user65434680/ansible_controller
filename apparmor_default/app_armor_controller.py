@@ -17,7 +17,7 @@ def generate_profile(path):
 """
 
 #segment 1 whitelist
-WHITELIST_FILE = os.path.join(c_path, "apparmor_default", "whitelist.json")
+WHITELIST_FILE = os.path.join(c_path, "whitelist.json")
 
 def load_whitelist():
     if os.path.exists(WHITELIST_FILE):

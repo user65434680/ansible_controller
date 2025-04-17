@@ -8,7 +8,7 @@ import json
 import os
 
 c_path = os.path.dirname(os.path.abspath(__file__))
-allowed_domains_file = os.path.join(c_path, "unbound_default", "allowed_domains.json")
+allowed_domains_file = os.path.join(c_path, "allowed_domains.json")
 
 def allow_domains():
     existing_domains = {"domains": []}

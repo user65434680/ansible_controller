@@ -4,8 +4,8 @@ import json
 import os
 
 c_path = os.path.dirname(os.path.abspath(__file__))
-user_counts_file = os.path.join(c_path, "clients_default", "user_counts.json")
-ranked_clients_file = os.path.join(c_path, "clients_default", "ranked_clients.json")
+user_counts_file = os.path.join(c_path, "user_counts.json")
+ranked_clients_file = os.path.join(c_path, "ranked_clients.json")
 
 def load_user_counts(path=user_counts_file):
     with open(path, "r") as f:
