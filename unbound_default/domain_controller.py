@@ -6,9 +6,11 @@ import json
 from ansible_utils import run_ansible_playbook
 import json
 import os
+from projects.project_context import current_project_number
 
 c_path = os.path.dirname(os.path.abspath(__file__))
-allowed_domains_file = os.path.join(c_path, "allowed_domains.json")
+a_path = "projects"
+allowed_domains_file = os.path.join(a_path, current_project_number, "allowed_domains.json")
 
 def allow_domains():
     existing_domains = {"domains": []}
