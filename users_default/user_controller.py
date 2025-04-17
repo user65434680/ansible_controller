@@ -14,7 +14,7 @@ current_project_number = get_current_project_number()
 c_path = os.path.dirname(os.path.abspath(__file__))
 projects = os.path.join(c_path, "projects")
 a_path = os.path.dirname(projects)
-user_data_file = os.path.join(a_path, current_project_number, "user_data.json")
+user_data_file = os.path.join(current_project_number, "user_data.json")
 
 def add_users_from_file():
     filename = input("Enter the file name that contains names from students. (only works as .txt)").strip()
