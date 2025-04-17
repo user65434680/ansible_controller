@@ -10,7 +10,8 @@ from ansible_utils import run_ansible_playbook
 from projects.project_context import current_project_number
 
 c_path = os.path.dirname(os.path.abspath(__file__))
-a_path = "projects"
+projects = os.path.join(c_path, "projects")
+a_path = os.path.dirname(projects)
 user_data_file = os.path.join(a_path, current_project_number, "user_data.json")
 
 def add_users_from_file():
