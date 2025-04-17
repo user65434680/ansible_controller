@@ -1,7 +1,7 @@
 import os
 import json
 import random
-from projects.project_context import current_project_number as project_id
+from projects.project_context import get_current_project_number as project_id
 import projects.project_context
 
 
@@ -33,7 +33,7 @@ def generate_unique_project_number():
 
     while True:
         number = f"{random.randint(0, 9999):04}"
-        if number not in existing_numbers:
+        if number != "0001" and number not in existing_numbers:
             return number
 
 def create_project():
@@ -55,7 +55,7 @@ def load_project():
 
     for number, name in associations.items():
         if name.lower() == project_name.lower():
-            projects.project_context.current_project_number = number
+            projects.project_context.get_current_project_number = number
             print(f"Loaded project '{name}' with ID {number}.")
             return number
 

@@ -5,7 +5,7 @@ import sys
 import subprocess
 import json
 from ansible_utils import run_ansible_playbook
-from projects.project_context import current_project_number
+from projects.project_context import get_current_project_number
 
 c_path = os.path.dirname(os.path.abspath(__file__))
 projects = os.path.join(c_path, "projects")
@@ -19,7 +19,7 @@ def generate_profile(path):
 """
 
 #segment 1 whitelist
-WHITELIST_FILE = os.path.join(a_path, current_project_number, "whitelist.json")
+WHITELIST_FILE = os.path.join(a_path, get_current_project_number, "whitelist.json")
 
 def load_whitelist():
     if os.path.exists(WHITELIST_FILE):

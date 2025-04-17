@@ -2,7 +2,7 @@ import os
 import json
 import sys
 import shutil
-from projects.project_context import current_project_number
+from projects.project_context import get_current_project_number
 
 c_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -109,10 +109,10 @@ def load_template():
         return
 
     file_map = {
-        "whitelist.json": f"projects/{current_project_number}/whitelist.json",
-        "user_data.json": f"projects/{current_project_number}user_data.json",
-        "ranked_clients.json": f"projects/{current_project_number}ranked_clients.json",
-        "allowed_domains.json": f"projects/{current_project_number}allowed_domains.json"
+        "whitelist.json": f"projects/{get_current_project_number}/whitelist.json",
+        "user_data.json": f"projects/{get_current_project_number}user_data.json",
+        "ranked_clients.json": f"projects/{get_current_project_number}ranked_clients.json",
+        "allowed_domains.json": f"projects/{get_current_project_number}allowed_domains.json"
     }
 
     for filename, destination in file_map.items():
