@@ -1,9 +1,7 @@
 from project_manager import ensure_projects_folder, list_projects, create_project, load_project
-from projects.project_context import get_current_project_number
+from projects.project_context import set_current_project_number
 import subprocess
 import os
-
-current_project_number = get_current_project_number()
 
 def start():
     ensure_projects_folder()
@@ -14,15 +12,14 @@ def start():
     print("3. List projects")
     print("4. Exit")
 
-
-
     choice = input("Choice: ").strip()
     if choice == "1":
         create_project()
     elif choice == "2":
-        current_project_number = load_project()
-        if current_project_number:
-            print(f"Switching to main menu for project {current_project_number}...\n")
+        loaded_project = load_project()
+        if loaded_project:
+            set_current_project_number(loaded_project)
+            print(f"Switching to main menu for project {loaded_project}...\n")
             subprocess.run(["python3", "controller.py"])
     elif choice == "3":
         list_projects()
