@@ -8,6 +8,8 @@ from template_controller import template_controller_menu
 from project_manager import ensure_projects_folder, list_projects, create_project, load_project
 from projects.project_context import get_current_project_number
 
+current_project_number = get_current_project_number()
+
 def start():
     ensure_projects_folder()
     print("\nWelcome to the system configuration tool.")
@@ -21,9 +23,9 @@ def start():
     if choice == "1":
         create_project()
     elif choice == "2":
-        get_current_project_number = load_project()
-        if get_current_project_number:
-            print(f"Switching to main menu for project {get_current_project_number}...\n")
+        current_project_number = load_project()
+        if current_project_number:
+            print(f"Switching to main menu for project {current_project_number}...\n")
             main_menu()
     elif choice == "3":
         list_projects()

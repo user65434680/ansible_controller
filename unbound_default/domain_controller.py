@@ -8,10 +8,12 @@ import json
 import os
 from projects.project_context import get_current_project_number
 
+current_project_number = get_current_project_number()
+
 c_path = os.path.dirname(os.path.abspath(__file__))
 projects = os.path.join(c_path, "projects")
 a_path = os.path.dirname(projects)
-allowed_domains_file = os.path.join(a_path, get_current_project_number, "allowed_domains.json")
+allowed_domains_file = os.path.join(a_path, current_project_number, "allowed_domains.json")
 
 def allow_domains():
     existing_domains = {"domains": []}

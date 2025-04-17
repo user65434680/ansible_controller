@@ -4,7 +4,9 @@ import random
 from projects.project_context import get_current_project_number as project_id
 import projects.project_context
 
+from projects.project_context import get_current_project_number
 
+current_project_number = get_current_project_number()
 PROJECTS_DIR = "projects"
 ASSOCIATIONS_FILE = os.path.join(PROJECTS_DIR, "associations.json")
 
@@ -55,7 +57,7 @@ def load_project():
 
     for number, name in associations.items():
         if name.lower() == project_name.lower():
-            projects.project_context.get_current_project_number = number
+            projects.project_context.current_project_number = number
             print(f"Loaded project '{name}' with ID {number}.")
             return number
 
