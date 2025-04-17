@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# hardcoded paths change later if needed
 
 import json
 import sys
@@ -6,6 +7,7 @@ import os
 import subprocess
 from users_default.random_gen import generate_random_password
 from ansible_utils import run_ansible_playbook
+
 
 c_path = os.path.dirname(os.path.abspath(__file__))
 user_data_file = os.path.join(c_path, "users_default", "user_data.json")
