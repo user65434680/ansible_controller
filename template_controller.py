@@ -24,7 +24,7 @@ def list_templates():
         print("No templates found.")
 
 def save_template():
-    current_dir = os.getcwd()
+    current_dir = c_path  # Start searching from the script's directory
     templates_dir = os.path.join(current_dir, "templates")
     os.makedirs(templates_dir, exist_ok=True)
 
@@ -34,22 +34,18 @@ def save_template():
         return
 
     alias_map = {
-        os.path.join(c_path, "users_default", "whitelist.json"): "1) AppArmor whitelist",
-        os.path.join(c_path, "users_default", "user_data.json"): "2) Selected users",
-        os.path.join(c_path, "clients_default", "ranked_clients.json"): "3) Chosen clients",
-        os.path.join(c_path, "domains_default", "allowed_domains.json"): "4) Domain whitelist",
+        "whitelist.json": "1) AppArmor whitelist",
+        "user_data.json": "2) Selected users",
+        "ranked_clients.json": "3) Chosen clients",
+        "allowed_domains.json": "4) Domain whitelist",
     }
 
     json_paths = {}
     for root, dirs, files in os.walk(current_dir):
-        if "templates" in root:
-            continue
-
         for file in files:
             if file.endswith(".json") and file not in ("json_references.json", "user_counts.json"):
-                if file in alias_map:
-                    full_path = os.path.join(root, file)
-                    json_paths[file] = full_path
+                full_path = os.path.join(root, file)
+                json_paths[file] = full_path
 
     if not json_paths:
         print("No valid JSON files found to save.")
