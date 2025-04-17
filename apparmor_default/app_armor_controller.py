@@ -8,9 +8,6 @@ from ansible_utils import run_ansible_playbook
 
 c_path = os.path.dirname(os.path.abspath(__file__))
 
-#segment 1 whitelist
-WHITELIST_FILE = "whitelist.json"
-
 def generate_profile(path):
     return f"""#include <tunables/global>
 
@@ -18,6 +15,9 @@ def generate_profile(path):
   {path} rix,
 }}
 """
+
+#segment 1 whitelist
+WHITELIST_FILE = os.path.join(c_path, "apparmor_default", "whitelist.json")
 
 def load_whitelist():
     if os.path.exists(WHITELIST_FILE):

@@ -3,6 +3,8 @@ import json
 import sys
 import shutil
 
+c_path = os.path.dirname(os.path.abspath(__file__))
+
 def list_templates():
     template_dir = "templates"
     
@@ -30,10 +32,10 @@ def save_template():
         return
 
     alias_map = {
-        "whitelist.json": "1) AppArmor whitelist",
-        "user_data.json": "2) Selected users",
-        "ranked_clients.json": "3) Chosen clients",
-        "allowed_domains.json": "4) Domain whitelist",
+        os.path.join(c_path, "users_default", "whitelist.json"): "1) AppArmor whitelist",
+        os.path.join(c_path, "users_default", "user_data.json"): "2) Selected users",
+        os.path.join(c_path, "clients_default", "ranked_clients.json"): "3) Chosen clients",
+        os.path.join(c_path, "domains_default", "allowed_domains.json"): "4) Domain whitelist",
     }
 
     json_paths = {}

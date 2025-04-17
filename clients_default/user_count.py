@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
 import json
+import os
 
-def load_user_counts(path="user_counts.json"):
+c_path = os.path.dirname(os.path.abspath(__file__))
+user_counts_file = os.path.join(c_path, "clients_default", "user_counts.json")
+ranked_clients_file = os.path.join(c_path, "clients_default", "ranked_clients.json")
+
+def load_user_counts(path=user_counts_file):
     with open(path, "r") as f:
         return json.load(f)
-
-def extract_client_number(name):
-    return int(name.replace("client", ""))
 
 def client_ranking():
     try:
@@ -19,7 +21,7 @@ def client_ranking():
     try:
         user_counts = load_user_counts()
     except FileNotFoundError:
-        print("Error: user_counts.json not found.")
+        print(f"Error: {user_counts_file} not found.")
         return
 
     all_clients = {k: v for k, v in user_counts.items() if k.startswith("client") and k[6:].isdigit()}
@@ -42,10 +44,13 @@ def client_ranking():
         ]
     }
 
-    with open("ranked_clients.json", "w") as f:
+    with open(ranked_clients_file, "w") as f:
         json.dump(ranked_data, f, indent=4)
 
-    print("\nSaved selected clients to 'ranked_clients.json'.")
+    print(f"\nSaved selected clients to '{ranked_clients_file}'.")
+
+def extract_client_number(name):
+    return int(name.replace("client", ""))
 
 if __name__ == "__main__":
     client_ranking()

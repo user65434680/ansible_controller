@@ -8,13 +8,14 @@ import json
 import os
 
 c_path = os.path.dirname(os.path.abspath(__file__))
+allowed_domains_file = os.path.join(c_path, "unbound_default", "allowed_domains.json")
 
 def allow_domains():
     existing_domains = {"domains": []}
 
-    if os.path.exists('allowed_domains.json') and os.path.getsize('allowed_domains.json') > 0:
+    if os.path.exists(allowed_domains_file) and os.path.getsize(allowed_domains_file) > 0:
         try:
-            with open('allowed_domains.json', 'r') as file:
+            with open(allowed_domains_file, 'r') as file:
                 data = json.load(file)
 
                 if isinstance(data, dict) and "domains" in data and isinstance(data["domains"], list):
@@ -42,17 +43,14 @@ def allow_domains():
             existing_domains["domains"].append(domain)
             print(f"Added '{domain}' to allowed domains.")
 
-    with open('allowed_domains.json', 'w') as file:
+    with open(allowed_domains_file, 'w') as file:
         json.dump(existing_domains, file, indent=4)
 
     print("Allowed domains updated.\nRunning playbook...")
     allow_domains_run()
 
-
-
 def clear_allowed_domains():
-
-    with open('allowed_domains.json', 'w') as file:
+    with open(allowed_domains_file, 'w') as file:
         json.dump([], file, indent=4)
     
     run_ansible_playbook(f"{c_path}/unbound_clear_domains.yml")
