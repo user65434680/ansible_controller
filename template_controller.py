@@ -9,9 +9,11 @@ def list_templates():
     template_dir = "templates"
     
     if not os.path.exists(template_dir):
-        print(f"Template '{template_dir}' does not exist.")
+        print(f"Template '{template_dir}' does not exist. Creating...")
+        os.makedirs(template_dir, exist_ok=True)
+        print(f"Template '{template_dir}' created.")
         return
-
+ 
     folders = [folder for folder in os.listdir(template_dir) if os.path.isdir(os.path.join(template_dir, folder))]
 
     if folders:
