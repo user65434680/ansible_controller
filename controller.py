@@ -4,6 +4,7 @@ from users_default.user_controller import user_control
 from unbound_default.domain_controller import choose_action
 from clients_default.client_control import client_control_menu
 from apparmor_default.app_armor_controller import app_armor_menu
+from template_controller import template_controller_menu
 
 def main():
     while True:
@@ -12,7 +13,8 @@ def main():
         print("2. Client computers")
         print("3. Domains")
         print("4. AppArmor")
-        print("5. Exit")
+        print("5. Templates")
+        print("6. Exit")
 
         choice = input("Enter the number of your choice: ").strip()
 
@@ -25,6 +27,8 @@ def main():
         elif choice == "4":
             app_armor_menu()
         elif choice == "5":
+            template_controller_menu()
+        elif choice == "6":
             print("Exiting the program.")
             break
         else:

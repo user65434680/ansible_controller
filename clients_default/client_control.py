@@ -10,8 +10,29 @@ import os
 c_path = os.path.dirname(os.path.abspath(__file__))
 
 def assign_computers_manually():
-    with open("clients.txt", "r") as file:
-        clients = [line.strip() for line in file if line.strip()]
+    inventory_file_path = "../inventory/inventory.ini"
+    
+    if not os.path.exists(inventory_file_path):
+        print(f"Inventory file '{inventory_file_path}' does not exist.")
+        return
+
+    clients = []
+    with open(inventory_file_path, "r") as file:
+        in_clients_section = False
+        for line in file:
+            line = line.strip()
+            if line.startswith("[clients]"):
+                in_clients_section = True
+                continue
+            if in_clients_section:
+                if line == "" or line.startswith("["):
+                    break
+                client_name = line.split()[0]
+                clients.append(client_name)
+
+    if not clients:
+        print("No clients found in the inventory file.")
+        return
 
     print("Select a client:")
     for i, client in enumerate(clients, start=1):

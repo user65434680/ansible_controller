@@ -36,6 +36,33 @@ def add_users_from_file():
         print(f"An error occured {e}")
 
 def add_user():
+    global user_data
+
+    if user_data['users']:
+        print("\nThere are already users in the list. Choose an option:")
+        print("1) Add more users")
+        print("2) Clear contents and add new users")
+        print("3) Clear contents")
+        print("4) Exit")
+
+        choice = input("Select an option: ").strip()
+        if choice == "1":
+            pass
+        elif choice == "2":
+            user_data['users'] = []
+        elif choice == "3":
+            user_data['users'] = []
+            with open('user_data.json', 'w') as file:
+                json.dump(user_data, file, indent=4)
+            print("Contents cleared.")
+            return
+        elif choice == "4":
+            print("Exiting.")
+            return
+        else:
+            print("Invalid choice. Exiting.")
+            return
+
     print("\n--- Adding Users ---")
     while True:
         username = input("Enter username (or type 'exit' to stop): ").strip()
