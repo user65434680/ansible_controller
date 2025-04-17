@@ -8,9 +8,10 @@ from users_default.random_gen import generate_random_password
 from ansible_utils import run_ansible_playbook
 
 c_path = os.path.dirname(os.path.abspath(__file__))
+user_data_file = os.path.join(c_path, "users_default", "user_data.json")
 
 def add_users_from_file():
-    filename = input ("Enter the file name that contains names from students. (only works as .txt)").strip()
+    filename = input("Enter the file name that contains names from students. (only works as .txt)").strip()
     try:
         with open(filename, 'r') as file:
             users = []
@@ -25,15 +26,15 @@ def add_users_from_file():
 
                     users.append({'username': username, 'password': password})
             
-        with open('user_data.json', 'w') as file:
+        with open(user_data_file, 'w') as file:
             json.dump({'users': users}, file, indent=4)
 
-        print("Users have been added to user_data.json.")
+        print("Users have been added to users_default/user_data.json.")
         
     except FileNotFoundError:
         print(f"file {filename} not found")
     except Exception as e:
-        print(f"An error occured {e}")
+        print(f"An error occurred: {e}")
 
 def add_user():
     global user_data
@@ -52,7 +53,7 @@ def add_user():
             user_data['users'] = []
         elif choice == "3":
             user_data['users'] = []
-            with open('user_data.json', 'w') as file:
+            with open(user_data_file, 'w') as file:
                 json.dump(user_data, file, indent=4)
             print("Contents cleared.")
             return
@@ -86,17 +87,17 @@ def add_user():
 
         print(f"User '{username}' has been added.")
 
-    with open('user_data.json', 'w') as file:
+    with open(user_data_file, 'w') as file:
         json.dump(user_data, file, indent=4)
 
-    print("Users have been added to user_data.json.")
+    print("Users have been added to users_default/user_data.json.")
 
 def user_control():
 
     global user_data
     
     try:
-        with open('user_data.json', 'r') as file:
+        with open(user_data_file, 'r') as file:
             user_data = json.load(file) or {'users': []}
     except FileNotFoundError:
         user_data = {'users': []}
