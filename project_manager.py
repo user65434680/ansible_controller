@@ -53,8 +53,7 @@ def create_project():
 def delete_project():
     project_name = input("Enter the project name to delete: ").strip()
     associations = load_associations()
-
-    for number, name in associations.items():
+    for number, name in list(associations.items()):
         if name.lower() == project_name.lower():
             project_path = os.path.join(PROJECTS_DIR, number)
             if os.path.exists(project_path):
@@ -63,6 +62,8 @@ def delete_project():
             else:
                 print(f"Project folder '{project_path}' does not exist.")
             del associations[number]
+
+    save_associations(associations)
 
 def update_project_number_file(project_number):
     """Update project_number.json with the given project number."""
