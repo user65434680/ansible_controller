@@ -10,8 +10,6 @@ from projects.project_context import get_current_project_number
 current_project_number = get_current_project_number()
 
 c_path = os.path.dirname(os.path.abspath(__file__))
-projects = os.path.join(c_path, "projects")
-a_path = os.path.dirname(projects)
 def generate_profile(path):
     return f"""#include <tunables/global>
 
@@ -21,7 +19,8 @@ def generate_profile(path):
 """
 
 #segment 1 whitelist
-WHITELIST_FILE = os.path.join(a_path, current_project_number, "whitelist.json")
+projects_path = os.path.join(os.path.dirname(c_path), "projects")
+WHITELIST_FILE = os.path.join(projects_path, current_project_number, "whitelist.json")
 
 def load_whitelist():
     if os.path.exists(WHITELIST_FILE):
