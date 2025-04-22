@@ -4,6 +4,10 @@
   vars_files:
     - whitelist.json
   tasks:
+    - name: Debug whitelist variable
+      debug:
+        var: whitelist
+
     - name: Copy AppArmor profiles
       copy:
         dest: "/etc/apparmor.d/usr.bin.{{ item.app_name }}"
