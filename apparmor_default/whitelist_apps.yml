@@ -4,17 +4,16 @@
   vars_files:
     - whitelist.json
   tasks:
-  
     - name: Copy AppArmor profiles
       copy:
-        dest: "/etc/apparmor.d/usr.bin.{{ item.name }}"
+        dest: "/etc/apparmor.d/usr.bin.{{ item.app_name }}"
         content: "{{ item.profile }}"
       loop: "{{ whitelist }}"
 
     - name: Load AppArmor profile
-      command: "apparmor_parser -r /etc/apparmor.d/usr.bin.{{ item.name }}"
+      command: "apparmor_parser -r /etc/apparmor.d/usr.bin.{{ item.app_name }}"
       loop: "{{ whitelist }}"
 
     - name: Enforce AppArmor profile
-      command: "aa-enforce /etc/apparmor.d/usr.bin.{{ item.name }}"
+      command: "aa-enforce /etc/apparmor.d/usr.bin.{{ item.app_name }}"
       loop: "{{ whitelist }}"
