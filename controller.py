@@ -36,17 +36,18 @@ def main_menu():
             template_controller_menu()
         elif choice == "6":
             print("Exiting to projects...")
-            subprocess.run(["python3", "run_this.py"])
+            subprocess.run(["python3", "run.py"])
             sys.exit()
 
         elif choice == "7":
-            exit_choice = input("If you exit some changes may not be saved. Are you sure you want to exit?\n type: yes or no\n").strip()
+            exit_choice = input("If you exit some changes may not be saved. Are you sure you want to exit?\ntype: yes or no\n").strip()
                 
             if exit_choice == "yes":
                 print("Exiting the program.")
                 break
             elif exit_choice == "no":
-                return
+                print("Returning to main menu.")
+                continue
             else:
                 print("Invalid input please type yes or no.")
 

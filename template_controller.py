@@ -113,9 +113,9 @@ def load_template():
 
     file_map = {
         "whitelist.json": f"projects/{current_project_number}/whitelist.json",
-        "user_data.json": f"projects/{current_project_number}user_data.json",
-        "ranked_clients.json": f"projects/{current_project_number}ranked_clients.json",
-        "allowed_domains.json": f"projects/{current_project_number}allowed_domains.json"
+        "user_data.json": f"projects/{current_project_number}/user_data.json",
+        "ranked_clients.json": f"projects/{current_project_number}/ranked_clients.json",
+        "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json"
     }
 
     for filename, destination in file_map.items():

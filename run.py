@@ -28,6 +28,7 @@ def start():
             list_projects()
         elif choice == "4":
             print("Exiting.")
+            sys.exit()
         else:
             print("Invalid choice.")
 

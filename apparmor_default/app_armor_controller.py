@@ -54,7 +54,7 @@ def main_1():
         })
         print(f"Added {path} to whitelist.")
 
-    save_whitelist(whitelist)  # Save the updated whitelist
+    save_whitelist(whitelist)
     print(f"\nSaved to {WHITELIST_FILE}")
 
 def control_whitelist():
