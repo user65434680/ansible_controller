@@ -8,6 +8,7 @@ import subprocess
 from users_default.random_gen import generate_random_password
 from ansible_utils import run_ansible_playbook
 from projects.project_context import get_current_project_number
+from copy_controller import copy_file, delete_file
 
 current_project_number = get_current_project_number()
 
@@ -124,10 +125,14 @@ def user_control():
         return
     
 def delete_user():
+    copy_file("user_data.json")
     run_ansible_playbook(f"{c_path}/del_users.yml")
+    delete_file("user_data.json")
 
 def push_user():
+    copy_file("user_data.json")
     run_ansible_playbook(f"{c_path}/users.yml")
+    delete_file("user_data.json")
 
 if __name__ == '__main__':
     user_control()
