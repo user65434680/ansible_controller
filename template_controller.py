@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import json
 import sys
@@ -26,7 +28,7 @@ def list_templates():
         print("No templates found.")
 
 def save_template():
-    current_dir = c_path  # Start searching from the script's directory
+    current_dir = c_path
     templates_dir = os.path.join(current_dir, "templates")
     os.makedirs(templates_dir, exist_ok=True)
 

@@ -1,14 +1,13 @@
+#!/usr/bin/env python3
+
 import os
 import json
 import random
-from projects.project_context import get_current_project_number as project_id
-import projects.project_context
-
 from projects.project_context import get_current_project_number
 
-current_project_number = get_current_project_number()
 PROJECTS_DIR = "projects"
 ASSOCIATIONS_FILE = os.path.join(PROJECTS_DIR, "associations.json")
+NUMBER_FILE = os.path.join(os.path.dirname(__file__), "projects", "project_number.json")
 
 def ensure_projects_folder():
     if not os.path.exists(PROJECTS_DIR):
@@ -51,13 +50,24 @@ def create_project():
 
     print(f"Project '{project_name}' created with ID {project_number}.")
 
+def update_project_number_file(project_number):
+    """Update project_number.json with the given project number."""
+    os.makedirs(os.path.dirname(NUMBER_FILE), exist_ok=True)
+
+    if not os.path.exists(NUMBER_FILE):
+        print(f"{NUMBER_FILE} does not exist. Creating it...")
+
+    with open(NUMBER_FILE, "w") as f:
+        json.dump({"current_project_number": project_number}, f, indent=4)
+    print(f"Updated project_number.json with project number: {project_number}")
+
 def load_project():
     project_name = input("Enter the project name to load: ").strip()
     associations = load_associations()
 
     for number, name in associations.items():
         if name.lower() == project_name.lower():
-            projects.project_context.current_project_number = number
+            update_project_number_file(number)
             print(f"Loaded project '{name}' with ID {number}.")
             return number
 

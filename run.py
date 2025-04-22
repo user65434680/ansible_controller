@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 from project_manager import ensure_projects_folder, list_projects, create_project, load_project
-from projects.project_context import set_current_project_number
 import subprocess
 import os
+import sys
 
 def start():
     ensure_projects_folder()
@@ -18,9 +20,9 @@ def start():
     elif choice == "2":
         loaded_project = load_project()
         if loaded_project:
-            set_current_project_number(loaded_project)
             print(f"Switching to main menu for project {loaded_project}...\n")
-            subprocess.run(["python3", "controller.py"])
+            subprocess.Popen(["python3", "controller.py"])
+            sys.exit()
     elif choice == "3":
         list_projects()
     elif choice == "4":

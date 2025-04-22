@@ -1,0 +1,13 @@
+to do
+
+add option to push app armor rules to client
+fix the entire code for app armor
+test app armor and all other applications.
+
+ota pois data tiedostojen suora poisto ajamisen jälkeen. Sen sijaan lisää mahdollisuus hallita projektia eka menuun jossa on 
+1. Poista tämän hetkinen projekti
+2. Tallenna tämän hetkinen projekti, projekti kansioon mistä pystyt palauttamaan ne myöhemmin
+3. Luo Template säännöistä jotka olet luonut, että et joudu luomaan niitä aina alusta
+4. lataa tiedosto projektit kansiosta ja jatka mihin jäit tai puske se koneille
+
+add save project option somewhere. Best to probably add it to run.py since none of the json files being saved are being called or modified.
