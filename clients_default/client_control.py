@@ -40,7 +40,7 @@ def assign_computers_manually():
 
 def assign_computers_automatically():
     run_ansible_playbook(f"{c_path}/echo_available_computers.yml")
-    client_ranking
+    client_ranking()
 
 def add_to_ansible():
     add_choice = input("This is used to add new computers to ansible. You need username, password, IP and openssh-server to be installed.\n"

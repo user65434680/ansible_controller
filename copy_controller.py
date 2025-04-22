@@ -8,14 +8,16 @@ current_project_number = get_current_project_number()
 
 copy_map = {
     "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json",
-    "placeholder2.json": f"projects/{current_project_number}/placeholder2.json",
-    "placeholder3.json": f"projects/{current_project_number}/placeholder3.json",
+    "whitelist.json": f"projects/{current_project_number}/whitelist.json",
+    "user_data.json": f"projects/{current_project_number}/user_data.json",
+    "ranked_clients.json": f"projects/{current_project_number}/ranked_clients.json",
 }
 
 paste_map = {
     "allowed_domains.json": "unbound_default",
-    "placeholder2.json": "project/1",
-    "placeholder3.json": "project/1",
+    "whitelist.json": "apparmor_default",
+    "user_data.json": "users_default",
+    "ranked_clients.json": "clients_default",
 }
 
 def copy_file(filename):
