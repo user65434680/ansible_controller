@@ -4,6 +4,7 @@ import os
 import json
 import random
 from projects.project_context import get_current_project_number
+from run_this import start
 
 PROJECTS_DIR = "projects"
 ASSOCIATIONS_FILE = os.path.join(PROJECTS_DIR, "associations.json")
@@ -49,7 +50,7 @@ def create_project():
     save_associations(associations)
 
     print(f"Project '{project_name}' created with ID {project_number}.")
-    return
+    start()
 
 def update_project_number_file(project_number):
     """Update project_number.json with the given project number."""
@@ -79,9 +80,9 @@ def list_projects():
     associations = load_associations()
     if not associations:
         print("No projects found.")
-        return
+        start()
 
     print("\nProjects:")
     for name in associations.values():
         print(f"- {name}")
-    return
+    start()
