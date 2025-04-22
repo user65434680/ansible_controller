@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# hardcoded paths change later if needed
 
 import json
 import sys

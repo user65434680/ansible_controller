@@ -6,6 +6,7 @@ import subprocess
 import json
 from ansible_utils import run_ansible_playbook
 from projects.project_context import get_current_project_number
+from copy_controller import copy_file, delete_file
 
 current_project_number = get_current_project_number()
 
@@ -18,10 +19,10 @@ def generate_profile(path):
 }}
 """
 
-#segment 1 whitelist
 projects_path = os.path.join(os.path.dirname(c_path), "projects")
 WHITELIST_FILE = os.path.join(projects_path, current_project_number, "whitelist.json")
 
+#segment 1 whitelist
 def load_whitelist():
     if os.path.exists(WHITELIST_FILE):
         with open(WHITELIST_FILE, "r") as f:
@@ -86,7 +87,8 @@ def app_armor_menu():
     print("AppArmor Menu")
     print("1. Control whitelist")
     print("2. Control blacklist")
-    print("3. Exit")
+    print("3. Push to client")
+    print("4. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -95,6 +97,11 @@ def app_armor_menu():
     elif choice == '2':
         control_blacklist()
     elif choice == '3':
+        copy_file("whitelist.json")
+        run_ansible_playbook(f"{c_path}/whitelist_apps.yml")
+        delete_file("whitelist.json")
+    
+    elif choice == '4':
         return
     else:
         print("Invalid choice. Please try again.")
