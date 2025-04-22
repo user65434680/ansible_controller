@@ -16,6 +16,7 @@ a_path = os.path.dirname(projects)
 allowed_domains_file = os.path.join(a_path, current_project_number, "allowed_domains.json")
 
 def allow_domains():
+    ensure_allowed_domains_file()
     existing_domains = {"domains": []}
 
     if os.path.exists(allowed_domains_file) and os.path.getsize(allowed_domains_file) > 0:
@@ -53,6 +54,15 @@ def allow_domains():
 
     print("Allowed domains updated.\nRunning playbook...")
     allow_domains_run()
+
+def ensure_allowed_domains_file():
+    """Ensure that allowed_domains.json exists. If not, create it with a default structure."""
+    if not os.path.exists(allowed_domains_file):
+        print(f"{allowed_domains_file} does not exist. Creating it...")
+        os.makedirs(os.path.dirname(allowed_domains_file), exist_ok=True)
+        with open(allowed_domains_file, 'w') as file:
+            json.dump({"domains": []}, file, indent=4)
+        print(f"{allowed_domains_file} has been created with a default structure.")
 
 def clear_allowed_domains():
     with open(allowed_domains_file, 'w') as file:

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from ansible_utils import run_ansible_playbook
 import os
 
