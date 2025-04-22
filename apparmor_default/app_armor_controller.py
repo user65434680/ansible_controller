@@ -46,7 +46,7 @@ def main_1():
         name = os.path.basename(path)
         profile = generate_profile(path)
         whitelist.append({
-            "name": name,
+            "app_name": name,
             "path": path,
             "profile": profile
         })

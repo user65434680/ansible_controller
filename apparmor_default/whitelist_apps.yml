@@ -4,6 +4,17 @@
   vars_files:
     - whitelist.json
   tasks:
+
+    - name: Check if whitelist.json exists
+      stat:
+        path: "{{ whitelist_file }}"
+      register: whitelist_file_stat
+
+    - name: Fail if whitelist.json doesn't exist
+      fail:
+        msg: "whitelist.json not found"
+      when: not whitelist_file_stat.stat.exists
+
     - name: Copy AppArmor profiles
       copy:
         dest: "/etc/apparmor.d/usr.bin.{{ item.name }}"
