@@ -8,7 +8,7 @@ current_project_number = get_current_project_number()
 
 c_path = os.path.dirname(os.path.abspath(__file__))
 projects_path = os.path.join(os.path.dirname(c_path), "projects")
-user_counts_file = os.path.join(c_path, current_project_number, "user_counts.json")
+user_counts_file = os.path.join(c_path, "user_counts.json")
 ranked_clients_file = os.path.join(projects_path, current_project_number, "ranked_clients.json")
 
 def load_user_counts(path=user_counts_file):

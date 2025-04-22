@@ -74,11 +74,14 @@ def add_to_ansible2():
         print(f"Error running playbook {playbook_1}: {e.stderr}")
 
 def assign_computers_choice():
-    assign_computers_choice = input("Would you like to either assign computers\n1) manually\n2) automatically\nSelect number: \n").strip()
+    assign_computers_choice = input("Would you like to either assign computers\n1) manually\n2) automatically\nExit\nSelect number: ").strip()
     if assign_computers_choice == "1":
         assign_computers_manually()
     elif assign_computers_choice == "2":
         assign_computers_automatically()
+    elif assign_computers_choice == "3":
+        print("Exiting.")
+        return
     else:
         print("Please choose again.")
 
