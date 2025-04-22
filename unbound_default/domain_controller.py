@@ -7,6 +7,7 @@ from ansible_utils import run_ansible_playbook
 import json
 import os
 from projects.project_context import get_current_project_number
+from copy_controller import copy_file, delete_file
 
 current_project_number = get_current_project_number()
 
@@ -78,7 +79,9 @@ def clear_all():
     run_ansible_playbook(f"{c_path}/unbound_clear_blacklist.yml")
 
 def allow_domains_run():
+    copy_file("allowed_domains.json")
     run_ansible_playbook(f"{c_path}/unbound_whitelist.yml")
+    delete_file("allowed_domains.json")
 
 def choose_action():
     while True:
