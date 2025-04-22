@@ -49,6 +49,7 @@ def create_project():
     save_associations(associations)
 
     print(f"Project '{project_name}' created with ID {project_number}.")
+    return
 
 def update_project_number_file(project_number):
     """Update project_number.json with the given project number."""
@@ -83,3 +84,4 @@ def list_projects():
     print("\nProjects:")
     for name in associations.values():
         print(f"- {name}")
+    return

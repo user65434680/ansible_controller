@@ -36,7 +36,7 @@ def main_menu():
             template_controller_menu()
         elif choice == "6":
             print("Exiting to projects...")
-            subprocess.Popen(["python3", "run.py"])
+            subprocess.run(["python3", "run.py"])
             sys.exit()
 
         elif choice == "7":
