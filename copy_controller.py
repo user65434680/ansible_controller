@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
-import importlib.util
 import shutil
 import os
 from projects.project_context import get_current_project_number
 
 current_project_number = get_current_project_number()
-
 
 copy_map = {
     "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json",
@@ -20,13 +18,7 @@ paste_map = {
     "placeholder3.json": "project/1",
 }
 
-def copy_file(source, destination):
-    shutil.copy(source, destination)
-
-def delete_file(path):
-    os.remove(path)
-
-def run_copy_process(filename):
+def copy_file(filename):
     """Copy a file from its source in copy_map to its destination in paste_map."""
     source_path = copy_map.get(filename)
     destination_dir = paste_map.get(filename)
@@ -34,22 +26,19 @@ def run_copy_process(filename):
     if source_path and destination_dir:
         os.makedirs(destination_dir, exist_ok=True)
         dest_path = os.path.join(destination_dir, filename)
-        copy_file(source_path, dest_path)
+        shutil.copy(source_path, dest_path)
         print(f"Copied {filename} from {source_path} to {dest_path}")
-        return dest_path
     else:
         print(f"Missing source or destination for {filename}")
-        return None
 
-def delete_needed_file(filename):
+def delete_file(filename):
     """Delete a file from its destination in paste_map."""
     destination_dir = paste_map.get(filename)
 
     if destination_dir:
-
         dest_path = os.path.join(destination_dir, filename)
         if os.path.exists(dest_path):
-            delete_file(dest_path)
+            os.remove(dest_path)
             print(f"Deleted {dest_path}")
         else:
             print(f"File not found to delete: {dest_path}")
