@@ -13,7 +13,7 @@ def start():
         print("1. Create project")
         print("2. Load project")
         print("3. List projects")
-        print("5. Delete project")
+        print("4. Delete project")
         print("5. Exit")
 
         choice = input("Choice: ").strip()
@@ -27,6 +27,9 @@ def start():
                 sys.exit()
         elif choice == "3":
             list_projects()
+        elif choice == "4":
+            delete_project()
+            print("Project deleted successfully.")
         elif choice == "5":
             print("Exiting.")
             sys.exit()
