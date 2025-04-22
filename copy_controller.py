@@ -27,22 +27,26 @@ def delete_file(path):
     os.remove(path)
 
 def run_copy_process(filename):
+    """Copy a file from its source in copy_map to its destination in paste_map."""
     source_path = copy_map.get(filename)
     destination_dir = paste_map.get(filename)
-    
+
     if source_path and destination_dir:
+        os.makedirs(destination_dir, exist_ok=True)
         dest_path = os.path.join(destination_dir, filename)
         copy_file(source_path, dest_path)
-        print(f"Copied {filename} to {destination_dir}")
+        print(f"Copied {filename} from {source_path} to {dest_path}")
         return dest_path
     else:
         print(f"Missing source or destination for {filename}")
         return None
 
 def delete_needed_file(filename):
+    """Delete a file from its destination in paste_map."""
     destination_dir = paste_map.get(filename)
-    
+
     if destination_dir:
+
         dest_path = os.path.join(destination_dir, filename)
         if os.path.exists(dest_path):
             delete_file(dest_path)
