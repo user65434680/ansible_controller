@@ -50,6 +50,20 @@ def create_project():
 
     print(f"Project '{project_name}' created with ID {project_number}.")
 
+def delete_project():
+    project_name = input("Enter the project name to delete: ").strip()
+    associations = load_associations()
+
+    for number, name in associations.items():
+        if name.lower() == project_name.lower():
+            project_path = os.path.join(PROJECTS_DIR, number)
+            if os.path.exists(project_path):
+                os.rmdir(project_path)
+                print(f"Deleted project '{name}' with ID {number}.")
+            else:
+                print(f"Project folder '{project_path}' does not exist.")
+            del associations[number]
+
 def update_project_number_file(project_number):
     """Update project_number.json with the given project number."""
     os.makedirs(os.path.dirname(NUMBER_FILE), exist_ok=True)

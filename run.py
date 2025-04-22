@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from project_manager import ensure_projects_folder, list_projects, create_project, load_project
+from project_manager import ensure_projects_folder, list_projects, create_project, load_project, delete_project
 import subprocess
 import os
 import sys
@@ -13,7 +13,8 @@ def start():
         print("1. Create project")
         print("2. Load project")
         print("3. List projects")
-        print("4. Exit")
+        print("5. Delete project")
+        print("5. Exit")
 
         choice = input("Choice: ").strip()
         if choice == "1":
@@ -26,7 +27,7 @@ def start():
                 sys.exit()
         elif choice == "3":
             list_projects()
-        elif choice == "4":
+        elif choice == "5":
             print("Exiting.")
             sys.exit()
         else:
