@@ -12,9 +12,9 @@ from copy_controller import copy_file, delete_file
 current_project_number = get_current_project_number()
 
 c_path = os.path.dirname(os.path.abspath(__file__))
-projects = os.path.join(c_path, "projects")
-a_path = os.path.dirname(projects)
-allowed_domains_file = os.path.join(a_path, current_project_number, "allowed_domains.json")
+root_path = os.path.dirname(c_path)
+projects_path = os.path.join(root_path, "projects")
+allowed_domains_file = os.path.join(projects_path, current_project_number, "allowed_domains.json")  # Correct path
 
 def allow_domains():
     ensure_allowed_domains_file()
