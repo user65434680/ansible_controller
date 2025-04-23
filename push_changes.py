@@ -89,7 +89,7 @@ def push_menu():
         if not os.path.isfile(file_map["custom_clients.ini"]):
             print("WARNING: Custom client selection not found. Please consider creating one to prevent pushing changes to all clients on the network.")
 
-        choose_main = input("Would you like to push from pending changes or from checklist?\n1. checklist\n2. pending changes\n3.Show checklist\n4. exit\n").strip()
+        choose_main = input("Would you like to push from pending changes or from checklist?\n1. checklist\n2. pending changes\n3. Show checklist\n4. exit\n").strip()
 
         if choose_main == "1":
             available_options = [
@@ -144,7 +144,7 @@ def push_menu():
                         print(f"{idx}. {item}")
                         option_map[idx] = (category, item)
                         idx += 1
-                print(f"{idx}. Exit")
+                print(f"\n{idx}. Exit")
 
                 choose_option = input("\nSelect what changes to push: ").strip()
                 try:

@@ -125,7 +125,7 @@ def user_control():
         add_to_pending(projects_path, current_project_number, "user_changes", "delete_all_users.yml")
     elif option == "4":
         print("Adding delete specific user to pending changes")
-        add_to_pending(projects_path, current_project_number, "user_changes", "del_users")
+        add_to_pending(projects_path, current_project_number, "user_changes", "del_users.yml")
     elif option == "5":
         return
 

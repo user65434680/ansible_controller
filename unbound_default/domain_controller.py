@@ -74,7 +74,7 @@ def clear_all():
     print("Adding clear all domains and blacklist to pending changes...")
     with open('allowed_domains.json', 'w') as file:
         json.dump([], file, indent=4)
-    add_to_pending(projects_path, current_project_number, "domain_changes", "unbound_clear_blacklist")
+    add_to_pending(projects_path, current_project_number, "domain_changes", "unbound_clear_blacklist.yml")
 
 def choose_action():
     while True:
