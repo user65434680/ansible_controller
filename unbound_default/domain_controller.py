@@ -6,7 +6,7 @@ import json
 import json
 import os
 from projects.project_context import get_current_project_number
-from projects.pending_control.py import add_to_pending
+from projects.pending_control import add_to_pending
 
 current_project_number = get_current_project_number()
 
