@@ -59,6 +59,11 @@ selection_map = {
     }
 }
 
+correlating_files_map = {
+    "user_data.json": "users.yml",
+    "allowed_domains.json": "unbound_whitelist.yml",
+    "whitelist.json": "whitelist_apps.yml",
+}
 
 def check_list():
     done = []
@@ -108,17 +113,15 @@ def push_menu():
                 selection_idx = int(selection)
                 if selection_idx in option_map:
                     selected_key = option_map[selection_idx]
-                    print(f"You selected: {alias_map.get(selected_key, selected_key)}")
-                    task = selection_map.get(selected_key)
-                    if task:
-                        print(task["desc"])
-                        copy_file(task["json_file"])
+                    json_file_path = file_map[selected_key]
+                    yml_file_name = correlating_files_map[selected_key]
+                    yml_file_path = os.path.join(yml_map[yml_file_name], yml_file_name)
 
-                        yml_dir = yml_map[task["yml_file"]]
-                        full_playbook_path = f"{yml_dir}/{task['yml_file']}"
+                    print(f"Running corresponding file for: {alias_map.get(selected_key, selected_key)}")
+                    copy_file(json_file_path)
+                    run_ansible_playbook(yml_file_path)
+                    delete_file(json_file_path)
 
-                        run_ansible_playbook(full_playbook_path)
-                        delete_file(task["json_file"])
                 elif selection_idx == len(available_options) + 1:
                     print("Exiting")
                     sys.exit()
@@ -131,4 +134,3 @@ def push_menu():
         elif choose_main == "3":
             print("Exiting")
             return
-            
