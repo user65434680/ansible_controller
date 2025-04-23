@@ -12,10 +12,10 @@ from projects.project_context import get_current_project_number
 current_project_number = get_current_project_number()
 
 file_map = {
-    "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json",
     "whitelist.json": f"projects/{current_project_number}/whitelist.json",
     "user_data.json": f"projects/{current_project_number}/user_data.json",
     "custom_clients.ini": f"projects/{current_project_number}/custom_clients.ini",
+    "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json",
 }
 
 alias_map = {
@@ -87,12 +87,23 @@ def push_menu():
         choose_main = input("Would you like to push from pending changes or from checklist?\n1. checklist\n2. pending changes\n3. exit\n").strip()
 
         if choose_main == "1":
-            print("1. AppArmor whitelist")
-            print("2. Selected users")
-            print("3. Domain whitelist")
-            print("4. Chosen clients")
-            print("5. Exit")
+            available_options = [
+                key for key, value in file_map.items() if os.path.isfile(value)
+            ]
 
+            if available_options:
+                if "whitelist.json" in available_options:
+                    print("\n1. AppArmor whitelist")
+                if "user_data.json" in available_options:
+                    print("2. Selected users")
+                if "allowed_domains.json" in available_options:
+                    print("3. Domain whitelist")
+                if "custom_clients.ini" in available_options:
+                    print("4. Chosen clients")
+                print("5. Exit")
+            else:
+                print("No configuration files found. Please complete configuration first.")
+                continue
 
             selection = input("\nPlease choose what to push to clients: ").strip()
 

@@ -40,7 +40,7 @@ def save_template():
     alias_map = {
         "whitelist.json": "1) AppArmor whitelist",
         "user_data.json": "2) Selected users",
-        "ranked_clients.json": "3) Chosen clients",
+        "custom_clients.ini": "3) Chosen clients",
         "allowed_domains.json": "4) Domain whitelist",
     }
 
@@ -114,7 +114,7 @@ def load_template():
     file_map = {
         "whitelist.json": f"projects/{current_project_number}/whitelist.json",
         "user_data.json": f"projects/{current_project_number}/user_data.json",
-        "ranked_clients.json": f"projects/{current_project_number}/ranked_clients.json",
+        "custom_clients.ini": f"projects/{current_project_number}/custom_clients.ini",
         "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json"
     }
 
@@ -199,6 +199,6 @@ if __name__ == "__main__":
 
 #app_armor_default/whitelist.json 
 #users_default/user_data.json 
-#clients_deafault/ranked_clients.json 
+#clients_deafault/custom_clients.ini 
 #unbound_default/allowed_domains.json 
 #clients_default/user_counts.json
