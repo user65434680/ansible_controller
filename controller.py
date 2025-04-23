@@ -35,7 +35,7 @@ def main_menu():
             app_armor_menu()
         elif choice == "5":
             template_controller_menu()
-        elif choice == "5":
+        elif choice == "6":
             push_menu()
         elif choice == "7":
             print("Exiting to projects...")
