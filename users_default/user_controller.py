@@ -5,9 +5,7 @@ import sys
 import os
 import subprocess
 from users_default.random_gen import generate_random_password
-from ansible_utils import run_ansible_playbook
 from projects.project_context import get_current_project_number
-from copy_controller import copy_file, delete_file
 
 current_project_number = get_current_project_number()
 
@@ -110,28 +108,15 @@ def user_control():
     except FileNotFoundError:
         user_data = {'users': []}
 
-    option = input("User control options:\n1) Push user to client\n2) Create new user\n3) create new user from txt file\n4) Delete user\n5) Exit\nSelect an option: ").strip()
+    option = input("User control options:\n1. Create new user\n2. create new user from txt file\n3. Exit\nSelect an option: ").strip()
 
     if option == "1":
-        push_user()
-    elif option == "2":
         add_user() 
-    elif option == "3":
+    elif option == "2":
         add_users_from_file()
-    elif option == "4":
-        delete_user()
-    elif option == "5":
+    elif option == "3":
         return
-    
-def delete_user():
-    copy_file("user_data.json")
-    run_ansible_playbook(f"{c_path}/del_users.yml")
-    delete_file("user_data.json")
 
-def push_user():
-    copy_file("user_data.json")
-    run_ansible_playbook(f"{c_path}/users.yml")
-    delete_file("user_data.json")
 
 if __name__ == '__main__':
     user_control()

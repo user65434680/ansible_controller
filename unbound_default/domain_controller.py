@@ -3,11 +3,10 @@
 import os
 import subprocess
 import json
-from ansible_utils import run_ansible_playbook
 import json
 import os
 from projects.project_context import get_current_project_number
-from copy_controller import copy_file, delete_file
+from projects.pending_control.py import add_to_pending
 
 current_project_number = get_current_project_number()
 
@@ -53,8 +52,7 @@ def allow_domains():
     with open(allowed_domains_file, 'w') as file:
         json.dump(existing_domains, file, indent=4)
 
-    print("Allowed domains updated.\nRunning playbook...")
-    allow_domains_run()
+    print("Allowed domains updated. To push this change to clients please go to main menu and select push changes.")
 
 def ensure_allowed_domains_file():
     """Ensure that allowed_domains.json exists. If not, create it with a default structure."""
@@ -68,20 +66,14 @@ def ensure_allowed_domains_file():
 def clear_allowed_domains():
     with open(allowed_domains_file, 'w') as file:
         json.dump([], file, indent=4)
-    
-    run_ansible_playbook(f"{c_path}/unbound_clear_domains.yml")
+    add_to_pending(projects_path, current_project_number, "domain_changes", "unboud_clear_domains.yml")
+
 
 def clear_all():
 
     with open('allowed_domains.json', 'w') as file:
         json.dump([], file, indent=4)
-    
-    run_ansible_playbook(f"{c_path}/unbound_clear_blacklist.yml")
-
-def allow_domains_run():
-    copy_file("allowed_domains.json")
-    run_ansible_playbook(f"{c_path}/unbound_whitelist.yml")
-    delete_file("allowed_domains.json")
+    add_to_pending(projects_path, current_project_number, "domain_changes", "unbound_clear_blacklist")
 
 def choose_action():
     while True:

@@ -2,9 +2,8 @@
 
 import os 
 import json
-from ansible_utils import run_ansible_playbook
 from projects.project_context import get_current_project_number
-from copy_controller import copy_file, delete_file
+from projects.pending_control import add_to_pending
 
 current_project_number = get_current_project_number()
 
@@ -20,6 +19,7 @@ def generate_profile(path):
 
 projects_path = os.path.join(os.path.dirname(c_path), "projects")
 WHITELIST_FILE = os.path.join(projects_path, current_project_number, "whitelist.json")
+
 
 # Segment 1: Whitelist Management
 def load_whitelist():
@@ -64,8 +64,8 @@ def control_whitelist():
     if data1 == "1":
         main_1()
     elif data1 == "2":
-        run_ansible_playbook(f"{c_path}/remove_whitelist.yml")
-        print("Whitelist cleared")
+        print("Adding clear whitelist to pending changes...")
+        add_to_pending(projects_path, current_project_number, "apparmor_changes", "remove_whitelist.yml")
     elif data1 == "3":
         return
     else:
@@ -102,9 +102,8 @@ def app_armor_menu():
     elif choice == '2':
         control_blacklist()
     elif choice == '3':
-        copy_file("whitelist.json")
-        run_ansible_playbook(f"{c_path}/whitelist_apps.yml")
-        delete_file("whitelist.json")
+        print("Adding to pending changes")
+        add_to_pending(projects_path, current_project_number, "apparmor_changes", "remove_whitelist.yml")
     elif choice == '4':
         return
     else:

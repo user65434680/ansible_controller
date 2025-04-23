@@ -44,6 +44,16 @@ def create_project():
     project_path = os.path.join(PROJECTS_DIR, project_number)
     os.makedirs(project_path)
 
+    pending_file_path = os.path.join(project_path, "pending.json")
+    pending_data = {
+        "user_changes": [],
+        "domain_changes": [],
+        "apparmor_changes": []
+    }
+    with open(pending_file_path, "w") as f:
+        json.dump(pending_data, f, indent=4)
+    print(f"Created 'pending.json' in project folder: {pending_file_path}")
+
     associations = load_associations()
     associations[project_number] = project_name
     save_associations(associations)

@@ -10,14 +10,14 @@ copy_map = {
     "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json",
     "whitelist.json": f"projects/{current_project_number}/whitelist.json",
     "user_data.json": f"projects/{current_project_number}/user_data.json",
-    "ranked_clients.json": f"projects/{current_project_number}/ranked_clients.json",
+    "custom_clients.ini": f"projects/{current_project_number}/custom_clients.ini",
 }
 
 paste_map = {
     "allowed_domains.json": "unbound_default",
     "whitelist.json": "apparmor_default",
     "user_data.json": "users_default",
-    "ranked_clients.json": "clients_default",
+    "custom_clients.ini": "clients_default",
 }
 
 def copy_file(filename):
