@@ -60,6 +60,24 @@ selection_map = {
 }
 
 
+def check_list():
+    done = []
+    not_done = []
+
+    for name, path in file_map.items():
+        if os.path.isfile(path):
+            done.append(name)
+        else:
+            not_done.append(name)
+
+    print("Done:")
+    for item in done:
+        print(f" - {alias_map.get(item, item)}")
+
+    print("\nNot done yet:")
+    for item in not_done:
+        print(f" - {alias_map.get(item, item)}")
+
 def push_menu():
     while True:
         check_list()
@@ -69,56 +87,45 @@ def push_menu():
         choose_main = input("Would you like to push from pending changes or from checklist?\n1. checklist\n2. pending changes\n3. exit\n").strip()
 
         if choose_main == "1":
-            # Check if any configuration files exist
             available_options = [
                 key for key, value in file_map.items() if os.path.isfile(value)
             ]
 
             if available_options:
-                if "whitelist.json" in available_options:
-                    print("\n1. AppArmor whitelist")
-                if "user_data.json" in available_options:
-                    print("2. Selected users")
-                if "allowed_domains.json" in available_options:
-                    print("3. Domain whitelist")
-                if "custom_clients.ini" in available_options:
-                    print("4. Chosen clients")
-                print("5. Exit")
+                print("\nAvailable options:")
+                for idx, key in enumerate(available_options, start=1):
+                    print(f"{idx}. {alias_map.get(key, key)}")
+                print(f"{len(available_options) + 1}. Exit")
             else:
                 print("No configuration files found. Please complete configuration first.")
                 continue
 
             selection = input("\nPlease choose what to push to clients: ").strip()
 
-            if selection in selection_map:
-                task = selection_map[selection]
-                print(task["desc"])
-                copy_file(task["json_file"])
+            try:
+                selection_idx = int(selection) - 1
+                if 0 <= selection_idx < len(available_options):
+                    selected_key = available_options[selection_idx]
+                    task = selection_map.get(selected_key)
+                    if task:
+                        print(task["desc"])
+                        copy_file(task["json_file"])
 
-                yml_dir = yml_map[task["yml_file"]]
-                full_playbook_path = f"{yml_dir}/{task['yml_file']}"
+                        yml_dir = yml_map[task["yml_file"]]
+                        full_playbook_path = f"{yml_dir}/{task['yml_file']}"
 
-                run_ansible_playbook(full_playbook_path)
-                delete_file(task["json_file"])
-
-            elif selection == "4":
-                print("Selected custom clients for operation.")
-                print("PLACEHOLDER REMEMBER TO MAKE INTO A VARIABLE FOR RUNNING THE PLAYBOOK TO SPECIFIC CLIENTS!!!")
-
-            elif selection == "5":
-                print("Exiting")
-                sys.exit()
-
-            else:
-                print("Invalid selection. Please try again.")
-                return
-
+                        run_ansible_playbook(full_playbook_path)
+                        delete_file(task["json_file"])
+                elif selection_idx == len(available_options):
+                    print("Exiting")
+                    sys.exit()
+                else:
+                    print("Invalid selection. Please try again.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
         elif choose_main == "2":
             print("1. placeholder for pending changes")
-
         elif choose_main == "3":
             print("Exiting")
             return
-
-        else:
-            print("invalid input")
+            
