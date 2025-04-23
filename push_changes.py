@@ -114,13 +114,14 @@ def push_menu():
                 if selection_idx in option_map:
                     selected_key = option_map[selection_idx]
                     json_file_path = file_map[selected_key]
+                    json_file_name = os.path.basename(json_file_path)
                     yml_file_name = correlating_files_map[selected_key]
                     yml_file_path = os.path.join(yml_map[yml_file_name], yml_file_name)
 
                     print(f"Running corresponding file for: {alias_map.get(selected_key, selected_key)}")
-                    copy_file("user_data.json")
+                    copy_file(json_file_name)
                     run_ansible_playbook(yml_file_path)
-                    delete_file("user_data.json")
+                    delete_file(json_file_name)
 
                 elif selection_idx == len(available_options) + 1:
                     print("Exiting")
