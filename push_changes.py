@@ -93,8 +93,10 @@ def push_menu():
 
             if available_options:
                 print("\nAvailable options:")
+                option_map = {}
                 for idx, key in enumerate(available_options, start=1):
                     print(f"{idx}. {alias_map.get(key, key)}")
+                    option_map[idx] = key
                 print(f"{len(available_options) + 1}. Exit")
             else:
                 print("No configuration files found. Please complete configuration first.")
@@ -103,9 +105,10 @@ def push_menu():
             selection = input("\nPlease choose what to push to clients: ").strip()
 
             try:
-                selection_idx = int(selection) - 1
-                if 0 <= selection_idx < len(available_options):
-                    selected_key = available_options[selection_idx]
+                selection_idx = int(selection)
+                if selection_idx in option_map:
+                    selected_key = option_map[selection_idx]
+                    print(f"You selected: {alias_map.get(selected_key, selected_key)}")
                     task = selection_map.get(selected_key)
                     if task:
                         print(task["desc"])
@@ -116,7 +119,7 @@ def push_menu():
 
                         run_ansible_playbook(full_playbook_path)
                         delete_file(task["json_file"])
-                elif selection_idx == len(available_options):
+                elif selection_idx == len(available_options) + 1:
                     print("Exiting")
                     sys.exit()
                 else:
