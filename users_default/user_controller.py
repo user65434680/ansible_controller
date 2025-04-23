@@ -6,6 +6,7 @@ import os
 import subprocess
 from users_default.random_gen import generate_random_password
 from projects.project_context import get_current_project_number
+from projects.pending_control import add_to_pending
 
 current_project_number = get_current_project_number()
 
@@ -47,10 +48,12 @@ def add_user():
 
     if user_data['users']:
         print("\nThere are already users in the list. Choose an option:")
-        print("1) Add more users")
-        print("2) Clear contents and add new users")
-        print("3) Clear contents")
-        print("4) Exit")
+        print("1. Add more users")
+        print("2. Clear contents and add new users")
+        print("3. Clear contents")
+        print("4. Add delete all users to pending")
+        print("5. Add delete specified users to pending")
+        print("6. Exit")
 
         choice = input("Select an option: ").strip()
         if choice == "1":
@@ -64,6 +67,10 @@ def add_user():
             print("Contents cleared.")
             return
         elif choice == "4":
+            add_to_pending(projects_path, current_project_number, "user_changes", "delete_all_users.yml")
+        elif choice == "5":
+            add_to_pending(projects_path, current_project_number, "user_changes", "del_users")
+        elif choice == "6":
             print("Exiting.")
             return
         else:
