@@ -3,7 +3,7 @@
 import os
 import subprocess
 import sys
-
+import json
 from ansible_utils import run_ansible_playbook
 from copy_controller import copy_file, delete_file
 
@@ -131,7 +131,17 @@ def push_menu():
             except ValueError:
                 print("Invalid input. Please enter a number.")
         elif choose_main == "2":
-            print("1. placeholder for pending changes")
+            pending_file = os.path.join("projects", current_project_number, "pending.json")
+            if os.path.isfile(pending_file):
+                with open(pending_file, "r") as f:
+                    pending_data = json.load(f)
+                print("\nPending Changes:")
+                for category, items in pending_data.items():
+                    print(f"\n{category.capitalize()}:")
+                    for item in items:
+                        print(f" - {item}")
+            else:
+                print("No pending changes found.")
         elif choose_main == "3":
             print("Exiting")
             return

@@ -67,8 +67,10 @@ def add_user():
             print("Contents cleared.")
             return
         elif choice == "4":
+            print("Adding delete all users to pending changes...")
             add_to_pending(projects_path, current_project_number, "user_changes", "delete_all_users.yml")
         elif choice == "5":
+            print("Adding delete specified users to pending changes...")
             add_to_pending(projects_path, current_project_number, "user_changes", "del_users")
         elif choice == "6":
             print("Exiting.")

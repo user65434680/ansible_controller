@@ -64,13 +64,14 @@ def ensure_allowed_domains_file():
         print(f"{allowed_domains_file} has been created with a default structure.")
 
 def clear_allowed_domains():
+    print("Adding clear allowed domains to pending changes...")
     with open(allowed_domains_file, 'w') as file:
         json.dump([], file, indent=4)
     add_to_pending(projects_path, current_project_number, "domain_changes", "unboud_clear_domains.yml")
 
 
 def clear_all():
-
+    print("Adding clear all domains and blacklist to pending changes...")
     with open('allowed_domains.json', 'w') as file:
         json.dump([], file, indent=4)
     add_to_pending(projects_path, current_project_number, "domain_changes", "unbound_clear_blacklist")
