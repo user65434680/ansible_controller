@@ -118,9 +118,9 @@ def push_menu():
                     yml_file_path = os.path.join(yml_map[yml_file_name], yml_file_name)
 
                     print(f"Running corresponding file for: {alias_map.get(selected_key, selected_key)}")
-                    copy_file(json_file_path)
+                    copy_file("user_data.json")
                     run_ansible_playbook(yml_file_path)
-                    delete_file(json_file_path)
+                    delete_file("user_data.json")
 
                 elif selection_idx == len(available_options) + 1:
                     print("Exiting")
