@@ -60,24 +60,6 @@ selection_map = {
 }
 
 
-def check_list():
-    done = []
-    not_done = []
-
-    for name, path in file_map.items():
-        if os.path.isfile(path):
-            done.append(name)
-        else:
-            not_done.append(name)
-
-    print("Done:")
-    for item in done:
-        print(f" - {alias_map.get(item, item)}")
-
-    print("\nNot done yet:")
-    for item in not_done:
-        print(f" - {alias_map.get(item, item)}")
-
 def push_menu():
     while True:
         check_list()
@@ -87,6 +69,7 @@ def push_menu():
         choose_main = input("Would you like to push from pending changes or from checklist?\n1. checklist\n2. pending changes\n3. exit\n").strip()
 
         if choose_main == "1":
+            # Check if any configuration files exist
             available_options = [
                 key for key, value in file_map.items() if os.path.isfile(value)
             ]
@@ -132,3 +115,10 @@ def push_menu():
 
         elif choose_main == "2":
             print("1. placeholder for pending changes")
+
+        elif choose_main == "3":
+            print("Exiting")
+            return
+
+        else:
+            print("invalid input")
