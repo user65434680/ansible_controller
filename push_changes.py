@@ -19,10 +19,10 @@ file_map = {
 }
 
 alias_map = {
-    "whitelist.json": "1. AppArmor whitelist",
-    "user_data.json": "2. Selected users",
-    "custom_clients.ini": "3. Chosen clients",
-    "allowed_domains.json": "4. Domain whitelist",
+    "whitelist.json": "AppArmor whitelist",
+    "user_data.json": "Selected users",
+    "custom_clients.ini": "Chosen clients",
+    "allowed_domains.json": "Domain whitelist",
 }
 
 yml_map = {
