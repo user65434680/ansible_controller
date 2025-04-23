@@ -86,7 +86,6 @@ def check_list():
 def push_menu():
     check_list()
     while True:
-
         if not os.path.isfile(file_map["custom_clients.ini"]):
             print("WARNING: Custom client selection not found. Please consider creating one to prevent pushing changes to all clients on the network.")
 
@@ -137,10 +136,29 @@ def push_menu():
                 with open(pending_file, "r") as f:
                     pending_data = json.load(f)
                 print("\nPending Changes:")
+                option_map = {}
+                idx = 1
                 for category, items in pending_data.items():
                     print(f"\n{category.capitalize()}:")
                     for item in items:
-                        print(f" - {item}")
+                        print(f"{idx}. {item}")
+                        option_map[idx] = (category, item)
+                        idx += 1
+                print(f"{idx}. Exit")
+
+                choose_option = input("\nSelect what changes to push: ").strip()
+                try:
+                    selected_idx = int(choose_option)
+                    if selected_idx in option_map:
+                        category, item = option_map[selected_idx]
+                        print(f"Selected: {item} from {category}")
+                    elif selected_idx == idx:
+                        print("Exiting pending changes menu.")
+                        continue
+                    else:
+                        print("Invalid selection. Please try again.")
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
             else:
                 print("No pending changes found.")
         elif choose_main == "3":
