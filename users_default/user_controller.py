@@ -51,8 +51,6 @@ def add_user():
         print("1. Add more users")
         print("2. Clear contents and add new users")
         print("3. Clear contents")
-        print("4. Add delete all users to pending")
-        print("5. Add delete specified users to pending")
         print("6. Exit")
 
         choice = input("Select an option: ").strip()
@@ -117,13 +115,18 @@ def user_control():
     except FileNotFoundError:
         user_data = {'users': []}
 
-    option = input("User control options:\n1. Create new user\n2. create new user from txt file\n3. Exit\nSelect an option: ").strip()
-
+    option = input("User control options:\n1. Create new user\n2. create new user from txt file\n3. Add delete all users to pending\n4. Add delete specified users to pending\n5. Exit\nSelect an option: ").strip()
     if option == "1":
         add_user() 
     elif option == "2":
         add_users_from_file()
     elif option == "3":
+        print("Adding delete all users to pending changes...")
+        add_to_pending(projects_path, current_project_number, "user_changes", "delete_all_users.yml")
+    elif option == "4":
+        print("Adding delete specific user to pending changes")
+        add_to_pending(projects_path, current_project_number, "user_changes", "del_users")
+    elif option == "5":
         return
 
 

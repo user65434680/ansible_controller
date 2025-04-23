@@ -125,7 +125,7 @@ def push_menu():
 
                 elif selection_idx == len(available_options) + 1:
                     print("Exiting")
-                    sys.exit()
+                    return
                 else:
                     print("Invalid selection. Please try again.")
             except ValueError:
