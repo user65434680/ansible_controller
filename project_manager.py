@@ -39,8 +39,13 @@ def generate_unique_project_number():
 
 def create_project():
     project_name = input("Enter project name: ").strip()
-    project_number = generate_unique_project_number()
 
+    associations = load_associations()
+    if project_name.lower() in (name.lower() for name in associations.values()):
+        print(f"Error: A project with the name '{project_name}' already exists.")
+        return
+
+    project_number = generate_unique_project_number()
     project_path = os.path.join(PROJECTS_DIR, project_number)
     os.makedirs(project_path)
 
@@ -54,7 +59,6 @@ def create_project():
         json.dump(pending_data, f, indent=4)
     print(f"Created 'pending.json' in project folder: {pending_file_path}")
 
-    associations = load_associations()
     associations[project_number] = project_name
     save_associations(associations)
 
