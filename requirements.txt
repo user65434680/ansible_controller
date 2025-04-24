@@ -1,7 +1,5 @@
 python pyyaml
 
-ansible
+sudo apt-get install ansible
 
-whois
-
-dig
+sudo apt install apparmor-utils

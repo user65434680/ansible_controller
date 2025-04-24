@@ -1,0 +1,60 @@
+---
+- name: Apply SELinux blocklist dynamically based on blacklist
+  hosts: all
+  become: yes
+  tasks:
+    - name: Read blacklist.json file
+      ansible.builtin.slurp:
+        src: /path/to/blacklist.json
+      register: blacklist_content
+
+    - name: Decode the blacklist JSON
+      set_fact:
+        blacklist: "{{ blacklist_content.content | b64decode | from_json }}"
+
+    - name: Gather SELinux file contexts for applications
+      command: "semanage fcontext -l"
+      register: selinux_file_contexts
+      when: ansible_facts['selinux']['status'] == 'enabled'
+
+    - name: Create SELinux policy for blocking applications
+      ansible.builtin.copy:
+        dest: "/tmp/block_apps.te"
+        content: |
+          module block_apps 1.0;
+
+          require {
+              class process { execmem execstack };
+              {% for app in blacklist %}
+              # Resolving the SELinux type for the application: {{ app }}
+              {% set app_name = app | basename %}
+              {% set app_type = (selinux_file_contexts.stdout | regex_search(app, '\\S+\\s+\\S+\\s+' + app_name)) %}
+              {% if app_type %}
+              type {{ app_name }}_exec_t;
+              {% endif %}
+              {% endfor %}
+              type sudo_t;  # sudo context for sudo users
+          }
+
+          # Deny execution of these applications for all users
+          {% for app in blacklist %}
+          deny {{ app | basename }}_exec_t:process { execmem execstack };
+          {% endfor %}
+
+          # Allow users in the sudo group (sudo_t context) to run these applications
+          allow sudo_t {{ app | basename }}_exec_t:process { execmem execstack };
+        mode: '0644'
+
+    - name: Apply SELinux policy
+      command: "semodule -i /tmp/block_apps.pp"
+      when: ansible_facts['selinux']['status'] == 'enabled'
+
+    - name: Clean up temporary SELinux module
+      file:
+        path: /tmp/block_apps.te
+        state: absent
+
+    - name: Clean up temporary SELinux policy file
+      file:
+        path: /tmp/block_apps.pp
+        state: absent

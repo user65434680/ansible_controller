@@ -1,0 +1,14 @@
+[
+    {
+        "app_name": "kill",
+        "profile": "profile /bin/kill flags=(attach_disconnected) {\n    # Deny kill for everyone\n    deny /bin/kill rix,\n\n    # Allow \"sudo\" group users\n    profile /bin/kill flags=(attach_disconnected) {\n        # Allow sudo group users\n        allow /bin/kill rix,\n        # You can specify the sudo group if needed by adding: group sudo rix,\n    }\n}"
+    },
+    {
+        "app_name": "shutdown",
+        "profile": "profile /sbin/shutdown flags=(attach_disconnected) {\n    # Deny shutdown for everyone\n    deny /sbin/shutdown rix,\n\n    # Allow \"sudo\" group users\n    profile /sbin/shutdown flags=(attach_disconnected) {\n        # Allow sudo group users\n        allow /sbin/shutdown rix,\n        # You can specify the sudo group if needed by adding: group sudo rix,\n    }\n}"
+    },
+    {
+        "app_name": "reboot",
+        "profile": "profile /sbin/reboot flags=(attach_disconnected) {\n    # Deny reboot for everyone\n    deny /sbin/reboot rix,\n\n    # Allow \"sudo\" group users\n    profile /sbin/reboot flags=(attach_disconnected) {\n        # Allow sudo group users\n        allow /sbin/reboot rix,\n        # You can specify the sudo group if needed by adding: group sudo rix,\n    }\n}"
+    }
+]
