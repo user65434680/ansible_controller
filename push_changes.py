@@ -152,6 +152,13 @@ def push_menu():
                     if selected_idx in option_map:
                         category, item = option_map[selected_idx]
                         print(f"Selected: {item} from {category}")
+                        if item in yml_map:
+                            yml_dir = yml_map[item]
+                            yml_file_path = os.path.join(yml_dir, item)
+                            print(f"Running playbook: {yml_file_path}")
+                            run_ansible_playbook(yml_file_path)
+                        else:
+                            print(f"No corresponding playbook found for {item}.")
                     elif selected_idx == idx:
                         print("Exiting pending changes menu.")
                         continue
