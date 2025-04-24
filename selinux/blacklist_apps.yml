@@ -5,7 +5,7 @@
   tasks:
     - name: Read blacklist.json file
       ansible.builtin.slurp:
-        src: /path/to/blacklist.json
+        src: blacklist.json
       register: blacklist_content
 
     - name: Decode the blacklist JSON
