@@ -26,16 +26,13 @@ alias_map = {
 }
 
 yml_map = {
-    # apparmor
     "create_blacklist.yml": "apparmor_default",
     "delete_blacklist.yml": "apparmor_default",
     "remove_whitelist.yml": "apparmor_default",
     "whitelist_apps.yml": "apparmor_default",
-    # unbound
     "unbound_clear_blacklist.yml": "unbound_default",
     "unbound_clear_domains.yml": "unbound_default",
     "unbound_whitelist.yml": "unbound_default",
-    # users
     "del_users.yml": "users_default",
     "delete_all_users.yml": "users_default",
     "users.yml": "users_default",
@@ -66,6 +63,7 @@ correlating_files_map = {
 }
 
 def check_list():
+    """Display files that are done and not yet completed."""
     done = []
     not_done = []
 
@@ -83,95 +81,100 @@ def check_list():
     for item in not_done:
         print(f" - {alias_map.get(item, item)}")
 
+def push_from_checklist():
+    """Handle pushing from checklist."""
+    available_options = [
+        key for key, value in file_map.items() if os.path.isfile(value)
+    ]
+
+    if not available_options:
+        print("No configuration files found. Please complete configuration first.")
+        return
+
+    print("\nAvailable options:")
+    option_map = {}
+    for idx, key in enumerate(available_options, start=1):
+        print(f"{idx}. {alias_map.get(key, key)}")
+        option_map[idx] = key
+    print(f"{len(available_options) + 1}. Exit")
+
+    try:
+        selection = int(input("\nPlease choose what to push to clients: ").strip())
+        if selection in option_map:
+            selected_key = option_map[selection]
+            json_file_name = os.path.basename(file_map[selected_key])
+            yml_file_name = correlating_files_map[selected_key]
+            yml_file_path = os.path.join(yml_map[yml_file_name], yml_file_name)
+
+            print(f"Running corresponding file for: {alias_map.get(selected_key, selected_key)}")
+            copy_file(json_file_name)
+            run_ansible_playbook(yml_file_path)
+            delete_file(json_file_name)
+        elif selection == len(available_options) + 1:
+            print("Exiting")
+        else:
+            print("Invalid selection. Please try again.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
+def push_from_pending_changes():
+    """Handle pushing from pending changes."""
+    pending_file = os.path.join("projects", current_project_number, "pending.json")
+    if os.path.isfile(pending_file):
+        with open(pending_file, "r") as f:
+            pending_data = json.load(f)
+        print("\nPending Changes:")
+        option_map = {}
+        idx = 1
+        for category, items in pending_data.items():
+            print(f"\n{category.capitalize()}:")
+            for item in items:
+                print(f"{idx}. {item}")
+                option_map[idx] = (category, item)
+                idx += 1
+        print(f"\n{idx}. Exit")
+
+        try:
+            choose_option = int(input("\nSelect what changes to push: ").strip())
+            if choose_option in option_map:
+                category, item = option_map[choose_option]
+                print(f"Selected: {item} from {category}")
+                if item in yml_map:
+                    yml_file_path = os.path.join(yml_map[item], item)
+                    print(f"Running playbook: {yml_file_path}")
+                    run_ansible_playbook(yml_file_path)
+                else:
+                    print(f"No corresponding playbook found for {item}.")
+            elif choose_option == idx:
+                print("Exiting pending changes menu.")
+            else:
+                print("Invalid selection. Please try again.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+    else:
+        print("No pending changes found.")
+
 def push_menu():
+    """Main push menu that allows users to choose options."""
     check_list()
+
     while True:
         if not os.path.isfile(file_map["custom_clients.ini"]):
-            print("WARNING: Custom client selection not found. Please consider creating one to prevent pushing changes to all clients on the network.")
+            print("WARNING: Custom client selection not found. Please consider creating one.")
 
-        choose_main = input("Would you like to push from pending changes or from checklist?\n1. checklist\n2. pending changes\n3. Show checklist\n4. exit\n").strip()
+        choose_main = input(
+            "Would you like to push from pending changes or from checklist?\n"
+            "1. checklist\n2. pending changes\n3. Show checklist\n4. exit\n"
+        ).strip()
 
         if choose_main == "1":
-            available_options = [
-                key for key, value in file_map.items() if os.path.isfile(value)
-            ]
-
-            if available_options:
-                print("\nAvailable options:")
-                option_map = {}
-                for idx, key in enumerate(available_options, start=1):
-                    print(f"{idx}. {alias_map.get(key, key)}")
-                    option_map[idx] = key
-                print(f"{len(available_options) + 1}. Exit")
-            else:
-                print("No configuration files found. Please complete configuration first.")
-                continue
-
-            selection = input("\nPlease choose what to push to clients: ").strip()
-
-            try:
-                selection_idx = int(selection)
-                if selection_idx in option_map:
-                    selected_key = option_map[selection_idx]
-                    json_file_path = file_map[selected_key]
-                    json_file_name = os.path.basename(json_file_path)
-                    yml_file_name = correlating_files_map[selected_key]
-                    yml_file_path = os.path.join(yml_map[yml_file_name], yml_file_name)
-
-                    print(f"Running corresponding file for: {alias_map.get(selected_key, selected_key)}")
-                    copy_file(json_file_name)
-                    run_ansible_playbook(yml_file_path)
-                    delete_file(json_file_name)
-
-                elif selection_idx == len(available_options) + 1:
-                    print("Exiting")
-                    return
-                else:
-                    print("Invalid selection. Please try again.")
-            except ValueError:
-                print("Invalid input. Please enter a number.")
+            push_from_checklist()
         elif choose_main == "2":
-            pending_file = os.path.join("projects", current_project_number, "pending.json")
-            if os.path.isfile(pending_file):
-                with open(pending_file, "r") as f:
-                    pending_data = json.load(f)
-                print("\nPending Changes:")
-                option_map = {}
-                idx = 1
-                for category, items in pending_data.items():
-                    print(f"\n{category.capitalize()}:")
-                    for item in items:
-                        print(f"{idx}. {item}")
-                        option_map[idx] = (category, item)
-                        idx += 1
-                print(f"\n{idx}. Exit")
-
-                choose_option = input("\nSelect what changes to push: ").strip()
-                try:
-                    selected_idx = int(choose_option)
-                    if selected_idx in option_map:
-                        category, item = option_map[selected_idx]
-                        print(f"Selected: {item} from {category}")
-                        if item in yml_map:
-                            yml_dir = yml_map[item]
-                            yml_file_path = os.path.join(yml_dir, item)
-                            print(f"Running playbook: {yml_file_path}")
-                            run_ansible_playbook(yml_file_path)
-                        else:
-                            print(f"No corresponding playbook found for {item}.")
-                    elif selected_idx == idx:
-                        print("Exiting pending changes menu.")
-                        continue
-                    else:
-                        print("Invalid selection. Please try again.")
-                except ValueError:
-                    print("Invalid input. Please enter a number.")
-            else:
-                print("No pending changes found.")
+            push_from_pending_changes()
         elif choose_main == "3":
             check_list()
         elif choose_main == "4":
             print("Exiting")
             return
         else:
-            print("Invalid option please try again")
+            print("Invalid option, please try again.")
