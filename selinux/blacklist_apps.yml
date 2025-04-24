@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars_files:
-    - blacklist.json  # Ensure the blacklist is loaded
+    - blacklist.json  # This now loads a dictionary containing the "blacklist" list
 
   tasks:
     - name: Create SELinux policy file
@@ -27,7 +27,7 @@
 
         mode: '0644'
 
-    - name: Apply SELinux policy
+    - name: Compile and apply SELinux policy
       command: "semodule -i /tmp/block_apps.pp"
       when: ansible_facts['selinux']['status'] == 'enabled'
 
