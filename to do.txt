@@ -11,5 +11,3 @@ ota pois data tiedostojen suora poisto ajamisen jälkeen. Sen sijaan lisää mah
 4. lataa tiedosto projektit kansiosta ja jatka mihin jäit tai puske se koneille
 
 add save project option somewhere. Best to probably add it to run.py since none of the json files being saved are being called or modified.
-
-add the client user on the clients to visudo and give it username ALL=(ALL) NOPASSWD: ALL under root
