@@ -3,3 +3,13 @@ python pyyaml
 sudo apt-get install ansible
 
 sudo apt install apparmor-utils
+
+sudo apt update
+
+sudo apt install policycoreutils selinux-utils selinux-basics
+
+sudo selinux-activate
+
+sudo reboot
+
+sudo selinux-config-enforcing

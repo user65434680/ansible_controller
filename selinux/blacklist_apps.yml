@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars_files:
-    - blacklist.json  # This now loads a dictionary containing the "blacklist" list
+    - blacklist.json
 
   tasks:
     - name: Create SELinux policy file
