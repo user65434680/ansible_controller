@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import subprocess
 from clients_default.user_count import client_ranking
 from clients_default.generate_keys_script import generate_ssh_keys_for_clients
@@ -39,6 +38,7 @@ def assign_computers_manually():
         print(f"{i}) {client}")
 
 def assign_computers_automatically():
+    print("Running playbook to echo available computers...")
     run_ansible_playbook(f"{c_path}/echo_available_computers.yml")
     client_ranking()
 
@@ -55,7 +55,6 @@ def add_to_ansible():
 def add_to_ansible2():
     generate_ssh_keys_for_clients()
 
-    playbook_1 = "add_computer.yml"
     ansible_user = input("Enter the computer client username: ").strip()
     ansible_IP = input("Enter the client IP address: ").strip()
 
@@ -64,14 +63,7 @@ def add_to_ansible2():
     with open(inventory_file_path, 'a') as inventory_file:
         inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
 
-    ansible_1 = ['ansible-playbook', '-i', inventory_file_path, playbook_1, '-u', ansible_user, '--ask-become-pass']
-
-    try:
-        result = subprocess.run(ansible_1, check=True, text=True, capture_output=True)
-        print(result.stdout)
-        print(f"Playbook {playbook_1} executed successfully.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error running playbook {playbook_1}: {e.stderr}")
+    print(f"Client {ansible_user} with IP {ansible_IP} added to the inventory file.")
 
 def assign_computers_choice():
     assign_computers_choice = input("Would you like to either assign computers\n1) manually\n2) automatically\n3) Exit\nSelect number: ").strip()
@@ -84,7 +76,6 @@ def assign_computers_choice():
         return
     else:
         print("Please choose again.")
-
 
 def client_control_menu():
     while True:
