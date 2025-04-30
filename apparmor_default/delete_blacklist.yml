@@ -1,0 +1,8 @@
+- name: Remove AppArmor deny-all profile
+  hosts: all
+  become: yes
+  tasks:
+    - name: Delete deny-all profile
+      file:
+        path: /etc/apparmor.d/custom-list
+        state: absent
