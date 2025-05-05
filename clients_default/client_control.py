@@ -2,7 +2,7 @@
 
 import subprocess
 from clients_default.user_count import client_ranking
-from clients_default.generate_keys_script import generate_ssh_keys_for_clients
+from clients_default.generate_keys_script import copy_ssh_key_to_client
 from ansible_utils import run_ansible_playbook
 import os
 
@@ -73,7 +73,7 @@ def add_to_ansible2():
             with open(inventory_file_path, 'a') as inventory_file:
                 inventory_file.write(f"{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
             print(f"Client {ansible_user} with IP {ansible_IP} added to the inventory file.")
-            generate_ssh_keys_for_clients()
+            copy_ssh_key_to_client()
         except Exception as e:
             print(f"Error writing to inventory file: {e}")
             return
