@@ -2,15 +2,6 @@
 - name: Copy SSH key to remote client
   hosts: all
   gather_facts: no
-  vars_prompt:
-    - name: "client_ip"
-      prompt: "Enter the client server IP address"
-      private: no
-
-    - name: "ansible_user"
-      prompt: "Enter the SSH username for the client server"
-      private: no
-
   tasks:
     - name: Add SSH key to remote user's authorized_keys
       authorized_key:
