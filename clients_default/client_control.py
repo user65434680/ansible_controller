@@ -58,7 +58,9 @@ def add_to_ansible2():
     ansible_user = input("Enter the computer client username: ").strip()
     ansible_IP = input("Enter the client IP address: ").strip()
 
-    inventory_file_path = "../inventory/inventory.ini"
+    inventory_file_path = os.path.join(os.path.dirname(c_path), "inventory", "inventory.ini")
+
+    os.makedirs(os.path.dirname(inventory_file_path), exist_ok=True)
 
     with open(inventory_file_path, 'a') as inventory_file:
         inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
