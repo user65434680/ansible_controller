@@ -53,7 +53,6 @@ def add_to_ansible():
         return
 
 def add_to_ansible2():
-    generate_ssh_keys_for_clients()
 
     while True:
         ansible_user = input("Enter the computer client username (or type 'exit' to quit): ").strip()
@@ -69,6 +68,7 @@ def add_to_ansible2():
 
         os.makedirs(os.path.dirname(inventory_file_path), exist_ok=True)
 
+        generate_ssh_keys_for_clients()
         try:
             with open(inventory_file_path, 'a') as inventory_file:
                 inventory_file.write(f"{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
