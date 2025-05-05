@@ -11,3 +11,8 @@ ota pois data tiedostojen suora poisto ajamisen jälkeen. Sen sijaan lisää mah
 4. lataa tiedosto projektit kansiosta ja jatka mihin jäit tai puske se koneille
 
 add save project option somewhere. Best to probably add it to run.py since none of the json files being saved are being called or modified.
+
+
+add the following to the option to add clients
+
+clearing of .ssh/known_hosts if something errors, creating of only 1 key used for all client computers, make the interface easier to understand, fix no inventory file found at ../inventory/inventory.ini, add automatic dedection for clients not added to control in the network.

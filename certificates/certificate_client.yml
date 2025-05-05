@@ -1,0 +1,32 @@
+---
+- name: Manage certificates on the remote client
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Ensure the custom certificate directory exists
+      file:
+        path: "/etc/ssl/custom-certs"
+        state: directory
+        mode: '0755'
+
+    - name: Copy certificates to the custom directory
+      copy:
+        src: "/tmp/certs/"
+        dest: "/etc/ssl/custom-certs/"
+        mode: '0644'
+      ignore_errors: false
+
+    - name: Rehash the certificate directory
+      command: c_rehash /etc/ssl/custom-certs
+
+    - name: Combine all certificates into a single PEM file
+      shell: cat /etc/ssl/custom-certs/*.crt > /etc/ssl/custom-certs/combined.pem
+
+    - name: Ensure combined PEM file has correct permissions
+      file:
+        path: "/etc/ssl/custom-certs/combined.pem"
+        mode: '0644'
+
+    - name: Print completion message
+      debug:
+        msg: "Certificate management complete."

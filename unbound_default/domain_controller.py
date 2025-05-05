@@ -7,6 +7,7 @@ import json
 import os
 from projects.project_context import get_current_project_number
 from projects.pending_control import add_to_pending
+from certificates.certificate import run_all_certificate
 
 current_project_number = get_current_project_number()
 
@@ -51,6 +52,8 @@ def allow_domains():
 
     with open(allowed_domains_file, 'w') as file:
         json.dump(existing_domains, file, indent=4)
+    
+    run_all_certificate()
 
     print("Allowed domains updated. To push this change to clients please go to main menu and select push changes.")
 

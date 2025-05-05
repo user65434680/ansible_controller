@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 
 import subprocess
+from projects.project_context import get_current_project_number
+import os
+
+
+current_project_number = get_current_project_number()
+c_path = os.path.dirname(os.path.abspath(__file__))
+inventory_path = f"projects/{current_project_number}/custom_clients.ini"
 
 def run_ansible_playbook(playbook, inventory="inventory/inventory.ini"):
+    if os.path.exists(inventory_path):
+        inventory = inventory_path
+
     command = ['ansible-playbook', '-i', inventory, playbook, '--ask-become-pass']
 
     try:

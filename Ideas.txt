@@ -1,3 +1,7 @@
 Estä IP:llä pääsy verkkosivuille.
 
 Varaus systeemi?
+
+use real time blocking with auditd a script and apparmor to kill apt commands and block the directory it was gonna get downloaded to.
+
+make it so that non sudo users cannot be switched to via su

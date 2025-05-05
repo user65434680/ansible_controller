@@ -6,6 +6,6 @@
   tasks:
     - name: Delete profile files
       file:
-        path: "/etc/apparmor.d/usr.bin.{{ item.name }}"
+        path: "/etc/apparmor.d/custom-list{{ item.name }}"
         state: absent
       loop: "{{ whitelist }}"

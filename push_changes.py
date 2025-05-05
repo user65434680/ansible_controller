@@ -6,16 +6,20 @@ import sys
 import json
 from ansible_utils import run_ansible_playbook
 from copy_controller import copy_file, delete_file
+import shutil
+
 
 from projects.project_context import get_current_project_number
 
 current_project_number = get_current_project_number()
+certs_path = f"projects/{current_project_number}/certs"
 
 file_map = {
     "whitelist.json": f"projects/{current_project_number}/whitelist.json",
     "user_data.json": f"projects/{current_project_number}/user_data.json",
     "custom_clients.ini": f"projects/{current_project_number}/custom_clients.ini",
     "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json",
+    "certificates": f"{certs_path}"
 }
 
 alias_map = {
@@ -23,6 +27,7 @@ alias_map = {
     "user_data.json": "Selected users",
     "custom_clients.ini": "Chosen clients",
     "allowed_domains.json": "Domain whitelist",
+    "certificates": "certificates"
 }
 
 yml_map = {
@@ -109,6 +114,21 @@ def push_from_checklist():
             print(f"Running corresponding file for: {alias_map.get(selected_key, selected_key)}")
             copy_file(json_file_name)
             run_ansible_playbook(yml_file_path)
+
+            if selected_key == "allowed_domains.json":
+                print("Cloning certs_path to certificates...")
+                certificates_dir = "certificates"
+                os.makedirs(certificates_dir, exist_ok=True)
+                for cert_file in os.listdir(certs_path):
+                    src = os.path.join(certs_path, cert_file)
+                    dest = os.path.join(certificates_dir, cert_file)
+                    if os.path.isfile(src):
+                        shutil.copy(src, dest)
+                        print(f"Copied {src} to {dest}")
+
+                print("Running /certificates/copy_certificates.yml...")
+                run_ansible_playbook("certificates/copy_certificates.yml")
+
             delete_file(json_file_name)
         elif selection == len(available_options) + 1:
             print("Exiting")
