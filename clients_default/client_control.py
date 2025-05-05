@@ -68,14 +68,16 @@ def add_to_ansible2():
 
         os.makedirs(os.path.dirname(inventory_file_path), exist_ok=True)
 
-        generate_ssh_keys_for_clients()
+
         try:
             with open(inventory_file_path, 'a') as inventory_file:
                 inventory_file.write(f"{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
             print(f"Client {ansible_user} with IP {ansible_IP} added to the inventory file.")
+            generate_ssh_keys_for_clients()
         except Exception as e:
             print(f"Error writing to inventory file: {e}")
             return
+
 
 def assign_computers_choice():
     assign_computers_choice = input("Would you like to either assign computers\n1) manually\n2) automatically\n3) Exit\nSelect number: ").strip()
