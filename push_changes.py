@@ -10,7 +10,7 @@ import shutil
 
 
 from projects.project_context import get_current_project_number
-
+c_path = os.path.dirname(os.path.abspath(__file__))
 current_project_number = get_current_project_number()
 certs_path = f"projects/{current_project_number}/certs"
 
@@ -126,8 +126,9 @@ def push_from_checklist():
                         shutil.copy(src, dest)
                         print(f"Copied {src} to {dest}")
 
-                print("Running /certificates/copy_certificates.yml...")
-                run_ansible_playbook("certificates/copy_certificates.yml")
+                print("Running certificates/copy_certificates.yml...")
+                run_ansible_playbook(f"{c_path}/certificates/copy_certificates.yml")
+                run_ansible_playbook(f"{c_path}certificates/certificate_client.yml")
 
             delete_file(json_file_name)
         elif selection == len(available_options) + 1:
