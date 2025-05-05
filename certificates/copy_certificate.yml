@@ -1,15 +1,15 @@
 ---
-- name: Copy all certificates from ./certs on control node to /etc/ssl/test-certs/ on remote machine
+- name: Copy all certificates from ./certs on control node to /tmp/certs on remote machine
   hosts: all
   tasks:
-    - name: Ensure /etc/ssl/test-certs/ directory exists on remote machine
+    - name: Ensure /tmp/certs directory exists on remote machine
       file:
-        path: "/etc/ssl/test-certs/"
+        path: "/tmp/certs"
         state: directory
         mode: '0755'
 
     - name: Copy all certificates from control node to remote machine
       copy:
         src: "./certs/"
-        dest: "/etc/ssl/test-certs/"
+        dest: "/tmp/certs"
         mode: '0644'
