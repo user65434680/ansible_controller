@@ -10,5 +10,3 @@
         user: "{{ ansible_user }}"
         state: present
         key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
-      vars:
-        ansible_host: "{{ client_ip }}"
