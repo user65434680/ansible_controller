@@ -1,16 +1,22 @@
-- name: Create low-privileged user with home directory
+- name: Create low-privileged user with home directory and add to 'students' group
   hosts: all
   become: true
   vars_files:
     - user_data.json
   tasks:
-    - name: Ensure the user exists
+    - name: Ensure the 'students' group exists
+      ansible.builtin.group:
+        name: students
+        state: present
+
+    - name: Ensure the user exists and is added to 'students' group
       ansible.builtin.user:
         name: "{{ item.username }}"
         password: "{{ item.password | password_hash('sha512') }}"
         shell: /bin/bash
         state: present
         create_home: yes
+        groups: students
       loop: "{{ users }}"
       loop_control:
         loop_var: item
