@@ -53,7 +53,6 @@ def add_to_ansible():
         return
 
 def add_to_ansible2():
-
     while True:
         ansible_user = input("Enter the computer client username (or type 'exit' to quit): ").strip()
         if ansible_user.lower() == "exit":
@@ -64,16 +63,16 @@ def add_to_ansible2():
         if ansible_IP.lower() == "exit":
             print("Exiting...")
             return
+
         inventory_file_path = os.path.join(os.path.dirname(c_path), "inventory", "inventory.ini")
-
         os.makedirs(os.path.dirname(inventory_file_path), exist_ok=True)
-
 
         try:
             with open(inventory_file_path, 'a') as inventory_file:
                 inventory_file.write(f"{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
             print(f"Client {ansible_user} with IP {ansible_IP} added to the inventory file.")
-            copy_ssh_key_to_client()
+            
+            copy_ssh_key_to_client(ansible_IP, ansible_user)
         except Exception as e:
             print(f"Error writing to inventory file: {e}")
             return

@@ -15,10 +15,8 @@ def generate_ssh_key():
     else:
         print("SSH key already exists.")
 
-def copy_ssh_key_to_client():
+def copy_ssh_key_to_client(client_ip, username):
     """Copy the SSH key to the client server using Ansible."""
-    client_ip = input("Enter the client server IP address: ").strip()
-    username = input("Enter the SSH username for the client server: ").strip()
     yml_path = os.path.join(c_path, "copy_ssh_keys.yml")
     inventory_content = f"""
 [clients]
@@ -29,7 +27,7 @@ def copy_ssh_key_to_client():
         f.write(inventory_content)
 
     try:
-        command = ['ansible-playbook', '-i', inventory_file, yml_path, '--ask-become-pass']
+        command = ['ansible-playbook', '-i', inventory_file, yml_path]
         subprocess.run(command, check=True)
         print(f"SSH key copied to {username}@{client_ip} successfully.")
     except subprocess.CalledProcessError as e:
