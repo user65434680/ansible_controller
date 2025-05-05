@@ -44,7 +44,7 @@ def assign_computers_automatically():
 
 def add_to_ansible():
     add_choice = input("This is used to add new computers to ansible. You need username, password, IP and openssh-server to be installed.\n"
-                       "All computers must have the same sudo password for this to work, so do not add computers with different passwords.\n"
+                       "After adding a computer to file ssh password is no longer needed for operations. This must be done for all computers that want to be controlled.\n"
                        "1) continue\n2) exit\n option: ").strip()
     if add_choice == "1":
         add_to_ansible2()
