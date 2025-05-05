@@ -3,6 +3,8 @@
 import subprocess
 import os
 
+c_path = os.path.dirname(os.path.abspath(__file__))
+
 def generate_ssh_key():
     """Generate an SSH key pair if it doesn't exist."""
     ssh_key_path = os.path.expanduser("~/.ssh/id_rsa")
@@ -17,17 +19,17 @@ def copy_ssh_key_to_client():
     """Copy the SSH key to the client server using Ansible."""
     client_ip = input("Enter the client server IP address: ").strip()
     username = input("Enter the SSH username for the client server: ").strip()
-    password = input("Enter the SSH password for the client server: ").strip()
+    yml_path = os.path.join(c_path, "copy_ssh_keys.yml")
     inventory_content = f"""
 [clients]
-{client_ip} ansible_user={username} ansible_ssh_pass={password} ansible_become_pass={password}
+{client_ip} ansible_user={username}
 """
     inventory_file = "temp_inventory.ini"
     with open(inventory_file, "w") as f:
         f.write(inventory_content)
 
     try:
-        command = ['ansible-playbook', '-i', inventory_file, 'copy_ssh_keys.yml']
+        command = ['ansible-playbook', '-i', inventory_file, yml_path, '--ask-become-pass']
         subprocess.run(command, check=True)
         print(f"SSH key copied to {username}@{client_ip} successfully.")
     except subprocess.CalledProcessError as e:
