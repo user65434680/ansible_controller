@@ -55,17 +55,27 @@ def add_to_ansible():
 def add_to_ansible2():
     generate_ssh_keys_for_clients()
 
-    ansible_user = input("Enter the computer client username: ").strip()
-    ansible_IP = input("Enter the client IP address: ").strip()
+    while True:
+        ansible_user = input("Enter the computer client username (or type 'exit' to quit): ").strip()
+        if ansible_user.lower() == "exit":
+            print("Exiting...")
+            return
 
-    inventory_file_path = os.path.join(os.path.dirname(c_path), "inventory", "inventory.ini")
+        ansible_IP = input("Enter the client IP address (or type 'exit' to quit): ").strip()
+        if ansible_IP.lower() == "exit":
+            print("Exiting...")
+            return
+        inventory_file_path = os.path.join(os.path.dirname(c_path), "inventory", "inventory.ini")
 
-    os.makedirs(os.path.dirname(inventory_file_path), exist_ok=True)
+        os.makedirs(os.path.dirname(inventory_file_path), exist_ok=True)
 
-    with open(inventory_file_path, 'a') as inventory_file:
-        inventory_file.write(f"\n[clients]\n{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
-
-    print(f"Client {ansible_user} with IP {ansible_IP} added to the inventory file.")
+        try:
+            with open(inventory_file_path, 'a') as inventory_file:
+                inventory_file.write(f"{ansible_user} ansible_host={ansible_IP} ansible_user={ansible_user}\n")
+            print(f"Client {ansible_user} with IP {ansible_IP} added to the inventory file.")
+        except Exception as e:
+            print(f"Error writing to inventory file: {e}")
+            return
 
 def assign_computers_choice():
     assign_computers_choice = input("Would you like to either assign computers\n1) manually\n2) automatically\n3) Exit\nSelect number: ").strip()
