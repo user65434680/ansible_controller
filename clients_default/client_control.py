@@ -9,7 +9,7 @@ import os
 c_path = os.path.dirname(os.path.abspath(__file__))
 
 def assign_computers_manually():
-    inventory_file_path = "../inventory/inventory.ini"
+    inventory_file_path = os.path.join(os.path.dirname(c_path), "inventory", "inventory.ini")
     
     if not os.path.exists(inventory_file_path):
         print(f"Inventory file '{inventory_file_path}' does not exist.")
