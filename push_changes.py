@@ -138,42 +138,34 @@ def push_from_checklist():
     except ValueError:
         print("Invalid input. Please enter a number.")
 
-def push_from_pending_changes():
-    """Handle pushing from pending changes."""
-    pending_file = os.path.join("projects", current_project_number, "pending.json")
-    if os.path.isfile(pending_file):
-        with open(pending_file, "r") as f:
-            pending_data = json.load(f)
-        print("\nPending Changes:")
-        option_map = {}
-        idx = 1
-        for category, items in pending_data.items():
-            print(f"\n{category.capitalize()}:")
-            for item in items:
-                print(f"{idx}. {item}")
-                option_map[idx] = (category, item)
-                idx += 1
-        print(f"\n{idx}. Exit")
+def push_from_delete_changes():
+    """Handle pushing from delete changes."""
+    delete_options = {
+        key: value for key, value in yml_map.items()
+        if key not in ["create_blacklist.yml", "whitelist_apps.yml", "unbound_whitelist.yml", "users.yml"]
+    }
 
-        try:
-            choose_option = int(input("\nSelect what changes to push: ").strip())
-            if choose_option in option_map:
-                category, item = option_map[choose_option]
-                print(f"Selected: {item} from {category}")
-                if item in yml_map:
-                    yml_file_path = os.path.join(yml_map[item], item)
-                    print(f"Running playbook: {yml_file_path}")
-                    run_ansible_playbook(yml_file_path)
-                else:
-                    print(f"No corresponding playbook found for {item}.")
-            elif choose_option == idx:
-                print("Exiting pending changes menu.")
-            else:
-                print("Invalid selection. Please try again.")
-        except ValueError:
-            print("Invalid input. Please enter a number.")
-    else:
-        print("No pending changes found.")
+    print("\nDelete Changes Options:")
+    option_map = {}
+    idx = 1
+    for yml_file, folder in delete_options.items():
+        print(f"{idx}. {yml_file}")
+        option_map[idx] = os.path.join(folder, yml_file)
+        idx += 1
+    print(f"{idx}. Exit")
+
+    try:
+        choose_option = int(input("\nSelect what changes to delete: ").strip())
+        if choose_option in option_map:
+            yml_file_path = option_map[choose_option]
+            print(f"Running playbook: {yml_file_path}")
+            run_ansible_playbook(yml_file_path)
+        elif choose_option == idx:
+            print("Exiting delete changes menu.")
+        else:
+            print("Invalid selection. Please try again.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
 
 def push_menu():
     """Main push menu that allows users to choose options."""
@@ -191,7 +183,7 @@ def push_menu():
         if choose_main == "1":
             push_from_checklist()
         elif choose_main == "2":
-            push_from_pending_changes()
+            push_from_delete_changes()
         elif choose_main == "3":
             check_list()
         elif choose_main == "4":
