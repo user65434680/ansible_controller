@@ -27,6 +27,23 @@ def copy_ssh_key_to_client(client_ip, username):
         f.write(inventory_content)
 
     try:
+        print(f"Scanning SSH key for {client_ip}...")
+        result = subprocess.run(
+            ["ssh-keyscan", "-H", client_ip],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+            text=True
+        )
+        known_hosts_path = os.path.expanduser("~/.ssh/known_hosts")
+        with open(known_hosts_path, "a") as known_hosts:
+            known_hosts.write(result.stdout)
+        print(f"Added {client_ip} to known_hosts.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to scan SSH key for {client_ip}: {e.stderr}")
+        return
+
+    try:
         command = ['ansible-playbook', '-i', inventory_file, yml_path, '--ask-pass', '--ask-become-pass']
         subprocess.run(command, check=True)
         print(f"SSH key copied to {username}@{client_ip} successfully.")
