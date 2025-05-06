@@ -176,8 +176,8 @@ def push_menu():
             print("WARNING: Custom client selection not found. Please consider creating one.")
 
         choose_main = input(
-            "Would you like to push from pending changes or from checklist?\n"
-            "1. checklist\n2. pending changes\n3. Show checklist\n4. exit\n"
+            "Would you like to push from delete changes or from checklist?\n"
+            "1. checklist\n2. delete changes\n3. Show checklist\n4. exit\n"
         ).strip()
 
         if choose_main == "1":
