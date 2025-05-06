@@ -27,7 +27,7 @@ def copy_ssh_key_to_client(client_ip, username):
         f.write(inventory_content)
 
     try:
-        command = ['ansible-playbook', '-i', inventory_file, yml_path, '--ask-pass', '--ask-become-pass']
+        command = ['ansible-playbook', '-i', inventory_file, yml_path, '--ask-become-pass']
         subprocess.run(command, check=True)
         print(f"SSH key copied to {username}@{client_ip} successfully.")
     except subprocess.CalledProcessError as e:
