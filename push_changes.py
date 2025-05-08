@@ -12,7 +12,7 @@ import shutil
 from projects.project_context import get_current_project_number
 c_path = os.path.dirname(os.path.abspath(__file__))
 current_project_number = get_current_project_number()
-certs_path = f"projects/{current_project_number}/certs"
+certs_path = f"projects/{current_project_number}"
 
 file_map = {
     "whitelist.json": f"projects/{current_project_number}/whitelist.json",
@@ -117,14 +117,16 @@ def push_from_checklist():
 
             if selected_key == "allowed_domains.json":
                 print("Cloning certs_path to certificates...")
-                certificates_dir = "certificates"
+                certificates_dir = os.path.join(c_path, "certificates")
+                destination_dir = os.path.join(certificates_dir, "certs")
+
                 os.makedirs(certificates_dir, exist_ok=True)
-                for cert_file in os.listdir(certs_path):
-                    src = os.path.join(certs_path, cert_file)
-                    dest = os.path.join(certificates_dir, cert_file)
-                    if os.path.isfile(src):
-                        shutil.copy(src, dest)
-                        print(f"Copied {src} to {dest}")
+
+                if os.path.exists(certs_path):
+                    shutil.copytree(certs_path, destination_dir, dirs_exist_ok=True)
+                    print(f"Copied certs directory from '{certs_path}' to '{destination_dir}'.")
+                else:
+                    print(f"Error: Source certs directory '{certs_path}' does not exist.")
 
                 print("Running certificates/copy_certificates.yml...")
                 run_ansible_playbook(f"{c_path}/certificates/copy_certificate.yml")
