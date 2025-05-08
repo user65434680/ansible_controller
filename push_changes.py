@@ -128,7 +128,7 @@ def push_from_checklist():
 
                 print("Running certificates/copy_certificates.yml...")
                 run_ansible_playbook(f"{c_path}/certificates/copy_certificate.yml")
-                run_ansible_playbook(f"{c_path}certificates/certificate_client.yml")
+                run_ansible_playbook(f"{c_path}/certificates/certificate_client.yml")
 
             delete_file(json_file_name)
         elif selection == len(available_options) + 1:
