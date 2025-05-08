@@ -118,8 +118,7 @@ def push_from_checklist():
             if selected_key == "allowed_domains.json":
                 print("Cloning certs_path to certificates...")
                 certificates_dir = os.path.join(c_path, "certificates")
-                destination_dir = os.path.join(certificates_dir, "certs")
-
+                destination_dir = certificates_dir
                 os.makedirs(certificates_dir, exist_ok=True)
 
                 if os.path.exists(certs_path):
@@ -193,3 +192,4 @@ def push_menu():
             return
         else:
             print("Invalid option, please try again.")
+# If you are reading this trying to make sense of this code, im so sorry I genuenly dont know how it got this out of hand and I hope you can make the changes you wish to make.
