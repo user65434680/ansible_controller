@@ -10,7 +10,8 @@
         mode: '0755'
 
     - name: Move certificates from /tmp/certs to the custom directory
-      command: mv /tmp/certs/* /etc/ssl/custom-certs/
+      shell: mv /tmp/certs/* /etc/ssl/custom-certs/
+
 
     - name: Rehash the certificate directory
       command: c_rehash /etc/ssl/custom-certs
