@@ -1,6 +1,6 @@
 ---
 - name: Manage certificates on the remote client
-  hosts: localhost
+  hosts: all
   become: true
   tasks:
     - name: Ensure the custom certificate directory exists
