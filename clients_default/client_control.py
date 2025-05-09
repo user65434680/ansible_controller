@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import subprocess
-from clients_default.user_count import client_ranking
+from clients_default.assing_computers_automatically import client_ranking_from_inventory
 from clients_default.generate_keys_script import copy_ssh_key_to_client
 from ansible_utils import run_ansible_playbook
 import os
@@ -38,9 +38,8 @@ def assign_computers_manually():
         print(f"{i}) {client}")
 
 def assign_computers_automatically():
-    print("Running playbook to echo available computers...")
-    run_ansible_playbook(f"{c_path}/echo_available_computers.yml")
-    client_ranking()
+    print("Automatically assigning computers...")
+    client_ranking_from_inventory()
 
 def add_to_ansible():
     add_choice = input("This is used to add new computers to ansible. You need username, password, IP and openssh-server to be installed.\n"
