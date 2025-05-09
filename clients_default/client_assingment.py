@@ -16,15 +16,11 @@ def assign_computers_manually():
 
     clients = []
     with open(inventory_file, "r") as file:
-        in_clients_section = False
         for line in file:
             line = line.strip()
             if line.startswith("[clients]"):
-                in_clients_section = True
                 continue
-            if in_clients_section:
-                if line == "" or line.startswith("["):
-                    break
+            if line:
                 clients.append(line)
 
     if not clients:
