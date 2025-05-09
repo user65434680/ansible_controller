@@ -33,9 +33,6 @@ def client_ranking_from_inventory():
             if line.startswith("[clients]"):
                 in_clients_section = True
                 continue
-            if in_clients_section:
-                if not line.startswith(";") and not line.startswith("#"):
-                    clients.append(line)
 
     if not clients:
         print("No clients found in the inventory file.")
@@ -46,16 +43,19 @@ def client_ranking_from_inventory():
         num_needed = len(clients)
 
     selected_clients = clients[:num_needed]
-
     ini_content = "[clients]\n"
     ini_content += "\n".join(selected_clients)
-
     ini_file_path = os.path.join(projects_path, current_project_number, "custom_clients.ini")
-    with open(ini_file_path, "w") as f:
-        f.write(ini_content)
+    print(f"Writing to file: {ini_file_path}")
+    print("Content to write:")
+    print(ini_content)
+    try:
+        with open(ini_file_path, "w") as f:
+            f.write(ini_content)
+        print(f"\nSaved selected clients to '{ini_file_path}'.")
+    except Exception as e:
+        print(f"Error writing to file: {e}")
 
     print("\nSelected Clients:")
     for client in selected_clients:
         print(client)
-
-    print(f"\nSaved selected clients to '{ini_file_path}'.")
