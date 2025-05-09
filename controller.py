@@ -16,11 +16,10 @@ def main_menu():
         print("1. Users")
         print("2. Client computers")
         print("3. Domains")
-        print("4. AppArmor")
-        print("5. Templates")
-        print("6. Push changes to client")
-        print("7. Return to projects")
-        print("8. Exit the system")
+        print("4. Templates")
+        print("5. Push changes to client")
+        print("6. Return to projects")
+        print("7. Exit the system")
 
         choice = input("Enter the number of your choice: ").strip()
 
@@ -31,17 +30,15 @@ def main_menu():
         elif choice == "3":
             choose_action()
         elif choice == "4":
-            print("Placeholder")
-        elif choice == "5":
             template_controller_menu()
-        elif choice == "6":
+        elif choice == "5":
             push_menu()
-        elif choice == "7":
+        elif choice == "6":
             print("Exiting to projects...")
             subprocess.run(["python3", "run.py"])
             sys.exit()
 
-        elif choice == "8":
+        elif choice == "7":
             exit_choice = input("If you exit some changes may not be saved. Are you sure you want to exit?\ntype: yes or no\n").strip()
                 
             if exit_choice == "yes":

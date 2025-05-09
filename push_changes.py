@@ -15,7 +15,6 @@ current_project_number = get_current_project_number()
 certs_path = f"projects/{current_project_number}"
 
 file_map = {
-    "whitelist.json": f"projects/{current_project_number}/whitelist.json",
     "user_data.json": f"projects/{current_project_number}/user_data.json",
     "custom_clients.ini": f"projects/{current_project_number}/custom_clients.ini",
     "allowed_domains.json": f"projects/{current_project_number}/allowed_domains.json",
@@ -23,7 +22,6 @@ file_map = {
 }
 
 alias_map = {
-    "whitelist.json": "AppArmor whitelist",
     "user_data.json": "Selected users",
     "custom_clients.ini": "Chosen clients",
     "allowed_domains.json": "Domain whitelist",
@@ -31,10 +29,6 @@ alias_map = {
 }
 
 yml_map = {
-    "create_blacklist.yml": "apparmor_default",
-    "delete_blacklist.yml": "apparmor_default",
-    "remove_whitelist.yml": "apparmor_default",
-    "whitelist_apps.yml": "apparmor_default",
     "unbound_clear_blacklist.yml": "unbound_default",
     "unbound_clear_domains.yml": "unbound_default",
     "unbound_whitelist.yml": "unbound_default",
@@ -45,16 +39,11 @@ yml_map = {
 
 selection_map = {
     "1": {
-        "desc": "Pushing AppArmor whitelist...",
-        "json_file": "whitelist.json",
-        "yml_file": "whitelist_apps.yml",
-    },
-    "2": {
         "desc": "Pushing selected users...",
         "json_file": "user_data.json",
         "yml_file": "users.yml",
     },
-    "3": {
+    "2": {
         "desc": "Pushing domain whitelist...",
         "json_file": "allowed_domains.json",
         "yml_file": "unbound_whitelist.yml",
@@ -64,7 +53,6 @@ selection_map = {
 correlating_files_map = {
     "user_data.json": "users.yml",
     "allowed_domains.json": "unbound_whitelist.yml",
-    "whitelist.json": "whitelist_apps.yml",
 }
 
 def check_list():
@@ -143,7 +131,7 @@ def push_from_delete_changes():
     """Handle pushing from delete changes."""
     delete_options = {
         key: value for key, value in yml_map.items()
-        if key not in ["create_blacklist.yml", "whitelist_apps.yml", "unbound_whitelist.yml", "users.yml"]
+        if key not in ["unbound_whitelist.yml", "users.yml"]
     }
 
     print("\nDelete Changes Options:")
@@ -192,4 +180,3 @@ def push_menu():
             return
         else:
             print("Invalid option, please try again.")
-# If you are reading this trying to make sense of this code, im so sorry I genuenly dont know how it got this out of hand and I hope you can make the changes you wish to make.

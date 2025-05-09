@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
-from ansible_utils import run_ansible_playbook
 import os
 
-from clients_default.assing_computers_automatically import client_ranking_from_inventory
 c_path = os.path.dirname(os.path.abspath(__file__))
 
 def assign_computers_manually():
