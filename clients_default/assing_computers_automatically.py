@@ -11,8 +11,10 @@ projects_path = os.path.join(os.path.dirname(c_path), "projects")
 user_counts_file = os.path.join(c_path, "user_counts.json")
 custom_clients_file = os.path.join(projects_path, current_project_number, "custom_clients.ini")
 
-def client_ranking_from_inventory(inventory_file="inventory/inventory.ini"):
+def client_ranking_from_inventory():
     """Automatically assign clients from the inventory file."""
+    inventory_file = os.path.join(os.path.dirname(c_path), "inventory", "inventory.ini")
+
     if not os.path.exists(inventory_file):
         print(f"Error: Inventory file '{inventory_file}' not found.")
         return

@@ -6,8 +6,10 @@ import os
 from clients_default.assing_computers_automatically import client_ranking_from_inventory
 c_path = os.path.dirname(os.path.abspath(__file__))
 
-def assign_computers_manually(inventory_file="inventory/inventory.ini"):
+def assign_computers_manually():
     """Display clients from the inventory file and allow the user to select."""
+    inventory_file = os.path.join(os.path.dirname(c_path), "inventory", "inventory.ini")
+
     if not os.path.exists(inventory_file):
         print(f"Error: Inventory file '{inventory_file}' not found.")
         return
@@ -42,7 +44,3 @@ def assign_computers_manually(inventory_file="inventory/inventory.ini"):
             print("Invalid selection. Please try again.")
     except ValueError:
         print("Invalid input. Please enter a number.")
-
-def assign_computers_automatically():
-    run_ansible_playbook(f"{c_path}/echo_available_computers.yml")
-    client_ranking_from_inventory()
