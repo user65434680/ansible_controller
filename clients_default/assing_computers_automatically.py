@@ -33,6 +33,9 @@ def client_ranking_from_inventory():
             if line.startswith("[clients]"):
                 in_clients_section = True
                 continue
+            if in_clients_section:
+                if not line.startswith(";") and not line.startswith("#"):
+                    clients.append(line)
 
     if not clients:
         print("No clients found in the inventory file.")
