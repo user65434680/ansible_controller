@@ -26,7 +26,7 @@ def main_menu():
         choice = input("Enter the number of your choice: ").strip()
 
         if choice == "1":
-            print("placeholder")
+            wizard_menu()
         elif choice == "2":
             user_control()
         elif choice == "3":
