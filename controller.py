@@ -27,7 +27,7 @@ def main_menu():
         choice = input("Enter the number of your choice: ").strip()
 
         if choice == "1":
-            wizard_menu()
+            start_wizard()
         elif choice == "2":
             user_control()
         elif choice == "3":
