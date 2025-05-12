@@ -9,6 +9,7 @@ from clients_default.client_control import assign_computers_choice
 from clients_default.client_assingment import assign_computers_manually
 from clients_default.client_control import assign_computers_automatically
 from unbound_default.domain_controller import allow_domains
+from clients_default.client_control import add_to_ansible
 
 
 def start_wizard():
@@ -31,7 +32,7 @@ def wizard():
         if choice == "exit":
             break
         elif choice == "1":
-            assign_computers_choice()
+            add_to_ansible()
         elif choice == "2":
             pass
         else:
