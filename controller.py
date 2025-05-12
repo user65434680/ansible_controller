@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from setup_wizard import wizard_menu
 from users_default.user_controller import user_control
 from unbound_default.domain_controller import choose_action
 from clients_default.client_control import client_control_menu
@@ -8,6 +7,8 @@ from templates.template_controller import template_controller_menu
 import subprocess
 import sys
 from push_changes import push_menu
+from setup_wizard import wizard_menu
+
 
 
 
