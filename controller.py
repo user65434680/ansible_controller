@@ -7,7 +7,7 @@ from templates.template_controller import template_controller_menu
 import subprocess
 import sys
 from push_changes import push_menu
-from setup_wizard import wizard_menu
+from setup_wizard import start_wizard
 
 
 

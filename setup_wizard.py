@@ -11,20 +11,17 @@ from clients_default.client_control import assign_computers_automatically
 from unbound_default.domain_controller import allow_domains
 
 
-print("Setup wizard is used to guide you through configuration in the right order.")
-input("Press 1 to start 2 to exit:").strip()
-if input == "1":
-     print("Starting setup wizard...")
+def start_wizard():
+    print("Setup wizard is used to guide you through configuration in the right order.")
+    choice = input("Press 1 to start 2 to exit: ").strip()
+    if choice == "1":
+        print("Starting setup wizard...")
+        wizard()
+    elif choice == "2":
+        print("Exiting setup wizard.")
+    else:
+        print("Invalid input. Please enter 1 or 2.")
 
-def wizard_menu():
-    while True:
-        if input == "1":
-            print("Starting setup wizard...")     
-        elif input == "2":
-            print("Exiting setup wizard.")
-            break
-        else:
-            print("Invalid input. Please enter 1 or 2.")
 
 def wizard():
     while True:
