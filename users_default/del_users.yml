@@ -1,16 +1,15 @@
-- name: delete user
+- name: Delete users
   hosts: all
   become: true
   vars_files:
     - user_data.json
-  
   tasks:
-    - name: delete user
+    - name: Delete user and home directory
       ansible.builtin.user:
         name: "{{ item.username }}"
         state: absent
         remove: yes
+        force: yes
       loop: "{{ users }}"
       loop_control:
         loop_var: item
-  

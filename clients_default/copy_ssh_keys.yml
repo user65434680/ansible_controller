@@ -1,12 +1,30 @@
 ---
-- name: Copy SSH key to remote client
+- name: Copy SSH key to remote Silverblue client
   hosts: all
-  gather_facts: no
-  vars_prompt:
+  gather_facts: yes
+  become: yes
+  
+# silverblue compliant
 
   tasks:
+    - name: Ensure .ssh directory exists
+      file:
+        path: "/var/home/{{ ansible_user }}/.ssh"
+        state: directory
+        mode: '0700'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      
     - name: Add SSH key to remote user's authorized_keys
       authorized_key:
         user: "{{ ansible_user }}"
         state: present
         key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+        path: "/var/home/{{ ansible_user }}/.ssh/authorized_keys"
+        manage_dir: yes
+        
+    - name: Set proper SELinux context
+      ansible.posix.sefcontext:
+        target: "/var/home/{{ ansible_user }}/.ssh(/.*)?"
+        setype: ssh_home_t
+        state: present

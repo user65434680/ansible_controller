@@ -16,73 +16,21 @@
         shell: /bin/bash
         state: present
         create_home: yes
+        home: "/var/home/{{ item.username }}"
         groups: students
+        setype: user_home_dir_t
       loop: "{{ users }}"
       loop_control:
         loop_var: item
 
-    - name: Create Desktop directory
+    - name: Create standard directories
       ansible.builtin.file:
-        path: "/home/{{ item.username }}/Desktop"
+        path: "/var/home/{{ item.username }}/{{ item.dir }}"
         state: directory
         owner: "{{ item.username }}"
         group: "{{ item.username }}"
         mode: '0755'
-      loop: "{{ users }}"
+        setype: user_home_t
+      loop: "{{ users | product(['Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']) | list }}"
       loop_control:
-        loop_var: item
-
-    - name: Create Documents directory
-      ansible.builtin.file:
-        path: "/home/{{ item.username }}/Documents"
-        state: directory
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: '0755'
-      loop: "{{ users }}"
-      loop_control:
-        loop_var: item
-
-    - name: Create Downloads directory
-      ansible.builtin.file:
-        path: "/home/{{ item.username }}/Downloads"
-        state: directory
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: '0755'
-      loop: "{{ users }}"
-      loop_control:
-        loop_var: item
-
-    - name: Create Music directory
-      ansible.builtin.file:
-        path: "/home/{{ item.username }}/Music"
-        state: directory
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: '0755'
-      loop: "{{ users }}"
-      loop_control:
-        loop_var: item
-
-    - name: Create Pictures directory
-      ansible.builtin.file:
-        path: "/home/{{ item.username }}/Pictures"
-        state: directory
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: '0755'
-      loop: "{{ users }}"
-      loop_control:
-        loop_var: item
-
-    - name: Create Videos directory
-      ansible.builtin.file:
-        path: "/home/{{ item.username }}/Videos"
-        state: directory
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
-        mode: '0755'
-      loop: "{{ users }}"
-      loop_control:
-        loop_var: item
+        label: "Creating {{ item.1 }} for {{ item.0.username }}"

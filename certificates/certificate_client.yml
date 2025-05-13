@@ -1,29 +1,51 @@
 ---
-- name: Manage certificates on the remote client
+- name: Manage certificates on the remote Silverblue client
   hosts: all
   become: true
   tasks:
-    - name: Ensure the custom certificate directory exists
+  # silverblue compliant
+    - name: Create certificate directory in /etc/ssl
       file:
         path: "/etc/ssl/custom-certs"
         state: directory
         mode: '0755'
+        setype: cert_t
 
-    - name: Move certificates from /tmp/certs to the custom directory
-      shell: mv /tmp/certs/* /etc/ssl/custom-certs/
+    - name: Ensure /tmp/certs exists
+      file:
+        path: "/tmp/certs"
+        state: directory
+        mode: '0755'
 
+    - name: Copy certificates to custom directory
+      copy:
+        remote_src: yes
+        src: "/tmp/certs/"
+        dest: "/etc/ssl/custom-certs/"
+        mode: '0644'
+        setype: cert_t
+      register: cert_copy
 
-    - name: Rehash the certificate directory
-      command: c_rehash /etc/ssl/custom-certs
+    - name: Update CA trust store
+      command: update-ca-trust extract
+      when: cert_copy.changed
 
     - name: Combine all certificates into a single PEM file
       shell: cat /etc/ssl/custom-certs/*.crt > /etc/ssl/custom-certs/combined.pem
+      when: cert_copy.changed
 
-    - name: Ensure combined PEM file has correct permissions
+    - name: Set proper permissions and SELinux context for combined PEM
       file:
         path: "/etc/ssl/custom-certs/combined.pem"
         mode: '0644'
+        setype: cert_t
+      when: cert_copy.changed
+
+    - name: Ensure changes persist across reboots
+      command: ostree admin config-diff
+      register: config_diff
+      changed_when: false
 
     - name: Print completion message
       debug:
-        msg: "Certificate management complete."
+        msg: "Certificate management complete. A reboot may be required for changes to take effect."

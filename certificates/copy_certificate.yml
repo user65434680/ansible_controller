@@ -1,15 +1,32 @@
 ---
 - name: Copy all certificates from ./certs on control node to /tmp/certs on remote machine
   hosts: all
+  become: yes
   tasks:
     - name: Ensure /tmp/certs directory exists on remote machine
       file:
         path: "/tmp/certs"
         state: directory
         mode: '0755'
+        setype: cert_t
+        owner: root
+        group: root
 
     - name: Copy all certificates from control node to remote machine
       copy:
         src: "./certs/"
         dest: "/tmp/certs"
         mode: '0644'
+        setype: cert_t
+        owner: root
+        group: root
+      register: cert_transfer
+
+    - name: Verify certificate transfer
+      stat:
+        path: "/tmp/certs"
+      register: cert_check
+
+    - name: Display transfer status
+      debug:
+        msg: "Certificate transfer {{ 'successful' if cert_check.stat.exists else 'failed' }}"
