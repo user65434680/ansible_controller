@@ -4,6 +4,7 @@ import os
 import json
 
 from users_default.user_controller import add_user
+from users_default.user_controller import user_control
 from users_default.user_controller import add_users_from_file
 from clients_default.client_control import assign_computers_choice
 from clients_default.client_assingment import assign_computers_manually
@@ -52,14 +53,12 @@ def wizard():
             print("Invalid input. Please enter 1, 2.or 3")
             continue
 
-        choice = input("Please select how you would like to add users.\n1. Manually\n2. From a file\n3. skip\n").strip()
+        choice = input("Please select how you would like to add users.\n1. Add users\n2. skip\n").strip()
         if choice == "exit":
             break
         elif choice == "1":
-            add_user()
+            user_control()
         elif choice == "2":
-            add_users_from_file()
-        elif choice == "3":
             print("Skipping...")
         else:
             print("Invalid input. Please enter 1, 2 or 3.")
