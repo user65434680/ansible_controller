@@ -3,8 +3,6 @@
   hosts: all
   gather_facts: yes
   become: yes
-  
-# silverblue compliant
 
   tasks:
     - name: Ensure .ssh directory exists
@@ -23,8 +21,10 @@
         path: "/var/home/{{ ansible_user }}/.ssh/authorized_keys"
         manage_dir: yes
         
-    - name: Set proper SELinux context
-      ansible.posix.sefcontext:
-        target: "/var/home/{{ ansible_user }}/.ssh(/.*)?"
-        setype: ssh_home_t
-        state: present
+    - name: Set SELinux context using semanage
+      command: semanage fcontext -a -t ssh_home_t "/var/home/{{ ansible_user }}/.ssh(/.*)?"
+      ignore_errors: yes
+
+    - name: Apply SELinux context using restorecon
+      command: restorecon -Rv "/var/home/{{ ansible_user }}/.ssh"
+      ignore_errors: yes
