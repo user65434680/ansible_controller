@@ -3,6 +3,7 @@
 from clients_default.client_assingment import assign_computers_manually
 from clients_default.assing_computers_automatically import client_ranking_from_inventory
 from clients_default.generate_keys_script import copy_ssh_key_to_client
+from clients_default.generate_keys_script import generate_ssh_key
 import os
 
 c_path = os.path.dirname(os.path.abspath(__file__))
@@ -22,6 +23,12 @@ def add_to_ansible():
         return
 
 def add_to_ansible2():
+    try:
+        generate_ssh_key()
+    except Exception as e:
+        print(f"Error generating SSH key: {e}")
+        return
+
     while True:
         ansible_user = input("Enter the computer client username (or type 'exit' to quit): ").strip()
         if ansible_user.lower() == "exit":
