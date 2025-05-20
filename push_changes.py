@@ -113,21 +113,28 @@ def push_from_checklist():
             copy_file(json_file_name)
             run_ansible_playbook(yml_file_path)
 
-            if selected_key == "allowed_domains.json":
-                print("Cloning certs_path to certificates...")
-                certificates_dir = os.path.join(c_path, "certificates")
-                destination_dir = certificates_dir
-                os.makedirs(certificates_dir, exist_ok=True)
+        if selected_key == "allowed_domains.json":
+            print("Copying certificates to certificates/certs directory...")
+            certificates_dir = os.path.join(c_path, "certificates", "certs")
+            source_dir = os.path.join(c_path, "projects", str(current_project_number), "certs")
 
-                if os.path.exists(certs_path):
-                    shutil.copytree(certs_path, destination_dir, dirs_exist_ok=True)
-                    print(f"Copied certs directory from '{certs_path}' to '{destination_dir}'.")
-                else:
-                    print(f"Error: Source certs directory '{certs_path}' does not exist.")
+            os.makedirs(certificates_dir, exist_ok=True)
+            
+            if os.path.exists(source_dir):
+                shutil.copytree(source_dir, certificates_dir, dirs_exist_ok=True)
+                print(f"Copied certificates from '{source_dir}' to '{certificates_dir}'")
+            else:
+                print(f"Error: Source directory '{source_dir}' does not exist")
 
-                print("Running certificates/copy_certificates.yml...")
-                run_ansible_playbook(f"{c_path}/certificates/copy_certificate.yml")
-                run_ansible_playbook(f"{c_path}/certificates/certificate_client.yml")
+            print("Running certificate playbooks...")
+            run_ansible_playbook(f"{c_path}/certificates/copy_certificate.yml")
+            run_ansible_playbook(f"{c_path}/certificates/certificate_client.yml")
+
+            try:
+                shutil.rmtree(certificates_dir)
+                print(f"Cleaned up temporary certificates directory: {certificates_dir}")
+            except Exception as e:
+                print(f"Warning: Could not clean up certificates directory: {e}")
 
             delete_file(json_file_name)
         elif selection == len(available_options) + 1:

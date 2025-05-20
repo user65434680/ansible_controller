@@ -18,19 +18,17 @@
         create_home: yes
         home: "/var/home/{{ item.username }}"
         groups: students
-        setype: user_home_dir_t
       loop: "{{ users }}"
       loop_control:
         loop_var: item
 
     - name: Create standard directories
       ansible.builtin.file:
-        path: "/var/home/{{ item.username }}/{{ item.dir }}"
+        path: "/var/home/{{ item.0.username }}/{{ item.1 }}"
         state: directory
-        owner: "{{ item.username }}"
-        group: "{{ item.username }}"
+        owner: "{{ item.0.username }}"
+        group: "{{ item.0.username }}"
         mode: '0755'
-        setype: user_home_t
       loop: "{{ users | product(['Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']) | list }}"
       loop_control:
         label: "Creating {{ item.1 }} for {{ item.0.username }}"

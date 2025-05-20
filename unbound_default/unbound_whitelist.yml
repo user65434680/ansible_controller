@@ -4,30 +4,40 @@
   become: true
   vars_files:
     - allowed_domains.json
+
   tasks:
+    - name: Ensure unbound config directory exists
+      ansible.builtin.file:
+        path: /etc/unbound/conf.d
+        state: directory
+        mode: '0755'
+
     - name: Ensure config file exists
       ansible.builtin.file:
-        path: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        path: /etc/unbound/conf.d/whitelist.conf
         state: touch
         mode: '0644'
-      
-    - name: write default settings to file
+
+    - name: Write default settings to file
       ansible.builtin.lineinfile:
-        path: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        path: /etc/unbound/conf.d/whitelist.conf
         line: "{{ item }}"
         create: yes
-      with_items:
-      - "server:"
-      - "  local-zone: \".\" refuse"
-    
-    - name: write allowed domains to file
+        state: present
+      loop:
+        - "server:"
+        - "  local-zone: \".\" refuse"
+
+    - name: Write allowed domains to file
       ansible.builtin.lineinfile:
-        path: "/etc/unbound/unbound.conf.d/whitelist.conf"
+        path: /etc/unbound/conf.d/whitelist.conf
         line: "  local-zone: \"{{ item }}\" transparent"
         create: yes
-      with_items: "{{ domains }}"
+        state: present
+      loop: "{{ domains }}"
 
-    - name: restart service
+    - name: Restart unbound service
       ansible.builtin.systemd:
         name: unbound
         state: restarted
+        enabled: true
