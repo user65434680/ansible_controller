@@ -7,12 +7,15 @@ import json
 from ansible_utils import run_ansible_playbook
 from copy_controller import copy_file, delete_file
 import shutil
+from projects.project_context import get_current_project_number
+
+current_project_number = get_current_project_number()
 
 
 from projects.project_context import get_current_project_number
 c_path = os.path.dirname(os.path.abspath(__file__))
 current_project_number = get_current_project_number()
-certs_path = f"projects/{current_project_number}"
+certs_path = f"projects/{current_project_number}/certs"
 
 file_map = {
     "user_data.json": f"projects/{current_project_number}/user_data.json",
@@ -62,7 +65,8 @@ def check_list():
 
     for name, path in file_map.items():
         if name == "certificates":
-            if os.path.isdir(path) and any(file.endswith('.crt') for file in os.listdir(path)):
+            cert_path = os.path.join(c_path, path)
+            if os.path.isdir(cert_path) and any(file.endswith('.crt') for file in os.listdir(cert_path)):
                 done.append(name)
             else:
                 not_done.append(name)
