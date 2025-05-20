@@ -23,8 +23,6 @@ def start_wizard():
         print("Exiting setup wizard.")
     else:
         print("Invalid input. Please enter 1 or 2.")
-
-
 def wizard():
     while True:
         print("Welcome to the wizard. You can exit at any time by typing 'exit'.")
@@ -39,7 +37,6 @@ def wizard():
         else:
             print("Invalid input. Please enter 1 or 2.")
             continue
-
         choice = input("Please select how you would like to select clients you are going to push to.\n1. Manually\n2. Automatically\n3. skip (not recommended)\n").strip()
         if choice == "exit":
             break
@@ -61,7 +58,7 @@ def wizard():
         elif choice == "2":
             print("Skipping...")
         else:
-            print("Invalid input. Please enter 1, 2 or 3.")
+            print("Invalid input. Please enter 1 or 2.")
             continue
 
         choice = input("Would you like to add whitelisted websites?\n1. yes\n2. no\n").strip()

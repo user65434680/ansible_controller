@@ -61,10 +61,16 @@ def check_list():
     not_done = []
 
     for name, path in file_map.items():
-        if os.path.isfile(path):
-            done.append(name)
+        if name == "certificates":
+            if os.path.isdir(path) and any(file.endswith('.crt') for file in os.listdir(path)):
+                done.append(name)
+            else:
+                not_done.append(name)
         else:
-            not_done.append(name)
+            if os.path.isfile(path):
+                done.append(name)
+            else:
+                not_done.append(name)
 
     print("Done:")
     for item in done:
