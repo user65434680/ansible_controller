@@ -6,7 +6,7 @@ import json
 import json
 import os
 from projects.project_context import get_current_project_number
-from projects.pending_control import add_to_pending
+
 from certificates.certificate import run_all_certificate
 
 current_project_number = get_current_project_number()
@@ -14,7 +14,7 @@ current_project_number = get_current_project_number()
 c_path = os.path.dirname(os.path.abspath(__file__))
 root_path = os.path.dirname(c_path)
 projects_path = os.path.join(root_path, "projects")
-allowed_domains_file = os.path.join(projects_path, current_project_number, "allowed_domains.json")  # Correct path
+allowed_domains_file = os.path.join(projects_path, current_project_number, "allowed_domains.json")
 
 def allow_domains():
     ensure_allowed_domains_file()
