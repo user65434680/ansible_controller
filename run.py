@@ -7,6 +7,8 @@ import sys
 
 def start():
     ensure_projects_folder()
+    controller_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "controller.py")
+    
     while True:
         print("\nWelcome to the system configuration tool.")
         print("Please select an option from the menu.")
@@ -23,7 +25,7 @@ def start():
             loaded_project = load_project()
             if loaded_project:
                 print(f"Switching to main menu for project {loaded_project}...\n")
-                subprocess.run(["python3", "controller.py"])
+                subprocess.run(["python3", controller_path])
                 sys.exit()
         elif choice == "3":
             list_projects()

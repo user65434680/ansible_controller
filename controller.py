@@ -6,11 +6,13 @@ from clients_default.client_control import client_control_menu
 from templates.template_controller import template_controller_menu
 import subprocess
 import sys
+import os
 from push_changes import push_menu
 from setup_wizard import start_wizard
 
-
-
+c_path = os.path.dirname(os.path.abspath(__file__))
+run_script_path = os.path.join(c_path, "run.py")
+network_controller_path = os.path.join(c_path, "network_scanner", "network_controller.py")
 
 def main_menu():
     while True:
@@ -23,6 +25,8 @@ def main_menu():
         print("6. Push changes to client")
         print("7. Return to projects")
         print("8. Exit the system")
+        if os.path.exists("network_scanner"):
+            print("9. Suricata controller")
 
         choice = input("Enter the number of your choice: ").strip()
 
@@ -40,12 +44,10 @@ def main_menu():
             push_menu()
         elif choice == "7":
             print("Exiting to projects...")
-            subprocess.run(["python3", "run.py"])
+            subprocess.run(["python3", run_script_path])
             sys.exit()
-
         elif choice == "8":
             exit_choice = input("If you exit some changes may not be saved. Are you sure you want to exit?\ntype: yes or no\n").strip()
-                
             if exit_choice == "yes":
                 print("Exiting the program.")
                 break
@@ -54,8 +56,8 @@ def main_menu():
                 continue
             else:
                 print("Invalid input please type yes or no.")
-
-            
+        elif choice == "9" and os.path.exists(os.path.join(c_path, "network_scanner")):
+            subprocess.run(["python3", network_controller_path])
         else:
             print("Invalid choice. Try again.")
 

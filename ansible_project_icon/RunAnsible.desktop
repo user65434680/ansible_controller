@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Launch Ansible Controller
+Comment=Runs the run.py script in a new terminal
+Exec=/opt/ansible_controller/start.sh
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Utility;

@@ -8,6 +8,8 @@ sudo apt install sshpass -y
 sudo apt install libssl-dev python3-dev build-essential -y
 sudo apt install python3-openssl -y
 
+sudo ./ansible_project_icon/setup_ansible_icon.sh
+
 # Segment for optional scanning tools
 echo "Would you like to install Suricata and network scanning tools?"
 echo "This requires two network interfaces for the computer."
@@ -20,6 +22,8 @@ if [[ "$choice" =~ ^[Yy]$ ]]; then
     sudo ./run_all.sh
 else
     echo "Skipping Suricata and network scanning tools installation..."
+    echo "[*] Scheduling system reboot in 10 seconds..."
+    sudo shutdown -r +1 "System will reboot in 10 seconds"
 fi
 
 echo "Installation complete!"
