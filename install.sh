@@ -20,19 +20,20 @@ if [[ "$choice" =~ ^[Yy]$ ]]; then
     cd network_scanner
     chmod +x run_all.sh
     sudo ./run_all.sh
-    echo "[!!] MOVING DIRECTORY TO /opt/ansible_controller SCRIPT WILL TERMINATE[!!]"
-
-
+    echo "[!!] Script will be copied to /opt/ansible_controller [!!]"
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    DEST="/path/to/where/you/want/to/move"
+    DEST="/opt/ansible_controller"
 
-    mv "$SCRIPT_DIR" "$DEST"
+    sudo mkdir -p "$DEST"
+    sudo cp -r "$SCRIPT_DIR"/* "$DEST"
 else
     echo "Skipping Suricata and network scanning tools installation..."
     echo "[*] Scheduling system reboot in 10 seconds..."
     sudo shutdown -r +1 "System will reboot in 10 seconds"
-    echo "[!!] MOVING DIRECTORY TO /opt/ansible_controller SCRIPT WILL TERMINATE[!!]"
+    echo "[!!] Script will be copied to /opt/ansible_controller [!!]"
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    DEST="/path/to/where/you/want/to/move"
-    mv "$SCRIPT_DIR" "$DEST"
+    DEST="/opt/ansible_controller"
+
+    sudo mkdir -p "$DEST"
+    sudo cp -r "$SCRIPT_DIR"/* "$DEST"
 fi
