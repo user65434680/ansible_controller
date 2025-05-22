@@ -1,7 +1,7 @@
 import os
 import shutil
 
-source_file = "/opt/ansible_icon/RunAnsible.desktop"
+source_file = "/opt/ansible_icon/start.sh"
 
 home_root = "/home"
 
@@ -9,7 +9,7 @@ for username in os.listdir(home_root):
     user_desktop = os.path.join(home_root, username, "Desktop")
     
     if os.path.isdir(user_desktop):
-        dest_file = os.path.join(user_desktop, "RunAnsible.desktop")
+        dest_file = os.path.join(user_desktop, "start.sh")
         try:
             shutil.copy(source_file, dest_file)
             os.chmod(dest_file, 0o755)
@@ -19,7 +19,7 @@ for username in os.listdir(home_root):
 
 root_desktop = "/root/Desktop"
 if os.path.isdir(root_desktop):
-    dest_file = os.path.join(root_desktop, "RunAnsible.desktop")
+    dest_file = os.path.join(root_desktop, "start.sh")
     try:
         shutil.copy(source_file, dest_file)
         os.chmod(dest_file, 0o755)

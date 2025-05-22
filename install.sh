@@ -7,7 +7,8 @@ sudo apt install sshpass -y
 sudo apt install libssl-dev python3-dev build-essential -y
 sudo apt install python3-openssl -y
 
-sudo ../ansible_project_icon/setup_ansible_icon.sh
+sudo chmod +x setup_ansible_icon.sh
+sudo ./setup_ansible_icon.sh
 
 echo "Would you like to install Suricata and network scanning tools?"
 echo "This requires two network interfaces for the computer."

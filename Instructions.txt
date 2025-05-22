@@ -1,4 +1,4 @@
 To install the project on ubuntu 24.04.1 run
 
-sudo apt update && sudo apt upgrade -y && sudo apt install git && git clone -b test https://github.com/user65434680/ansible_controller /opt/ansible_controller && cd /opt/ansible_controller  && chmod +x perms.sh && ./perms.sh && sudo ./install.sh
+sudo apt update && sudo apt upgrade -y && sudo apt install git && sudo git clone -b test https://github.com/user65434680/ansible_controller /opt/ansible_controller && cd /opt/ansible_controller  && sudo chmod +x perms.sh && sudo ./perms.sh && sudo ./install.sh
 

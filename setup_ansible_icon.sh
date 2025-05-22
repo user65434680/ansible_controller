@@ -2,7 +2,7 @@
 
 # setup network scanner for controller
 SCRIPT_PATH="/opt/ansible_icon/ansible_icon.py"
-GENERAL_PATH="/opt/ansible_icon/RunAnsible.desktop"
+GENERAL_PATH="/opt/ansible_icon/start.sh"
 SERVICE_PATH="/etc/systemd/system/ansible_icon.service"
 
 if [[ "$EUID" -ne 0 ]]; then
@@ -10,8 +10,8 @@ if [[ "$EUID" -ne 0 ]]; then
   exit 1
 fi
 mkdir -p /opt/ansible_icon
-sudo cp ansible_icon.py "$SCRIPT_PATH"
-sudo cp RunAnsible.desktop "$GENERAL_PATH"
+sudo cp ansible_project_icon/ansible_icon.py "$SCRIPT_PATH"
+sudo cp ansible_project_icon/start.sh "$GENERAL_PATH"
 
 if [[ -f "$SCRIPT_PATH" ]]; then
   chmod +x "$SCRIPT_PATH"
@@ -26,7 +26,6 @@ cat <<EOF > "$SERVICE_PATH"
 Description=Network Scan Service
 After=network-online.target
 Wants=network-online.target
-RequiresMountsFor=/opt/ansible_icon
 
 [Service]
 Type=simple
@@ -50,4 +49,4 @@ echo "Setting permissions..."
 sudo chmod 700 /opt/ansible_icon
 sudo chmod 700 /opt/ansible_controller/ansible_icon.py
 sudo chown root:root /opt/ansible_controller/ansible_icon.py
-sudo chmod +x /opt/ansible_icon/RunAnsible.desktop
+sudo chmod +x /opt/ansible_icon/start.sh
