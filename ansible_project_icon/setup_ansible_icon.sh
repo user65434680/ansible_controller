@@ -51,6 +51,3 @@ sudo chmod 700 /opt/ansible_icon
 sudo chmod 700 /opt/ansible_controller/ansible_icon.py
 sudo chown root:root /opt/ansible_controller/ansible_icon.py
 sudo chmod +x /opt/ansible_icon/RunAnsible.desktop
-
-echo "Starting network scan service..."
-sudo systemctl start ansible_icon.service"

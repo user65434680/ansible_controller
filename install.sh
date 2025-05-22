@@ -8,7 +8,7 @@ sudo apt install sshpass -y
 sudo apt install libssl-dev python3-dev build-essential -y
 sudo apt install python3-openssl -y
 
-sudo ./ansible_project_icon/setup_ansible_icon.sh
+sudo ../ansible_project_icon/setup_ansible_icon.sh
 
 # Segment for optional scanning tools
 echo "Would you like to install Suricata and network scanning tools?"
@@ -20,10 +20,19 @@ if [[ "$choice" =~ ^[Yy]$ ]]; then
     cd network_scanner
     chmod +x run_all.sh
     sudo ./run_all.sh
+    echo "[!!] MOVING DIRECTORY TO /opt/ansible_controller SCRIPT WILL TERMINATE[!!]"
+
+
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    DEST="/path/to/where/you/want/to/move"
+
+    mv "$SCRIPT_DIR" "$DEST"
 else
     echo "Skipping Suricata and network scanning tools installation..."
     echo "[*] Scheduling system reboot in 10 seconds..."
     sudo shutdown -r +1 "System will reboot in 10 seconds"
+    echo "[!!] MOVING DIRECTORY TO /opt/ansible_controller SCRIPT WILL TERMINATE[!!]"
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    DEST="/path/to/where/you/want/to/move"
+    mv "$SCRIPT_DIR" "$DEST"
 fi
-
-echo "Installation complete!"
