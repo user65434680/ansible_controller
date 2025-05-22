@@ -183,7 +183,7 @@ def push_menu():
 
         choose_main = input(
             "Would you like to push from delete changes or from checklist?\n"
-            "1. checklist\n2. delete changes\n3. Show checklist\n4. exit\n"
+            "1. Push changes\n2. delete changes\n3. Show checklist\n4. exit\n"
         ).strip()
 
         if choose_main == "1":
