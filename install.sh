@@ -23,17 +23,3 @@ else
     echo "[*] Scheduling system reboot in 10 seconds..."
     sudo shutdown -r +1 "System will reboot in 10 seconds"
 fi
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST="/opt/ansible_controller"
-
-echo "[!!] Copying script to $DEST... [!!]"
-sudo mkdir -p "$DEST"
-sudo cp -r "$SCRIPT_DIR"/* "$DEST"
-
-if [[ -f "$DEST/$(basename "$0")" ]]; then
-    echo "Copy successful. Cleaning up source directory..."
-    sudo rm -rf "$SCRIPT_DIR"
-else
-    echo "Copy failed. Skipping deletion of original directory."
-fi
