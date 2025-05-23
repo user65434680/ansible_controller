@@ -6,6 +6,8 @@ ansible-galaxy collection install ansible.posix
 sudo apt install sshpass -y
 sudo apt install libssl-dev python3-dev build-essential -y
 sudo apt install python3-openssl -y
+# Not recommended for security reasons
+#sudo apt install openssh-server -y
 
 sudo chmod +x setup_ansible_icon.sh
 sudo ./setup_ansible_icon.sh
