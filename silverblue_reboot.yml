@@ -4,23 +4,12 @@
   become: true
   tasks:
   # silverblue OS requires reboots for some changes to take effect. to comply with this, this file is used to reboot the required systems.
-    - name: Check if reboot is required
-      command: needs-restarting -r
-      register: reboot_required
-      ignore_errors: yes
-      changed_when: false
-
-    - name: Notify users of impending reboot
-      debug:
-        msg: "System will reboot in 2 minutes"
-      when: reboot_required.rc == 1
-
     - name: Reboot the system
       reboot:
         msg: "Rebooting system to apply changes"
         connect_timeout: 5
         reboot_timeout: 300
-        pre_reboot_delay: 120
+        pre_reboot_delay: 10
         post_reboot_delay: 30
         test_command: whoami
       when: reboot_required.rc == 1

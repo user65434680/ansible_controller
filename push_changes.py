@@ -183,7 +183,8 @@ def push_menu():
 
         choose_main = input(
             "Would you like to push from delete changes or from checklist?\n"
-            "1. Push changes\n2. delete changes\n3. Show checklist\n4. exit\n"
+            "1. Push changes\n2. delete changes\n3. Show checklist\n"
+            "4. exit\n5. Reboot clients\n"
         ).strip()
 
         if choose_main == "1":
@@ -192,6 +193,14 @@ def push_menu():
             push_from_delete_changes()
         elif choose_main == "3":
             check_list()
+        elif choose_main == "5":
+            confirm = input("IMPORTANT: Are you sure you want to reboot all clients? (yes/no): ").strip().lower()
+            if confirm == "yes":
+                print("[!!] Rebooting remote clients - please ensure they come back online [!!]")
+                yml_file_path = os.path.join(c_path, "silverblue_reboot.yml")
+                run_ansible_playbook(yml_file_path)
+            else:
+                print("Reboot cancelled.")
         elif choose_main == "4":
             print("Exiting")
             return
